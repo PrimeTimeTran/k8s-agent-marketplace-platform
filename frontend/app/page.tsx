@@ -58,6 +58,17 @@ export default function Home() {
     <div className='flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black'>
       <div className='w-full max-w-md space-y-4 rounded-xl bg-white p-6 shadow dark:bg-zinc-900'>
         <h1 className='text-lg font-semibold'>Agent Runner</h1>
+        <ul>
+          <li>GCP</li>
+          <li>K8s</li>
+          <li>Docker</li>
+          {/* <li>React</li>
+          <li>Next</li>
+          <li>Node</li>
+          <li>Python</li>
+          <li>JS</li>
+          <li>TS</li> */}
+        </ul>
 
         <label className='text-sm font-medium'>Agent</label>
         <select

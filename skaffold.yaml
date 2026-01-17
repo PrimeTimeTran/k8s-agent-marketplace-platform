@@ -1,0 +1,37 @@
+apiVersion: skaffold/v4beta6
+kind: Config
+
+build:
+  artifacts:
+    - image: frontend
+      context: frontend
+      sync:
+        infer:
+          - '**/*'
+
+    - image: product-control-plane
+      context: product-control-plane
+      sync:
+        infer:
+          - '**/*'
+
+    - image: infra-control-plane
+      context: infra-control-plane
+      sync:
+        infer:
+          - '**/*'
+
+    - image: agent-runtime
+      context: agent_runtime
+      sync:
+        manual:
+          - src: '**/*.py'
+            dest: /app
+
+manifests:
+  rawYaml:
+    - k8s/namespaces.yaml
+    - k8s/frontend.yaml
+    - k8s/agent-runtime.yaml
+    - k8s/product-control-plane.yaml
+    - k8s/infra-control-plane.yaml

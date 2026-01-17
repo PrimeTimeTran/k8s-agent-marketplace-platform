@@ -16,7 +16,7 @@ spec:
       containers:
         - name: product-control-plane
           image: product-control-plane:dev
-          imagePullPolicy: IfNotPresent
+          command: ['npm', 'run', 'dev']
           ports:
             - containerPort: 3000
 ---
