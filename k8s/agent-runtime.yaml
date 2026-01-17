@@ -19,6 +19,14 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
+          command: ['uvicorn']
+          args:
+            - 'main:app'
+            - '--host'
+            - '0.0.0.0'
+            - '--port'
+            - '8000'
+            - '--reload'
 ---
 apiVersion: v1
 kind: Service

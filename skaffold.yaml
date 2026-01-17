@@ -28,6 +28,13 @@ build:
           - src: '**/*.py'
             dest: /app
 
+    - image: test-job
+      context: test-job
+      sync:
+        manual:
+          - src: '**/*.py'
+            dest: /app
+
 manifests:
   rawYaml:
     - k8s/namespaces.yaml
@@ -35,3 +42,4 @@ manifests:
     - k8s/agent-runtime.yaml
     - k8s/product-control-plane.yaml
     - k8s/infra-control-plane.yaml
+    - k8s/test-job.yaml

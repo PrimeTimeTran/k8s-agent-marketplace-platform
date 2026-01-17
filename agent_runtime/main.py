@@ -9,20 +9,41 @@ classifier = pipeline(
     model="distilbert-base-uncased-finetuned-sst-2-english"
 )
 
-translator = pipeline(
-    "translation_en_to_hi",
-    model="Helsinki-NLP/opus-mt-en-hi"
-)
-
-
 def run_classifier(prompt: str):
     res = classifier(prompt)
     return {
         "classification": res[0]["label"]
     }
 
-def run_translator(prompt: str):
-    res = translator(prompt)
+translator_hi = pipeline(
+    "translation_en_to_hi",
+    model="Helsinki-NLP/opus-mt-en-hi"
+)
+
+def run_translator_hi(prompt: str):
+    res = translator_hi(prompt)
+    return {
+        "translation": res[0]["translation_text"]
+    }
+
+translator_cn = pipeline(
+    "translation_en_to_zh",
+    model="Helsinki-NLP/opus-mt-en-zh"
+)
+
+def run_translator_cn(prompt: str):
+    res = translator_cn(prompt)
+    return {
+        "translation": res[0]["translation_text"]
+    }
+
+translator_vi = pipeline(
+    "translation_en_to_vi",
+    model="Helsinki-NLP/opus-mt-en-vi"
+)
+
+def run_translator_vi(prompt: str):
+    res = translator_vi(prompt)
     return {
         "translation": res[0]["translation_text"]
     }
@@ -30,7 +51,9 @@ def run_translator(prompt: str):
 
 AGENTS = {
     "classify": run_classifier,
-    "translate": run_translator,
+    "translate_hi": run_translator_hi,
+    "translate_cn": run_translator_cn,
+    "translate_vi": run_translator_vi,
 }
 
 

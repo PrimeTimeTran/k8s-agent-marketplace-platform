@@ -59,15 +59,14 @@ export default function Home() {
       <div className='w-full max-w-md space-y-4 rounded-xl bg-white p-6 shadow dark:bg-zinc-900'>
         <h1 className='text-lg font-semibold'>Agent Runner</h1>
         <ul>
-          <li>GCP</li>
           <li>K8s</li>
           <li>Docker</li>
-          {/* <li>React</li>
           <li>Next</li>
           <li>Node</li>
+          <li>FastAPI</li>
           <li>Python</li>
           <li>JS</li>
-          <li>TS</li> */}
+          <li>TS</li>
         </ul>
 
         <label className='text-sm font-medium'>Agent</label>
@@ -77,7 +76,9 @@ export default function Home() {
           className='w-full rounded-md border px-3 py-2 text-sm dark:bg-zinc-800'
         >
           <option value='classify'>Sentiment Classifier</option>
-          <option value='translate'>English → Hindi Translator</option>
+          <option value='translate_hi'>English → Hindi Translator</option>
+          <option value='translate_cn'>English → Chinese Translator</option>
+          <option value='translate_vi'>English → Vietnamese Translator</option>
         </select>
 
         <label className='text-sm font-medium'>Prompt</label>
