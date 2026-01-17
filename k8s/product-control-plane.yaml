@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-control-plane
+  namespace: agent-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-control-plane
+  template:
+    metadata:
+      labels:
+        app: product-control-plane
+    spec:
+      containers:
+        - name: product-control-plane
+          image: product-control-plane:dev
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-control-plane
+  namespace: agent-platform
+spec:
+  selector:
+    app: product-control-plane
+  ports:
+    - port: 3000

@@ -1,0 +1,18 @@
+apiVersion: marketplace.yourcompany.dev/v1
+kind: Agent
+metadata:
+  name: web-search
+spec:
+  displayName: Web Search Agent
+  version: '1.0.0'
+  runtime: python
+  image: web-search-agent:latest
+  entrypoint: main.py
+  health:
+    path: /health
+  inputs:
+    - name: prompt
+      type: string
+  outputs:
+    - name: response
+      type: string
