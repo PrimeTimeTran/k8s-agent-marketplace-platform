@@ -17,7 +17,7 @@ echo "▶ Setting kubectl context..."
 kubectl config use-context k3d-$CLUSTER_NAME
 
 echo "▶ Building images..."
-docker build -t agent-runtime:dev "$ROOT_DIR/agent_runtime"
+docker build -t agent-runtime:dev "$ROOT_DIR/agent-runtime"
 docker build -t infra-control-plane:dev "$ROOT_DIR/infra-control-plane"
 docker build -t product-control-plane:dev "$ROOT_DIR/product-control-plane"
 docker build -t frontend:dev "$ROOT_DIR/frontend"
