@@ -10,7 +10,7 @@ while MCP governs runtime reasoning and behavior within sand-boxed execution.
    2. User spaces
    3. "Generative AI"
 
-- Image Detection
+- Image Detection: ""
   https://huggingface.co/spaces/Qwen/Qwen-Image-2512
 - Object Classification
   https://huggingface.co/spaces/antokun/Cat_and_dog_breed_real_time_detection
