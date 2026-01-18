@@ -6,30 +6,35 @@ import fetch from 'node-fetch'
 const app = express()
 app.use(express.json())
 
+async function callAgentRuntime(payload, retries = 5) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await fetch('http://agent-runtime:8000/execute', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      if (!res.ok) {
+        throw new Error(await res.text())
+      }
+
+      return await res.json()
+    } catch (err) {
+      if (i === retries - 1) throw err
+      await new Promise((r) => setTimeout(r, 500 * (i + 1)))
+    }
+  }
+}
+
 app.post('/schedule-run', async (req, res) => {
   try {
     console.log('Infra CP:', req.body)
-
-    const response = await fetch('http://agent-runtime:8000/execute', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(req.body),
-    })
-
-    const text = await response.text()
-
-    if (!response.ok) {
-      console.error('Agent runtime error:', text)
-      return res.status(500).json({
-        error: 'Agent runtime failed',
-        details: text,
-      })
-    }
-
-    res.json(JSON.parse(text))
+    const result = await callAgentRuntime(req.body)
+    res.json(result)
   } catch (err) {
     console.error('Infra CP crash:', err)
-    res.status(500).json({ error: 'Infra control plane crashed' })
+    res.status(503).json({ error: 'Agent runtime unavailable' })
   }
 })
 

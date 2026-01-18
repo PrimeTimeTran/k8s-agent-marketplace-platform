@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Home() {
   const [agent, setAgent] = useState<'classify' | 'translate'>('classify')
@@ -53,6 +53,14 @@ export default function Home() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetch('/api/health')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('ENV CHECK:', data)
+      })
+  }, [])
 
   return (
     <div className='flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black'>

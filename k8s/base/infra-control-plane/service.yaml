@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: infra-control-plane
+  namespace: agent-platform
+spec:
+  selector:
+    app: infra-control-plane
+  ports:
+    - port: 3000
+      targetPort: 3000

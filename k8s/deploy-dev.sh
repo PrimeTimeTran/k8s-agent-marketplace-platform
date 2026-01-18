@@ -21,6 +21,6 @@ build_and_deploy () {
 build_and_deploy frontend ./frontend
 build_and_deploy product-control-plane ./product-control-plane
 build_and_deploy infra-control-plane ./infra-control-plane
-build_and_deploy agent-runtime ./agent_runtime
+build_and_deploy agent-runtime ./agent-runtime
 
 echo "✅ All services redeployed"

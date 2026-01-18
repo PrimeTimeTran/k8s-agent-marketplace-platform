@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: agent-platform
+spec:
+  template:
+    spec:
+      containers:
+        - name: frontend
+          command: ['npm', 'run', 'dev']
+          env:
+            - name: NODE_ENV
+              value: development
+            - name: CHOKIDAR_USEPOLLING
+              value: 'true'
+            - name: WATCHPACK_POLLING
+              value: 'true'

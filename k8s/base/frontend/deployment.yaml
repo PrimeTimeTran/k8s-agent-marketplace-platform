@@ -15,29 +15,13 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: frontend:dev
+          image: frontend
           imagePullPolicy: IfNotPresent
-          command: ['npm', 'run', 'dev']
           ports:
             - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: app-env
           env:
             - name: NEXT_PUBLIC_PRODUCT_API
               value: 'http://product-control-plane:3000'
-            - name: CHOKIDAR_USEPOLLING
-              value: 'true'
-            - name: WATCHPACK_POLLING
-              value: 'true'
-            - name: NEXT_DISABLE_TURBOPACK
-              value: '1'
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: frontend
-  namespace: agent-platform
-spec:
-  selector:
-    app: frontend
-  ports:
-    - port: 3000
-      targetPort: 3000

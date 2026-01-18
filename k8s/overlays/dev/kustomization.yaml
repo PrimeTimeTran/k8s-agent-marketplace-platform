@@ -1,0 +1,9 @@
+resources:
+  - ../../base
+
+patches:
+  - path: frontend-patch.yaml
+    target:
+      kind: Deployment
+      name: frontend
+      namespace: agent-platform

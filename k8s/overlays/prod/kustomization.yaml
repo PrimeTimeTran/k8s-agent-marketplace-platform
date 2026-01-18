@@ -1,0 +1,6 @@
+resources:
+  - ../../base
+  - env.yaml
+patches:
+  - app-env-patch.yaml
+  - frontend-patch.yaml

@@ -1,0 +1,6 @@
+resources:
+  - app-env
+  - frontend
+  - agent-runtime
+  - infra-control-plane
+  - product-control-plane

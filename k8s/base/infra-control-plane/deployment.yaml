@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: infra-control-plane
+  namespace: agent-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: infra-control-plane
+  template:
+    metadata:
+      labels:
+        app: infra-control-plane
+    spec:
+      serviceAccountName: infra-control-plane
+      containers:
+        - name: infra-control-plane
+          image: infra-control-plane:dev
+          imagePullPolicy: IfNotPresent
+          command: ['npm', 'run', 'dev']
+          ports:
+            - containerPort: 3000

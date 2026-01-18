@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-env
+  namespace: agent-platform
+data:
+  APP_ENV: base
+  NODE_ENV: production

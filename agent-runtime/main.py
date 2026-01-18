@@ -1,6 +1,7 @@
-from fastapi import FastAPI, HTTPException
+import os
 from pydantic import BaseModel
 from transformers import pipeline
+from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 
@@ -56,11 +57,18 @@ AGENTS = {
     "translate_vi": run_translator_vi,
 }
 
-
 class AgentRequest(BaseModel):
     agent: str
     prompt: str
     value: str
+
+@app.on_event("startup")
+async def boot():
+    print("BOOTING WITH APP_ENV=", os.getenv("APP_ENV", "unknown"))
+
+@app.get("/healthz")
+def healthz():
+    return {"status": "ok"}
 
 @app.post("/execute")
 def execute(req: AgentRequest):

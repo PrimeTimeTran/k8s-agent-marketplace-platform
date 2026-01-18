@@ -22,7 +22,7 @@ build:
           - '**/*'
 
     - image: agent-runtime
-      context: agent_runtime
+      context: agent-runtime
       sync:
         manual:
           - src: '**/*.py'
@@ -38,8 +38,14 @@ build:
 manifests:
   rawYaml:
     - k8s/namespaces.yaml
-    - k8s/frontend.yaml
-    - k8s/agent-runtime.yaml
-    - k8s/product-control-plane.yaml
-    - k8s/infra-control-plane.yaml
     - k8s/test-job.yaml
+  kustomize:
+    paths:
+      - k8s/overlays/dev
+
+profiles:
+  - name: prod
+    manifests:
+      kustomize:
+        paths:
+          - k8s/overlays/prod
