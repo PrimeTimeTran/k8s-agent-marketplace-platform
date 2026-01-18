@@ -171,6 +171,9 @@ kubectl get pods -n agent-platform -o wide
 kubectl get jobs -n agent-platform
 kubectl describe job test-job -n agent-platform
 kubectl logs -n agent-platform job/test-job
+
+# View job logs
+kubectl logs job/agent-job-1768775154867 -n agent-platform
 ```
 
 - See events (cluster truth serum)

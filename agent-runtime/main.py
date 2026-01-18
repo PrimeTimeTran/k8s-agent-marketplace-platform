@@ -1,85 +1,73 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel
-from transformers import pipeline
 
 app = FastAPI()
 
-classifier = pipeline(
-    "text-classification",
-    model="distilbert-base-uncased-finetuned-sst-2-english"
-)
-
-def run_classifier(prompt: str):
-    res = classifier(prompt)
-    return {
-        "classification": res[0]["label"]
-    }
-
-translator_hi = pipeline(
-    "translation_en_to_hi",
-    model="Helsinki-NLP/opus-mt-en-hi"
-)
-
-def run_translator_hi(prompt: str):
-    res = translator_hi(prompt)
-    return {
-        "translation": res[0]["translation_text"]
-    }
-
-translator_cn = pipeline(
-    "translation_en_to_zh",
-    model="Helsinki-NLP/opus-mt-en-zh"
-)
-
-def run_translator_cn(prompt: str):
-    res = translator_cn(prompt)
-    return {
-        "translation": res[0]["translation_text"]
-    }
-
-translator_vi = pipeline(
-    "translation_en_to_vi",
-    model="Helsinki-NLP/opus-mt-en-vi"
-)
-
-def run_translator_vi(prompt: str):
-    res = translator_vi(prompt)
-    return {
-        "translation": res[0]["translation_text"]
-    }
-
-
-AGENTS = {
-    "classify": run_classifier,
-    "translate_hi": run_translator_hi,
-    "translate_cn": run_translator_cn,
-    "translate_vi": run_translator_vi,
-}
-
+READY = False
+PIPELINES = {}
 
 class AgentRequest(BaseModel):
     agent: str
     prompt: str
     value: str
 
+@app.on_event("startup")
+def startup():
+    global READY, PIPELINES
+
+    from transformers import pipeline
+
+    PIPELINES["classify"] = pipeline(
+        "text-classification",
+        model="distilbert-base-uncased-finetuned-sst-2-english"
+    )
+
+    PIPELINES["translate_hi"] = pipeline(
+        "translation_en_to_hi",
+        model="Helsinki-NLP/opus-mt-en-hi"
+    )
+
+    # PIPELINES["translate_cn"] = pipeline(
+    #     "translation_en_to_zh",
+    #     model="Helsinki-NLP/opus-mt-en-zh"
+    # )
+
+    # PIPELINES["translate_vi"] = pipeline(
+    #     "translation_en_to_vi",
+    #     model="Helsinki-NLP/opus-mt-en-vi"
+    # )
+
+    READY = True
+
+
 @app.post("/execute")
 def execute(req: AgentRequest):
-    print("EXECUTE:", req.dict())
-    agent_fn = AGENTS.get(req.agent)
+    if not READY:
+        raise HTTPException(status_code=503, detail="Agent runtime not ready")
 
-    if not agent_fn:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Unknown agent '{req.agent}'"
-        )
+    pipeline_fn = PIPELINES.get(req.agent)
+    if not pipeline_fn:
+        raise HTTPException(status_code=400, detail=f"Unknown agent '{req.agent}'")
 
-    result = agent_fn(req.prompt)
+    res = pipeline_fn(req.prompt)
 
-    return {
-        "agent": req.agent,
-        "result": result,
-        "echo": req.value,
-    }
+    if req.agent == "classify":
+        return {"classification": res[0]["label"]}
+
+    return {"translation": res[0]["translation_text"]}
+
+
+@app.get("/healthz")
+def healthz():
+    return {"status": "ok"}
+
+
+@app.get("/readyz")
+def readyz():
+    if not READY:
+        return Response(status_code=503)
+    return {"status": "ready"}
+
 
 
 # from fastapi import FastAPI

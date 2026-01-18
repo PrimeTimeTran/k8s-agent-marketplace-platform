@@ -57,6 +57,7 @@ app.post('/schedule-job', async (req, res) => {
       },
       spec: {
         backoffLimit: 0,
+        ttlSecondsAfterFinished: 60,
         template: {
           spec: {
             restartPolicy: 'Never',

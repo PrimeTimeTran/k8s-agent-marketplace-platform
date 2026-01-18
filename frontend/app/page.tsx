@@ -77,8 +77,8 @@ export default function Home() {
         >
           <option value='classify'>Sentiment Classifier</option>
           <option value='translate_hi'>English → Hindi Translator</option>
-          <option value='translate_cn'>English → Chinese Translator</option>
           <option value='translate_vi'>English → Vietnamese Translator</option>
+          {/* <option value='translate_cn'>English → Chinese Translator</option> */}
         </select>
 
         <label className='text-sm font-medium'>Prompt</label>
