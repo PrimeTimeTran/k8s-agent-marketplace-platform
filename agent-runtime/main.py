@@ -76,7 +76,6 @@ def execute(req: AgentRequest):
     result = agent_fn(req.prompt)
 
     return {
-        "loi": "tran",
         "agent": req.agent,
         "result": result,
         "echo": req.value,

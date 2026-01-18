@@ -22,7 +22,7 @@ build:
           - '**/*'
 
     - image: agent-runtime
-      context: agent_runtime
+      context: agent-runtime
       sync:
         manual:
           - src: '**/*.py'
