@@ -3,8 +3,8 @@ import { useState } from 'react'
 
 export default function Home() {
   const [agent, setAgent] = useState<'classify' | 'translate'>('classify')
-  const [prompt, setPrompt] = useState('')
-  const [value, setValue] = useState('')
+  const [prompt, setPrompt] = useState('Im doing great!')
+  const [value, setValue] = useState('abc-123')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<any>(null)
 

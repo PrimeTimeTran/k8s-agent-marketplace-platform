@@ -21,25 +21,25 @@ build:
         infer:
           - '**/*'
 
-    - image: agent-runtime
-      context: agent-runtime
+    - image: agent-job
+      context: agent-job
       sync:
         manual:
           - src: '**/*.py'
             dest: /app
 
-    - image: test-job
-      context: test-job
-      sync:
-        manual:
-          - src: '**/*.py'
-            dest: /app
+    # - image: agent-runtime
+    #   context: agent-runtime
+    #   sync:
+    #     manual:
+    #       - src: '**/*.py'
+    #         dest: /app
 
 manifests:
   rawYaml:
     - k8s/namespaces.yaml
     - k8s/frontend.yaml
-    - k8s/agent-runtime.yaml
     - k8s/product-control-plane.yaml
     - k8s/infra-control-plane.yaml
-    - k8s/test-job.yaml
+    - k8s/agent-job.yaml
+    # - k8s/agent-runtime.yaml

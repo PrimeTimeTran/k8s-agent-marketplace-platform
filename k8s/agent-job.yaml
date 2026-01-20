@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: test-job
+  name: agent-job
   namespace: agent-platform
 spec:
   backoffLimit: 0
@@ -11,5 +11,5 @@ spec:
       restartPolicy: Never
       containers:
         - name: runner
-          image: test-job:latest
-          imagePullPolicy: IfNotPresent
+          image: agent-job:latest
+          imagePullPolicy: Never

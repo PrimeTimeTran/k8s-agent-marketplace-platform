@@ -46,8 +46,7 @@ const httpsAgent = new https.Agent({ ca })
 
 app.post('/schedule-job', async (req, res) => {
   try {
-    const jobName = `agent-job-${Date.now()}`
-
+    const jobName = `infra-agent-job-${Date.now()}`
     const job = {
       apiVersion: 'batch/v1',
       kind: 'Job',
@@ -64,8 +63,8 @@ app.post('/schedule-job', async (req, res) => {
             containers: [
               {
                 name: 'agent',
-                image: 'test-job:latest',
-                imagePullPolicy: 'IfNotPresent',
+                image: 'agent-job:latest',
+                imagePullPolicy: 'Never',
                 env: [
                   {
                     name: 'PAYLOAD',
