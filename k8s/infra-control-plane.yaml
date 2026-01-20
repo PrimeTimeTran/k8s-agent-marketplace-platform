@@ -1,15 +1,3 @@
-# ----------------------------
-# ServiceAccount (NEW)
-# ----------------------------
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: infra-control-plane
-  namespace: agent-platform
----
-# ----------------------------
-# Role (NEW - minimal permissions)
-# ----------------------------
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -23,9 +11,6 @@ rules:
     resources: ['pods']
     verbs: ['get', 'list', 'watch']
 ---
-# ----------------------------
-# RoleBinding (NEW)
-# ----------------------------
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -39,9 +24,6 @@ roleRef:
   name: infra-control-plane
   apiGroup: rbac.authorization.k8s.io
 ---
-# ----------------------------
-# Deployment (EXISTING + 1 LINE)
-# ----------------------------
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -66,9 +48,6 @@ spec:
           ports:
             - containerPort: 3000
 ---
-# ----------------------------
-# Service (UNCHANGED)
-# ----------------------------
 apiVersion: v1
 kind: Service
 metadata:
