@@ -28,12 +28,12 @@ build:
           - src: '**/*.py'
             dest: /app
 
-    # - image: agent-runtime
-    #   context: agent-runtime
-    #   sync:
-    #     manual:
-    #       - src: '**/*.py'
-    #         dest: /app
+    - image: agent-runtime
+      context: agent-runtime
+      sync:
+        manual:
+          - src: '**/*.py'
+            dest: /app
 
 manifests:
   rawYaml:
@@ -42,4 +42,4 @@ manifests:
     - k8s/product-control-plane.yaml
     - k8s/infra-control-plane.yaml
     - k8s/agent-job.yaml
-    # - k8s/agent-runtime.yaml
+    - k8s/agent-runtime.yaml

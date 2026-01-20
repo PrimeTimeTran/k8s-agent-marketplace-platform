@@ -12,7 +12,7 @@ export async function createJob(payload) {
     },
     spec: {
       backoffLimit: 0,
-      ttlSecondsAfterFinished: 60,
+      ttlSecondsAfterFinished: 3600,
       template: {
         spec: {
           restartPolicy: 'Never',

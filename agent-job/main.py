@@ -6,6 +6,6 @@ print(f"HOSTNAME={os.getenv('HOSTNAME')}")
 
 for i in range(5):
     print(f"Working... {i+1}/5")
-    time.sleep(2)
+    time.sleep(30)
 
 print("✅ Done, exiting")

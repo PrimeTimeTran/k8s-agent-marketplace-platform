@@ -1,5 +1,15 @@
+import sys
+import logging
 from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)],
+)
+
+logger = logging.getLogger("agent-runtime")
 
 app = FastAPI()
 
@@ -42,6 +52,9 @@ def startup():
 
 @app.post("/execute")
 def execute(req: AgentRequest):
+    print('Hi')
+    logger.info("Executing agent=%s", req.agent)
+
     if not READY:
         raise HTTPException(status_code=503, detail="Agent runtime not ready")
 
