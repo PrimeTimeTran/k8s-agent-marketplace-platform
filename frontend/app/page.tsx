@@ -1,5 +1,17 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+
+type Execution = {
+  id: string
+  status: string
+  payload: {
+    agent: string
+    prompt: string
+    value: string
+  }
+  logs: string
+  createdAt: number
+}
 
 export default function Home() {
   const [agent, setAgent] = useState<'classify' | 'translate'>('classify')
@@ -7,6 +19,25 @@ export default function Home() {
   const [value, setValue] = useState('abc-123')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<any>(null)
+  const [executions, setExecutions] = useState<Execution[]>([])
+  const [selectedExecution, setSelectedExecution] = useState<Execution | null>(
+    null,
+  )
+  const [loadingExecutions, setLoadingExecutions] = useState(false)
+  async function loadExecutions() {
+    setLoadingExecutions(true)
+
+    const res = await fetch('/api/executions', {
+      cache: 'no-store',
+    })
+    const data = await res.json()
+    setExecutions(data)
+    setLoadingExecutions(false)
+  }
+
+  useEffect(() => {
+    loadExecutions()
+  }, [])
 
   async function runAgent() {
     setLoading(true)
@@ -49,6 +80,9 @@ export default function Home() {
       const data = await res.json()
       setResult(data)
       console.log(data)
+      setTimeout(() => {
+        loadExecutions()
+      }, 5000)
     } finally {
       setLoading(false)
     }
@@ -123,6 +157,45 @@ export default function Home() {
             {JSON.stringify(result, null, 2)}
           </pre>
         )}
+        <div className='space-y-2'>
+          <label className='text-sm font-medium'>Executions</label>
+          <select
+            className='w-full rounded-md border px-3 py-2 text-sm dark:bg-zinc-800'
+            value={selectedExecution?.id ?? ''}
+            onChange={(e) => {
+              const ex = executions.find((x) => x.id === e.target.value)
+              setSelectedExecution(ex ?? null)
+            }}
+          >
+            <option value=''>
+              {loadingExecutions ? 'Loading…' : 'Select execution'}
+            </option>
+
+            {executions &&
+              executions.map((ex) => (
+                <option
+                  key={ex.id}
+                  value={ex.id}
+                >
+                  {ex.id} — {ex.status}
+                </option>
+              ))}
+          </select>
+          {selectedExecution && (
+            <div className='rounded-md border bg-zinc-50 p-3 text-xs dark:bg-zinc-900'>
+              <div className='mb-2 flex items-center justify-between'>
+                <span className='font-medium'>Execution Details</span>
+                <span className='rounded bg-zinc-200 px-2 py-0.5 text-[10px] dark:bg-zinc-700'>
+                  {selectedExecution.status}
+                </span>
+              </div>
+
+              <pre className='overflow-x-auto whitespace-pre-wrap'>
+                {selectedExecution.logs}
+              </pre>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

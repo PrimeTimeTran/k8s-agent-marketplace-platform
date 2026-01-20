@@ -1,4 +1,8 @@
-import { k8sPost } from './k8s.js'
+import { k8sGet, k8sPost } from './k8s.js'
+
+export async function getJob(namespace, name) {
+  return k8sGet(`/apis/batch/v1/namespaces/${namespace}/jobs/${name}`)
+}
 
 export async function createJob(payload) {
   const jobName = `infra-agent-job-${Date.now()}`
@@ -19,7 +23,7 @@ export async function createJob(payload) {
           containers: [
             {
               name: 'agent',
-              image: 'agent-job:latest',
+              image: 'agent-job:dev',
               imagePullPolicy: 'Never',
               env: [
                 {

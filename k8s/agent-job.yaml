@@ -11,5 +11,10 @@ spec:
       restartPolicy: Never
       containers:
         - name: runner
-          image: agent-job:latest
-          imagePullPolicy: Never
+          image: agent-job:dev
+          imagePullPolicy: IfNotPresent
+          env:
+            # - name: EXECUTION_ID
+            #   value: '<execution-id>'
+            # - name: CONTROL_PLANE_URL
+            #   value: 'http://infra-control-plane:3000'

@@ -1,7 +1,7 @@
 import fs from 'fs'
-import https from 'https'
+import { Agent } from 'undici'
 
-export const K8S_API = 'https://kubernetes.default.svc'
+export const K8S_API_BASE = 'https://kubernetes.default.svc'
 
 const token = fs.readFileSync(
   '/var/run/secrets/kubernetes.io/serviceaccount/token',
@@ -12,9 +12,30 @@ const ca = fs.readFileSync(
   '/var/run/secrets/kubernetes.io/serviceaccount/ca.crt',
 )
 
-export const httpsAgent = new https.Agent({ ca })
+export const dispatcher = new Agent({
+  connect: {
+    ca,
+  },
+})
 
 export const authHeaders = {
   Authorization: `Bearer ${token}`,
   'Content-Type': 'application/json',
+}
+
+export async function k8sFetch(path, options = {}) {
+  const res = await fetch(`${K8S_API_BASE}${path}`, {
+    dispatcher,
+    headers: {
+      ...authHeaders,
+      ...(options.headers || {}),
+    },
+    ...options,
+  })
+
+  if (!res.ok) {
+    throw new Error(await res.text())
+  }
+
+  return res
 }
