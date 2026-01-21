@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { Navbar, Footer } from './components'
 
 type Execution = {
   id: string
@@ -90,10 +91,10 @@ export default function Home() {
   }
 
   return (
-    <div className='flex justify-center items-center flex-col w-full space-y-5 py-16 bg-zinc-50 dark:bg-black'>
-      <input className='border w-64 p-4 text-2xl' />
-      <div className='flex min-h-screen items-center justify-center '>
-        <div className='max-w-md space-y-4 rounded-xl bg-white p-6 shadow dark:bg-zinc-900'>
+    <div className='space-y-5 min-h-screen  bg-zinc-50 dark:bg-black'>
+      <Navbar />
+      <div className='flex min-h-[80vh] justify-center'>
+        <div className='vh-50 max-w-md space-y-4 rounded-xl bg-white p-6 shadow dark:bg-zinc-900'>
           <h1 className='text-lg font-semibold'>Sentiment Classifier</h1>
           <label className='text-sm font-medium'>Agent</label>
           <select
@@ -104,7 +105,7 @@ export default function Home() {
             <option value='classify'>Sentiment Classifier</option>
           </select>
 
-          <label className='text-sm font-medium'>Prompt</label>
+          <label className='text-sm font-medium'>Statement</label>
           <input
             type='text'
             placeholder={
@@ -126,19 +127,19 @@ export default function Home() {
             className='w-full rounded-md border px-3 py-2 text-sm dark:bg-zinc-800'
           />
 
-          <button
+          {/* <button
             onClick={runAgent}
             disabled={loading || !prompt}
             className='w-full rounded-md bg-black px-4 py-2 text-white disabled:opacity-50 dark:bg-white dark:text-black'
           >
             {loading ? 'Running…' : 'Run Agent'}
-          </button>
+          </button> */}
           <button
             onClick={runJob}
             disabled={loading || !prompt}
             className='w-full rounded-md bg-black px-4 py-2 text-white disabled:opacity-50 dark:bg-white dark:text-black'
           >
-            {loading ? 'Scheduling…' : 'Schedule Job'}
+            {loading ? 'Running...' : 'Run'}
           </button>
 
           {result && (
@@ -189,7 +190,7 @@ export default function Home() {
 
         <span className='w-16' />
 
-        <div className='max-w-md space-y-4 rounded-xl bg-white p-6 shadow dark:bg-zinc-900'>
+        <div className='vh-50 max-w-md space-y-4 rounded-xl bg-white p-6 shadow dark:bg-zinc-900'>
           <h1 className='text-lg font-semibold'>Translation Agent</h1>
           <label className='text-sm font-medium'>Agent</label>
           <select
@@ -203,7 +204,7 @@ export default function Home() {
             </option>
           </select>
 
-          <label className='text-sm font-medium'>Prompt</label>
+          <label className='text-sm font-medium'>Text</label>
           <input
             type='text'
             placeholder={
@@ -225,19 +226,19 @@ export default function Home() {
             className='w-full rounded-md border px-3 py-2 text-sm dark:bg-zinc-800'
           />
 
-          <button
+          {/* <button
             onClick={runAgent}
             disabled={loading || !prompt}
             className='w-full rounded-md bg-black px-4 py-2 text-white disabled:opacity-50 dark:bg-white dark:text-black'
           >
             {loading ? 'Running…' : 'Run Agent'}
-          </button>
+          </button> */}
           <button
             onClick={runJob}
             disabled={loading || !prompt}
             className='w-full rounded-md bg-black px-4 py-2 text-white disabled:opacity-50 dark:bg-white dark:text-black'
           >
-            {loading ? 'Scheduling…' : 'Schedule Job'}
+            {loading ? 'Running...' : 'Run'}
           </button>
 
           {result && (
@@ -286,6 +287,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }
