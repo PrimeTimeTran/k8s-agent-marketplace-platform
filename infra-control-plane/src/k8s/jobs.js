@@ -5,7 +5,7 @@ export async function getJob(namespace, name) {
 }
 
 export async function queueJob({ executionId, agent, prompt }) {
-  const jobName = `agent-job-${executionId}`
+  const jobName = `infra-${executionId}`
 
   const job = {
     apiVersion: 'batch/v1',

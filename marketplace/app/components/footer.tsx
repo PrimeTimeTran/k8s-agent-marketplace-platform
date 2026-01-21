@@ -4,7 +4,8 @@ export function Footer() {
       <div className='mx-auto max-w-6xl px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4'>
         {/* Left */}
         <p className='text-sm text-zinc-500 dark:text-zinc-400'>
-          © {new Date().getFullYear()} MyApp. All rights reserved.
+          © {new Date().getFullYear()} AI Agent Marketplace. All rights
+          reserved.
         </p>
 
         {/* Right */}
