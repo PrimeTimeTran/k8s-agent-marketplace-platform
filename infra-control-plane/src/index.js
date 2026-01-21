@@ -13,5 +13,8 @@ app.get('/health', (req, res) => {
 })
 
 app.listen(3000, '0.0.0.0', () => {
-  console.log('Infra control plane listening on :3000')
+  console.log({
+    ts: new Date().toISOString(),
+    msg: 'Infra control plane listening on :3000',
+  })
 })

@@ -5,6 +5,11 @@ import executionsRoutes from './routes/executions.js'
 const app = express()
 app.use(express.json())
 app.use(executionsRoutes)
+
+app.get('/health', (req, res) => {
+  res.status(200).send('ok')
+})
+
 app.post('/run-agent', async (req, res) => {
   try {
     console.log('Product CP:', req.body)
