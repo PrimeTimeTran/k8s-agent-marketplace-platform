@@ -16,7 +16,7 @@ echo "▶ Setting kubectl context..."
 kubectl config use-context k3d-$CLUSTER_NAME
 
 echo "▶ Building images..."
-docker build -t frontend:dev "$ROOT_DIR/frontend"
+docker build -t marketplace:dev "$ROOT_DIR/marketplace"
 docker build -t product-control-plane:dev "$ROOT_DIR/product-control-plane"
 docker build -t infra-control-plane:dev "$ROOT_DIR/infra-control-plane"
 docker build -t agent-runtime:dev "$ROOT_DIR/agent-runtime"
@@ -24,7 +24,7 @@ docker build -t agent-job:dev "$ROOT_DIR/agent-job"
 
 echo "▶ Loading images into k3d..."
 k3d image import \
-  frontend:dev \
+  marketplace:dev \
   product-control-plane:dev \
   infra-control-plane:dev \
   agent-runtime:dev \
@@ -32,7 +32,7 @@ k3d image import \
 
 echo "▶ Applying Kubernetes manifests..."
 kubectl apply -f namespaces.yaml
-kubectl apply -f frontend.yaml
+kubectl apply -f marketplace.yaml
 kubectl apply -f product-control-plane.yaml
 kubectl apply -f infra-control-plane.yaml
 kubectl apply -f agent-runtime.yaml
@@ -41,5 +41,5 @@ kubectl apply -f agent-job.yaml
 echo "▶ Waiting for pods to become ready..."
 kubectl wait --for=condition=available --timeout=120s deployment --all -A
 
-echo "▶ Port forwarding frontend (Ctrl+C to stop)..."
-kubectl port-forward svc/frontend 3000:3000
+echo "▶ Port forwarding marketplace (Ctrl+C to stop)..."
+kubectl port-forward svc/marketplace 3000:3000

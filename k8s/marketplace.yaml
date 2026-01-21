@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: marketplace
   namespace: agent-platform
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: marketplace
   template:
     metadata:
       labels:
-        app: frontend
+        app: marketplace
     spec:
       containers:
-        - name: frontend
-          image: frontend
+        - name: marketplace
+          image: marketplace
           imagePullPolicy: IfNotPresent
           command: ['npm', 'run', 'dev']
           ports:
@@ -39,11 +39,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+  name: marketplace
   namespace: agent-platform
 spec:
   selector:
-    app: frontend
+    app: marketplace
   ports:
     - port: 3000
       targetPort: 3000

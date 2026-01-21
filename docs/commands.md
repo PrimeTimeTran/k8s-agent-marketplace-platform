@@ -16,7 +16,7 @@
   kubectl get pods -n agent-platform
 
 - After updating any k8s config
-  kubectl apply -f k8s/frontend.yaml
+  kubectl apply -f k8s/marketplace.yaml
 
 ## Development
 
@@ -29,7 +29,7 @@ skaffold dev
 - Create new images & roll them out to the cluster
 
 ```sh
-docker build -t frontend:dev ./frontend && k3d image import frontend:dev -c agent-mvp && kubectl rollout restart deployment frontend -n agent-platform
+docker build -t marketplace:dev ./marketplace && k3d image import marketplace:dev -c agent-mvp && kubectl rollout restart deployment marketplace -n agent-platform
 docker build -t product-control-plane:dev ./product-control-plane && k3d image import product-control-plane:dev -c agent-mvp && kubectl rollout restart deployment product-control-plane -n agent-platform
 docker build -t infra-control-plane:dev ./infra-control-plane && k3d image import infra-control-plane:dev -c agent-mvp && kubectl rollout restart deployment infra-control-plane -n agent-platform
 docker build -t agent-runtime:dev ./agent-runtime && k3d image import agent-runtime:dev -c agent-mvp && kubectl rollout restart deployment agent-runtime -n agent-platform
@@ -41,10 +41,10 @@ docker build -t agent-runtime:dev ./agent-runtime && k3d image import agent-runt
 kubectl apply -f k8s/test-job.yaml
 ```
 
-- Proxy next/frontend pod to host
+- Proxy next/marketplace pod to host
 
 ```sh
-kubectl port-forward svc/frontend 3000:3000 -n agent-platform
+kubectl port-forward svc/marketplace 3000:3000 -n agent-platform
 ```
 
 ## Logging/Debugging/Environment
@@ -59,7 +59,7 @@ kubectl get endpoints -n agent-platform
 - Describe a pod (gold for debugging)
 
 ```sh
-kubectl describe pod frontend-79c4b7dbc-28qcv -n agent-platform
+kubectl describe pod marketplace-79c4b7dbc-28qcv -n agent-platform
 ```
 
 - Print pods information
@@ -71,7 +71,7 @@ kubectl get pods -n agent-platform
 - View logs from single pod/job
 
 ```sh
-kubectl logs -n agent-platform -f frontend-79c4b7dbc-28qcv
+kubectl logs -n agent-platform -f marketplace-79c4b7dbc-28qcv
 ```
 
 - Fetch the stdout/stderr logs produced by the containers running in the pods
@@ -185,6 +185,6 @@ kubectl get events -n agent-platform --sort-by=.lastTimestamp
 - Cleanup stuck resources
 
 ```sh
-kubectl delete pod frontend-79c4b7dbc-28qcv -n agent-platform
+kubectl delete pod marketplace-79c4b7dbc-28qcv -n agent-platform
 kubectl delete job test-job -n agent-platform
 ```

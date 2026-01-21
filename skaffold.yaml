@@ -2,9 +2,11 @@ apiVersion: skaffold/v4beta6
 kind: Config
 
 build:
+  local:
+    push: false
   artifacts:
-    - image: frontend
-      context: frontend
+    - image: marketplace
+      context: marketplace
       docker:
         dockerfile: Dockerfile.dev
       sync:
@@ -33,7 +35,7 @@ build:
 manifests:
   rawYaml:
     - k8s/namespaces.yaml
-    - k8s/frontend.yaml
+    - k8s/marketplace.yaml
     - k8s/product-control-plane.yaml
     - k8s/infra-control-plane.yaml
     - k8s/agent-runtime.yaml

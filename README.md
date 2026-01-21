@@ -2,21 +2,14 @@
 
 [![Preview](./docs/architecture-diagram.png)](https://github.com/PrimeTimeTran/k8s-agent-marketplace-platform)
 
-## Dependencies
-
-- K8s
-- Docker
-- Node
-- FastAPI
-
-## Architecture
+## Layered Architecture
 
 - Marketplace
 - Product Control Plane
 - Infra Control Plane
 - Agent Jobs/Runtime
 
-## **Overview**
+## **Layers**
 
 Instead of building a monolithic system that becomes bloated, brittle, and difficult to evolve, this architecture is organized around four clearly defined layers: **Marketplace**, **Product Control Plane**, **Infra Control Plane**, and **Agent Runtime**. Each layer owns a single, well-scoped responsibility, allowing business concerns, product intent, infrastructure orchestration, and execution to evolve independently. This separation enables the platform to support many agents, users, and execution models without coupling commercial logic to operational reality or runtime behavior to policy decisions.
 
@@ -61,3 +54,194 @@ The Agent Runtime is the isolated execution environment in which an individual a
 The runtime is intentionally narrow in scope. It does not handle authentication, billing, marketplace logic, or scheduling decisions. Instead, it focuses on safe and deterministic execution: enforcing tool access, applying secrets policies, honoring resource constraints, and exposing health and execution status back to the Infra Control Plane. This makes the runtime interchangeable and extensible, allowing different agent implementations or execution strategies without altering the rest of the platform.
 
 By isolating agent execution from control-plane concerns, the platform can safely run untrusted or third-party agents at scale. Multiple users may invoke the same agent concurrently, with each invocation running in its own runtime context. The Agent Runtime is therefore the point of truth for execution behavior, while remaining fully governed by upstream control planes.
+
+## Dependencies
+
+- [Node](https://nodejs.org/en)
+- [FastAPI](https://fastapi.tiangolo.com/)
+- [Docker Desktop(with Kubernetes enabled)](https://docs.docker.com/desktop/)
+- [K8s](https://kubernetes.io/)
+- [kubectl](https://kubernetes.io/docs/reference/kubectl/)
+- [Skaffold](https://skaffold.dev/docs/quickstart/)
+
+### Getting Started
+
+Yeah — **“Getting Started” should describe the _journey_, not a single command**. For this AI marketplace, you’re onboarding someone into:
+
+- a Kubernetes-based control plane
+- a job-execution model
+- local + cluster-aware development
+- infra + app + agent images
+
+Below is a **clean, realistic Getting Started section** that matches what we’ve actually built and discussed.
+
+You can copy-paste this into the README and tweak naming as needed.
+
+---
+
+## Getting Started
+
+This project runs on **Kubernetes-first architecture**. The control plane, marketplace, and AI agents all run as containerized workloads inside a cluster.
+
+### 1. Prerequisites
+
+Make sure you have the following installed:
+
+- Node.js (LTS)
+- Docker Desktop **with Kubernetes enabled**
+- kubectl
+- (Optional) Skaffold for local dev iteration
+
+Verify Kubernetes is running:
+
+```bash
+kubectl cluster-info
+```
+
+---
+
+### 2. Create / Verify Cluster
+
+For local development, we assume **Docker Desktop Kubernetes**.
+
+Ensure your context is correct:
+
+```bash
+kubectl config current-context
+```
+
+You should see something like:
+
+```text
+docker-desktop
+```
+
+Create the namespace used by the platform:
+
+```bash
+kubectl create namespace agent-platform
+```
+
+---
+
+### 3. Build Container Images
+
+This project uses **multiple images** (marketplace, control plane, infra/agents).
+
+Build them locally so Kubernetes can pull them without a registry:
+
+```bash
+docker build -t marketplace:dev ./marketplace
+docker build -t infra-control-plane:dev ./infra/control-plane
+docker build -t infra-agent:dev ./infra/agent
+```
+
+> If using Docker Desktop, these images are immediately available to the cluster.
+
+---
+
+### 4. Deploy Core Infrastructure
+
+Apply the Kubernetes manifests in order:
+
+```bash
+kubectl apply -f k8s/
+```
+
+This typically includes:
+
+- Deployments (marketplace, control plane)
+- Services
+- RBAC (service accounts, roles, role bindings)
+- Job templates for agent execution
+
+Verify everything is running:
+
+```bash
+kubectl get pods -n agent-platform
+```
+
+---
+
+### 5. Verify Control Plane Access
+
+Port-forward the control plane:
+
+```bash
+kubectl port-forward svc/infra-control-plane 3000:3000 -n agent-platform
+```
+
+Test:
+
+```bash
+curl http://localhost:3000/health
+```
+
+---
+
+### 6. Verify marketplace
+
+Port-forward the marketplace service:
+
+```bash
+kubectl port-forward svc/marketplace 3001:3000 -n agent-platform
+```
+
+Open:
+
+```
+http://localhost:3001
+```
+
+---
+
+### 7. Run an Agent Job (Smoke Test)
+
+Trigger an execution via the control plane:
+
+```bash
+curl -X POST http://localhost:3000/schedule-job \
+  -H "Content-Type: application/json" \
+  -d '{ "prompt": "hello world" }'
+```
+
+Watch jobs execute:
+
+```bash
+kubectl get jobs -n agent-platform
+kubectl logs -f job/<job-name> -n agent-platform
+```
+
+---
+
+### 8. Development Workflow
+
+You have two options:
+
+#### Option A: Manual Rebuild (Clear + Explicit)
+
+Best for understanding the system.
+
+```bash
+docker build -t marketplace:dev ./marketplace
+kubectl rollout restart deploy/marketplace -n agent-platform
+```
+
+#### Option B: Skaffold (Fast Iteration)
+
+Once you understand the flow:
+
+```bash
+skaffold dev
+```
+
+---
+
+## Mental Model (Important)
+
+- **marketplace** → user interaction
+- **Control Plane** → schedules executions
+- **Agent Jobs** → ephemeral Kubernetes Jobs
+- **Kubernetes** → _is the execution engine_
+
+This is not a traditional backend — Kubernetes _is the backend_.

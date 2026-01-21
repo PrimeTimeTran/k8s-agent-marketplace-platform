@@ -1,5 +1,5 @@
 - [x] Hot Reloading
-  - [x] Frontend
+  - [x] marketplace
   - [x] Product
   - [x] Infrastructure
   - [ ] Agent Run Time

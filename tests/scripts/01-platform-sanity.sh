@@ -7,7 +7,7 @@
 #
 # What this confirms:
 # 1. All core deployments are up and Ready:
-#    - frontend
+#    - marketplace
 #    - product-control-plane
 #    - infra-control-plane
 #
@@ -54,7 +54,7 @@ curl_in_cluster() {
 }
 
 echo "🔎 Waiting for deployments..."
-kubectl wait --for=condition=Available deploy/frontend -n "$NAMESPACE" --timeout=60s
+kubectl wait --for=condition=Available deploy/marketplace -n "$NAMESPACE" --timeout=60s
 kubectl wait --for=condition=Available deploy/product-control-plane -n "$NAMESPACE" --timeout=60s
 kubectl wait --for=condition=Available deploy/infra-control-plane -n "$NAMESPACE" --timeout=60s
 

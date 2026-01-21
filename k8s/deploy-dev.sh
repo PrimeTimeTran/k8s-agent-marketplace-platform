@@ -30,7 +30,7 @@ apply_manifest () {
 }
 
 # ---- Build images ----
-build_and_load frontend "$ROOT_DIR/frontend"
+build_and_load marketplace "$ROOT_DIR/marketplace"
 build_and_load product-control-plane "$ROOT_DIR/product-control-plane"
 build_and_load infra-control-plane "$ROOT_DIR/infra-control-plane"
 build_and_load agent-runtime "$ROOT_DIR/agent-runtime"
@@ -38,7 +38,7 @@ build_and_load agent-runtime "$ROOT_DIR/agent-runtime"
 
 # ---- Apply manifests ----
 apply_manifest "$K8S_DIR/namespaces.yaml"
-apply_manifest "$K8S_DIR/frontend.yaml"
+apply_manifest "$K8S_DIR/marketplace.yaml"
 apply_manifest "$K8S_DIR/product-control-plane.yaml"
 apply_manifest "$K8S_DIR/infra-control-plane.yaml"
 apply_manifest "$K8S_DIR/agent-runtime.yaml"
