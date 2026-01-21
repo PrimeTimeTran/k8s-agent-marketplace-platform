@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: product-control-plane
-          image: product-control-plane:dev
+          image: product-control-plane
           command: ['npm', 'run', 'dev']
           ports:
             - containerPort: 3000

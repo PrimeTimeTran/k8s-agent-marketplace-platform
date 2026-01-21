@@ -31,7 +31,10 @@ export default function Home() {
       cache: 'no-store',
     })
     const data = await res.json()
-    setExecutions(data)
+
+    const executions = Array.isArray(data) ? data : (data?.executions ?? [])
+
+    setExecutions(executions)
     setLoadingExecutions(false)
   }
 

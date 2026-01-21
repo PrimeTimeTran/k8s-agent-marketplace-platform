@@ -5,6 +5,8 @@ build:
   artifacts:
     - image: frontend
       context: frontend
+      docker:
+        dockerfile: Dockerfile.dev
       sync:
         infer:
           - '**/*'
@@ -21,13 +23,6 @@ build:
         infer:
           - '**/*'
 
-    - image: agent-job
-      context: agent-job
-      sync:
-        manual:
-          - src: '**/*.py'
-            dest: /app
-
     - image: agent-runtime
       context: agent-runtime
       sync:
@@ -41,5 +36,4 @@ manifests:
     - k8s/frontend.yaml
     - k8s/product-control-plane.yaml
     - k8s/infra-control-plane.yaml
-    - k8s/agent-job.yaml
     - k8s/agent-runtime.yaml

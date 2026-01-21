@@ -34,7 +34,7 @@ build_and_load frontend "$ROOT_DIR/frontend"
 build_and_load product-control-plane "$ROOT_DIR/product-control-plane"
 build_and_load infra-control-plane "$ROOT_DIR/infra-control-plane"
 build_and_load agent-runtime "$ROOT_DIR/agent-runtime"
-build_and_load agent-job "$ROOT_DIR/agent-job"
+# build_and_load agent-job "$ROOT_DIR/agent-job"
 
 # ---- Apply manifests ----
 apply_manifest "$K8S_DIR/namespaces.yaml"
@@ -42,6 +42,6 @@ apply_manifest "$K8S_DIR/frontend.yaml"
 apply_manifest "$K8S_DIR/product-control-plane.yaml"
 apply_manifest "$K8S_DIR/infra-control-plane.yaml"
 apply_manifest "$K8S_DIR/agent-runtime.yaml"
-apply_manifest "$K8S_DIR/agent-job.yaml"
+# apply_manifest "$K8S_DIR/agent-job.yaml"
 
 echo "✅ All services built and applied"

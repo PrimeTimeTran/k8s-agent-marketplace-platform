@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: frontend:dev
+          image: frontend
           imagePullPolicy: IfNotPresent
           command: ['npm', 'run', 'dev']
           ports:
@@ -23,12 +23,18 @@ spec:
           env:
             - name: NEXT_PUBLIC_PRODUCT_API
               value: 'http://product-control-plane:3000'
-            - name: CHOKIDAR_USEPOLLING
-              value: 'true'
+            # These 5 values are for hot module reloading
             - name: WATCHPACK_POLLING
               value: 'true'
-            - name: NEXT_DISABLE_TURBOPACK
-              value: '1'
+            - name: WATCHPACK_POLLING_INTERVAL
+              value: '100'
+            - name: CHOKIDAR_USEPOLLING
+              value: 'true'
+            - name: CHOKIDAR_INTERVAL
+              value: '100'
+            - name: WATCHPACK_FORCE_POLLING
+              value: 'true'
+
 ---
 apiVersion: v1
 kind: Service

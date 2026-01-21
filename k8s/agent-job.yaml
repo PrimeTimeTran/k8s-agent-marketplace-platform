@@ -10,8 +10,8 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-        - name: runner
-          image: agent-job:dev
+        - name: agent-job
+          image: agent-job
           imagePullPolicy: IfNotPresent
           env:
             # - name: EXECUTION_ID
