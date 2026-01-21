@@ -1,4 +1,4 @@
-import { getJobPod, getPodLogs } from '../k8s/pods.js'
+import { getJobPod, getPodLogs } from '../../k8s/pods.js'
 import { getExecution, updateExecution } from './store.js'
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))

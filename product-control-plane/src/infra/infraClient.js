@@ -1,4 +1,4 @@
-const INFRA_BASE = 'http://infra-control-plane:3000'
+import { INFRA_BASE } from '../config/constants.js'
 
 export async function fetchExecutions() {
   const res = await fetch(`${INFRA_BASE}/executions`)

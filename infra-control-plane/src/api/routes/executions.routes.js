@@ -1,6 +1,8 @@
 import express from 'express'
-import { getExecution, getAllExecutions } from '../executions/store.js'
-
+import {
+  getExecution,
+  getAllExecutions,
+} from '../../domain/executions/store.js'
 const router = express.Router()
 
 router.get('/executions', (req, res) => {

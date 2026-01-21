@@ -1,11 +1,12 @@
 import express from 'express'
-import { watchJobLogs } from '../executions/watcher.js'
-import { createExecution } from '../executions/store.js'
-import { scheduleRun, scheduleJob } from '../executions/service.js'
+import { queueJob } from '../../k8s/jobs.js'
+import { scheduleRun } from '../../domain/executions/service.js'
+import { watchJobLogs } from '../../domain/executions/watcher.js'
+import { createExecution } from '../../domain/executions/store.js'
 
 const router = express.Router()
 
-router.post('/schedule-run', async (req, res) => {
+router.post('/queue-agent', async (req, res) => {
   try {
     const result = await scheduleRun(req.body)
     res.json(result)
@@ -15,7 +16,7 @@ router.post('/schedule-run', async (req, res) => {
   }
 })
 
-router.post('/schedule-job', async (req, res) => {
+router.post('/queue-job', async (req, res) => {
   try {
     const payload = req.body
     const executionId = `job-exec-${Date.now()}`
@@ -28,7 +29,7 @@ router.post('/schedule-job', async (req, res) => {
       createdAt: Date.now(),
     })
 
-    const result = await scheduleJob({
+    const result = await queueJob({
       ...payload,
       executionId,
     })

@@ -52,7 +52,6 @@ def startup():
 
 @app.post("/execute")
 def execute(req: AgentRequest):
-    print('Hi')
     logger.info("Executing agent=%s", req.agent)
 
     if not READY:

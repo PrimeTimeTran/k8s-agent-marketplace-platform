@@ -19,8 +19,8 @@
 #    - product-control-plane responds to health checks
 #    - infra-control-plane responds to health checks
 #
-# 4. Infra control plane can schedule work:
-#    - POST /schedule-job succeeds
+# 4. Infra control plane can queue work:
+#    - POST /queue-job succeeds
 #    - A Kubernetes Job is created with a unique name
 #
 # 5. Kubernetes job lifecycle works:
@@ -62,7 +62,7 @@ echo "🌐 Checking service health..."
 curl_in_cluster http://product-control-plane:3000/health
 curl_in_cluster http://infra-control-plane:3000/health
 
-echo "⚙️ Scheduling agent job..."
+echo "⚙️ Queuing agent job..."
 
 JOB_JSON=$(kubectl run smoke-curl \
   -n "$NAMESPACE" \
@@ -71,7 +71,7 @@ JOB_JSON=$(kubectl run smoke-curl \
   --image=curlimages/curl \
   --quiet \
   -- \
-  curl -sf http://infra-control-plane:3000/schedule-job \
+  curl -sf http://infra-control-plane:3000/queue-job \
     -H "Content-Type: application/json" \
     -d '{}'
 )
@@ -81,7 +81,7 @@ echo "📦 Job response:"
 echo "$JOB_JSON"
 
 if ! echo "$JOB_JSON" | jq -e . >/dev/null; then
-  echo "❌ Invalid JSON returned from schedule-job"
+  echo "❌ Invalid JSON returned from queue-job"
   exit 1
 fi
 
