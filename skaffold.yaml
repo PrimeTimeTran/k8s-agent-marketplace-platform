@@ -28,6 +28,11 @@ build:
     - image: agent-job
       context: agent-job
 
+    - image: agent-base
+      context: execution
+      docker:
+        dockerfile: Dockerfile.base
+
 manifests:
   rawYaml:
     - k8s/namespaces.yaml

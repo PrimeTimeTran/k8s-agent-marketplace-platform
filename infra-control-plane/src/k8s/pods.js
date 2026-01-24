@@ -19,10 +19,11 @@ export async function getJobPod(namespace, jobName) {
 export async function getPodLogs(namespace, podName) {
   try {
     const res = await k8sFetch(
-      `/api/v1/namespaces/${namespace}/pods/${podName}/log`,
+      `/api/v1/namespaces/${namespace}/pods/${podName}/log?container=agent`,
     )
     return res.text()
-  } catch {
+  } catch (e) {
+    console.error(`Failed to get logs for ${podName}:`, e.message)
     return ''
   }
 }

@@ -23,7 +23,7 @@ export async function queueAgentController(req, res) {
 
 export async function queueJobController(req, res) {
   try {
-    console.log('Product CP (job):', req.body)
+    console.log('Product CP (job):', JSON.stringify(req.body, null, 2))
 
     const result = await queueJob(req.body)
 

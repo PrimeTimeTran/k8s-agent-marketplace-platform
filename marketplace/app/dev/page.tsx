@@ -18,6 +18,14 @@ type Execution = {
 
 const AGENTS = [
   {
+    id: 'agent-1',
+    name: 'Dynamic Agent Repo',
+    type: 'custom-git-agent',
+    icon: <FaRegSmile size={24} />,
+    description: 'Clone and run an agent from a Git repo.',
+    placeholder: 'https://github.com/user/repo.git',
+  },
+  {
     id: 'sentiment-1',
     name: 'Sentiment Classifier',
     type: 'classify',
@@ -50,8 +58,20 @@ function AgentCard({
   agent: (typeof AGENTS)[0]
   onRun?: () => void
 }) {
-  const [prompt, setPrompt] = useState('Im doing great!')
-  const [value, setValue] = useState('abc-123')
+  const [repo, setRepo] = useState('https://github.com/PrimeTimeTran/agent-job')
+  const [configJson, setConfigJson] = useState(
+    JSON.stringify(
+      {
+        env: {
+          CUSTOM_VAR: 'Hello from UI',
+          API_KEY: '123-abc',
+        },
+        args: ['--verbose', '--dry-run'],
+      },
+      null,
+      2,
+    ),
+  )
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<any>(null)
 
@@ -60,13 +80,22 @@ function AgentCard({
     setResult(null)
 
     try {
+      let parsedConfig = {}
+      try {
+        parsedConfig = JSON.parse(configJson)
+      } catch (e) {
+        alert('Invalid JSON config')
+        setLoading(false)
+        return
+      }
+
       const res = await fetch('/api/queue-job', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           agent: agent.type,
-          prompt,
-          value,
+          repoUrl: repo || undefined,
+          ...parsedConfig,
         }),
       })
 
@@ -101,29 +130,30 @@ function AgentCard({
       </p>
 
       <div className='space-y-3 flex-1'>
+        {agent.type == 'custom-git-agent' && (
+          <div>
+            <label className='text-xs font-medium text-zinc-500 mb-1 block'>
+              Repo
+            </label>
+            <input
+              type='text'
+              placeholder={agent.placeholder}
+              value={repo}
+              onChange={(e) => setRepo(e.target.value)}
+              className='w-full rounded-md border border-zinc-200 px-3 py-1.5 text-xs dark:bg-zinc-800 dark:border-zinc-700'
+            />
+          </div>
+        )}
         <div>
           <label className='text-xs font-medium text-zinc-500 mb-1 block'>
-            Input
+            Configuration (JSON)
           </label>
-          <input
-            type='text'
-            placeholder={agent.placeholder}
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            className='w-full rounded-md border border-zinc-200 px-3 py-1.5 text-xs dark:bg-zinc-800 dark:border-zinc-700'
-          />
-        </div>
-
-        <div>
-          <label className='text-xs font-medium text-zinc-500 mb-1 block'>
-            API Key
-          </label>
-          <input
-            type='text'
-            placeholder='Optional key'
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            className='w-full rounded-md border border-zinc-200 px-3 py-1.5 text-xs dark:bg-zinc-800 dark:border-zinc-700'
+          <textarea
+            rows={8}
+            placeholder='{ "env": {}, "args": [] }'
+            value={configJson}
+            onChange={(e) => setConfigJson(e.target.value)}
+            className='w-full rounded-md border border-zinc-200 px-3 py-1.5 text-xs font-mono dark:bg-zinc-800 dark:border-zinc-700'
           />
         </div>
       </div>
@@ -137,7 +167,7 @@ function AgentCard({
         </Link>
         <button
           onClick={runJob}
-          disabled={loading || !prompt}
+          disabled={loading}
           className='flex-1 flex items-center justify-center gap-1.5 rounded-md bg-black px-3 py-1.5 text-xs font-medium text-white hover:bg-zinc-800 disabled:opacity-50 dark:bg-white dark:text-black dark:hover:bg-zinc-200 transition-colors'
         >
           {loading ? (

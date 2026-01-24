@@ -1,4 +1,5 @@
 import { FaRobot, FaCheck } from 'react-icons/fa'
+import { DeployForm } from './DeployForm'
 
 function Hero() {
   return (
@@ -28,9 +29,7 @@ function Hero() {
               emotions expressed within an online mention.
             </p>
             <div className='flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4'>
-              <button className='w-full sm:w-auto rounded-md bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500'>
-                Deploy Agent
-              </button>
+              <DeployForm />
               <button className='w-full sm:w-auto rounded-md bg-white px-6 py-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'>
                 View API Reference
               </button>

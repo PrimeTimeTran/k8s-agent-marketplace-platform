@@ -7,7 +7,6 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 EXECUTION_DIR="$ROOT/../execution"
 IMAGES_DIR="$ROOT/fixtures/execution/images"
 
-# Build base image
 if [[ -f "$EXECUTION_DIR/Dockerfile.base" ]]; then
   echo "  • execution-base"
   docker build -t execution-base:dev -f "$EXECUTION_DIR/Dockerfile.base" "$EXECUTION_DIR"

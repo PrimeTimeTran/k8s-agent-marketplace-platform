@@ -8,8 +8,10 @@ export async function watchJobLogs(executionId, jobName) {
   let lastLogs = ''
 
   while (!podName) {
+    console.log(`[Watcher] Looking for pod for job ${jobName}...`)
     const pod = await getJobPod('agent-platform', jobName)
     if (pod?.metadata?.name) {
+      console.log(`[Watcher] Found pod ${pod.metadata.name}`)
       podName = pod.metadata.name
       updateExecution(executionId, { status: 'running' })
       break
@@ -20,13 +22,16 @@ export async function watchJobLogs(executionId, jobName) {
   while (true) {
     const pod = await getJobPod('agent-platform', jobName)
     if (!pod) {
+      console.log(`[Watcher] Pod lost for ${jobName}`)
       await sleep(1000)
       continue
     }
 
     const phase = pod.status?.phase
+    console.log(`[Watcher] Pod phase: ${phase}`)
 
     const logs = await getPodLogs('agent-platform', podName)
+    console.log(`[Watcher] Logs length: ${logs?.length || 0}`)
 
     if (logs && logs.length > lastLogs.length) {
       const newLogs = logs.slice(lastLogs.length)

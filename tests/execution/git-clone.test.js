@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const FIXTURES_DIR = path.join(__dirname, '../fixtures/execution')
+const SOURCE_REPO = path.join(FIXTURES_DIR, 'repos/agent-job')
 const REPO_DIR = path.join(FIXTURES_DIR, 'temp-git-repo')
 
 // Clean up previous runs
@@ -14,22 +15,17 @@ if (fs.existsSync(REPO_DIR)) {
 }
 
 console.log('▶ Setting up temp git repo at', REPO_DIR)
-fs.mkdirSync(REPO_DIR, { recursive: true })
+// Copy source files to temp dir
+fs.cpSync(SOURCE_REPO, REPO_DIR, { recursive: true })
 
 // Initialize git repo
 execSync('git init', { cwd: REPO_DIR, stdio: 'ignore' })
 // Configure git user for commit
-execSync('git config user.email "test@example.com"', {
+execSync('git config user.email "loi.tran@healthcompiler.com"', {
   cwd: REPO_DIR,
   stdio: 'ignore',
 })
 execSync('git config user.name "Test User"', { cwd: REPO_DIR, stdio: 'ignore' })
-
-// Create main.py
-const mainPyContent = `
-print("HELLO FROM GIT REPO")
-`
-fs.writeFileSync(path.join(REPO_DIR, 'main.py'), mainPyContent)
 
 // Commit
 execSync('git add .', { cwd: REPO_DIR, stdio: 'ignore' })
@@ -45,7 +41,7 @@ const cmd = `docker run --rm -v "${REPO_DIR}":/repo-source -e GIT_REPO_URL=/repo
 try {
   const output = execSync(cmd, { encoding: 'utf8' }).trim()
   console.log('📤 Output:', output)
-  assert.match(output, /HELLO FROM GIT REPO/)
+  assert.match(output, /Hello Git Clone Test/)
   console.log('✅ git-clone execution test passed')
 } catch (e) {
   console.error('❌ Test failed')

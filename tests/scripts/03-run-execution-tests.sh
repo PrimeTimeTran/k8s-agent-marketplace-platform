@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# Build fixtures for testing execution layer
+# Then run all of the tests of the execution layer
+
 set -euo pipefail
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

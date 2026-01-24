@@ -18,6 +18,7 @@ router.post('/queue-agent', async (req, res) => {
 
 router.post('/queue-job', async (req, res) => {
   try {
+    console.log('Infra CP (queue-job) body:', JSON.stringify(req.body, null, 2))
     const payload = req.body
     const executionId = `job-exec-${Date.now()}`
 
@@ -34,7 +35,7 @@ router.post('/queue-job', async (req, res) => {
       executionId,
     })
 
-    watchJobLogs(executionId, executionId).catch((err) => {
+    watchJobLogs(executionId, result.jobName).catch((err) => {
       console.error(`Watcher failed for ${executionId}`, err)
     })
 
