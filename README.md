@@ -6,10 +6,10 @@
 
 ### Mental Model
 
-- **marketplace** → user interaction
-- **Control Plane** → schedules executions
-- **Agent Jobs** → ephemeral Kubernetes Jobs
-- **Kubernetes** → _is the execution engine_
+- **Marketplace** → user interaction
+- **Product Control Plane** → schedules executions
+- **Infra Control Plane** → ephemeral Kubernetes Jobs
+- **Execution** → _is the execution engine_
 
 ## **Layers**
 
@@ -47,11 +47,11 @@ This control plane does not make product or business decisions. It assumes that 
 
 By delegating scheduling and lifecycle management to Kubernetes, the Infra Control Plane avoids custom infrastructure logic while remaining flexible enough to support different execution models. It acts as the system’s operational backbone, ensuring that agent executions are isolated, resource-bounded, observable, and resilient to failure.
 
-### Agent Jobs/Runtime
+### Execution(Agent Jobs/Runtime)
 
 > “What actually executes the agent.”
 
-The Agent Runtime is the isolated execution environment in which an individual agent invocation runs. It is responsible for loading the agent code, resolving its dependencies, executing the agent’s logic, and producing outputs in response to a single request. Each execution is treated as a discrete unit of work with its own lifecycle, logs, resource limits, and failure modes.
+Execution is creates an _Agent Runtime_ in an isolated execution environment in which an individual agent invocation runs. It is responsible for loading the agent code, resolving its dependencies, executing the agent’s logic, and producing outputs in response to a single request. Each execution is treated as a discrete unit of work with its own lifecycle, logs, resource limits, and failure modes.
 
 The runtime is intentionally narrow in scope. It does not handle authentication, billing, marketplace logic, or scheduling decisions. Instead, it focuses on safe and deterministic execution: enforcing tool access, applying secrets policies, honoring resource constraints, and exposing health and execution status back to the Infra Control Plane. This makes the runtime interchangeable and extensible, allowing different agent implementations or execution strategies without altering the rest of the platform.
 
