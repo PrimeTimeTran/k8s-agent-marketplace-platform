@@ -140,6 +140,104 @@ function CodeEditor({
   )
 }
 
+function stripAnsi(text: string) {
+  return text.replace(/\x1b\[[0-9;]*m/g, '')
+}
+
+function AnsiToHtml({ text }: { text: string }) {
+  if (!text) return null
+
+  // Split by escape codes
+  const parts = text.split(/(\x1b\[\d+m)/g)
+
+  let currentColor = 'text-zinc-700 dark:text-zinc-300'
+  let currentDecor = ''
+
+  const spans = []
+  let i = 0
+
+  for (const part of parts) {
+    if (!part) continue
+
+    if (part.match(/^\x1b\[\d+m$/)) {
+      const code = part.match(/\d+/)?.[0]
+      switch (code) {
+        case '0':
+          currentColor = 'text-zinc-700 dark:text-zinc-300'
+          currentDecor = ''
+          break
+        case '1':
+          currentDecor += ' font-bold'
+          break
+        case '4':
+          currentDecor += ' underline'
+          break
+        case '90':
+          currentColor = 'text-zinc-400 dark:text-zinc-500'
+          break
+        case '91':
+          currentColor = 'text-red-500'
+          break
+        case '92':
+          currentColor = 'text-green-500'
+          break
+        case '93':
+          currentColor = 'text-yellow-500'
+          break
+        case '94':
+          currentColor = 'text-blue-500'
+          break
+        case '95':
+          currentColor = 'text-purple-500'
+          break
+        case '96':
+          currentColor = 'text-cyan-500'
+          break
+      }
+    } else {
+      spans.push(
+        <span
+          key={i++}
+          className={`${currentColor} ${currentDecor}`}
+        >
+          {part}
+        </span>,
+      )
+    }
+  }
+
+  return <>{spans}</>
+}
+
+function LogViewer({ logs }: { logs: string }) {
+  if (!logs)
+    return (
+      <p className='text-xs text-zinc-400 italic p-4'>
+        No logs available yet...
+      </p>
+    )
+
+  const lineCount = logs.split('\n').length
+
+  return (
+    <div className='flex text-xs font-mono bg-white dark:bg-zinc-900 p-4 min-h-full'>
+      <div className='flex-none text-right pr-4 text-zinc-300 dark:text-zinc-600 select-none border-r border-zinc-100 dark:border-zinc-800 mr-4'>
+        {Array.from({ length: lineCount }).map((_, i) => (
+          <div
+            key={i}
+            className='leading-relaxed'
+          >
+            {i + 1}
+          </div>
+        ))}
+      </div>
+      <div className='flex-1 whitespace-pre overflow-x-auto leading-relaxed'>
+        <AnsiToHtml text={logs} />
+      </div>
+    </div>
+  )
+}
+
 function CollapsibleSection({
   title,
   children,
@@ -503,19 +601,11 @@ export function ExecutionDetails({
           title='Logs'
           icon={MdTerminal}
           defaultOpen={true}
-          contentToCopy={execution.logs}
+          contentToCopy={execution.logs ? stripAnsi(execution.logs) : ''}
         >
           <div className='relative h-96 resize-y overflow-hidden min-h-[100px] flex flex-col'>
             <div className='flex-1 overflow-y-auto bg-white dark:bg-zinc-900 p-0'>
-              {execution.logs ? (
-                <pre className='text-xs font-mono whitespace-pre-wrap text-zinc-700 dark:text-zinc-300 p-4'>
-                  {execution.logs}
-                </pre>
-              ) : (
-                <p className='text-xs text-zinc-400 italic p-4'>
-                  No logs available yet...
-                </p>
-              )}
+              <LogViewer logs={execution.logs} />
             </div>
           </div>
         </CollapsibleSection>
