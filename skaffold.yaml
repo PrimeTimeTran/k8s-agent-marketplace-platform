@@ -25,13 +25,12 @@ build:
         infer:
           - '**/*'
 
-    - image: agent-job
-      context: agent-job
-
     - image: agent-base
       context: execution
       docker:
         dockerfile: Dockerfile.base
+        buildArgs:
+          PYTHON_VERSION: '3.11'
 
 manifests:
   rawYaml:
@@ -39,4 +38,3 @@ manifests:
     - k8s/marketplace.yaml
     - k8s/product-control-plane.yaml
     - k8s/infra-control-plane.yaml
-    - k8s/agent-job.yaml

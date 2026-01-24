@@ -59,10 +59,13 @@ function AgentCard({
   agent: (typeof AGENTS)[0]
   onRun?: () => void
 }) {
-  const [repo, setRepo] = useState('https://github.com/PrimeTimeTran/agent-job')
+  const [repo, setRepo] = useState(
+    'https://github.com/PrimeTimeTran/agent-job-2',
+  )
   const [configJson, setConfigJson] = useState(
     JSON.stringify(
       {
+        pythonVersion: '3.12',
         env: {
           CUSTOM_VAR: 'Hello from UI',
           API_KEY: '123-abc',
@@ -281,7 +284,7 @@ export default function Dev() {
                       : 'Select an execution to view logs'}
                   </option>
                   {executions
-                    .sort((a, b) => b.createdAt - a.createdAt)
+                    .sort((a, b) => a.createdAt - b.createdAt)
                     .map((ex, i) => (
                       <option
                         key={ex.id}

@@ -1,5 +1,12 @@
 import { k8sGet, k8sPost } from './k8s.js'
 
+const DEFAULT_PYTHON_VERSION = '3.11'
+const PLATFORM_IMAGE = 'agent-platform:latest'
+const PYTHON_IMAGE_MAP = {
+  3.11: 'agent-base:3.11',
+  3.12: 'agent-base:3.12',
+}
+
 export async function getJob(namespace, name) {
   return k8sGet(`/apis/batch/v1/namespaces/${namespace}/jobs/${name}`)
 }
@@ -9,7 +16,8 @@ export async function queueJob(
     executionId,
     agent,
     prompt,
-    image,
+    pythonVersion = DEFAULT_PYTHON_VERSION,
+    image, // escape hatch only
     repoUrl,
     env: customEnv = {},
     args = [],
@@ -17,7 +25,10 @@ export async function queueJob(
   { post = k8sPost } = {},
 ) {
   const jobName = `infra-${executionId}`
-  const jobImage = image || (repoUrl ? 'agent-base:dev' : 'agent-job:dev')
+  const jobImage =
+    image ||
+    PYTHON_IMAGE_MAP[pythonVersion] ||
+    PYTHON_IMAGE_MAP[DEFAULT_PYTHON_VERSION]
 
   const env = [
     { name: 'EXECUTION_MODE', value: 'agent' },
@@ -28,8 +39,8 @@ export async function queueJob(
       name: 'CONTROL_PLANE_URL',
       value: 'http://infra-control-plane:3000',
     },
-    // Ensure the runner can find the common library in /platform
     { name: 'PYTHONPATH', value: '/platform:/app' },
+    { name: 'PYTHON_VERSION', value: pythonVersion },
   ]
 
   // Add custom environment variables
@@ -63,18 +74,11 @@ export async function queueJob(
         },
         spec: {
           restartPolicy: 'Never',
-          // 1. Create a shared volume to hold platform tools
-          volumes: [
-            {
-              name: 'platform-tools',
-              emptyDir: {},
-            },
-          ],
+          volumes: [{ name: 'platform-tools', emptyDir: {} }],
           initContainers: [
             {
-              // 2. Use the platform base image to copy tools into the shared volume
               name: 'install-platform',
-              image: 'agent-base:dev',
+              image: jobImage,
               imagePullPolicy: 'IfNotPresent',
               command: [
                 'sh',
@@ -94,7 +98,6 @@ export async function queueJob(
               name: 'agent',
               image: jobImage,
               imagePullPolicy: 'IfNotPresent',
-              // 3. Override the command to run the platform runner instead of the default entrypoint
               command: ['python', '/platform/runner.py', 'main.py', ...args],
               volumeMounts: [
                 {
