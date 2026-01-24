@@ -37,7 +37,8 @@ test_python_11_vs_12()
 
 for i in range(3):
     print(f"\nWorking... {i + 1}/3")
-    print('Mehul color ...')
-    print('Santosh color ...')
-    print('Raj color ...')
+    print('Mehul color red')
+    print('Santosh color white')
+    print('Raj color blue')
+    print('Loi colors red + white + blue')
     time.sleep(1)

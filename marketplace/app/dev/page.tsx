@@ -82,17 +82,17 @@ export default function Dev() {
   return (
     <div className='min-h-screen bg-zinc-50 dark:bg-black py-12'>
       <div className='mx-auto max-w-7xl px-6 lg:px-8'>
-        <div className='mx-auto max-w-2xl text-center mb-12'>
+        <section className='mx-auto max-w-2xl text-center mb-6'>
           <h2 className='text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl dark:text-white'>
             Marketplace
           </h2>
           <p className='mt-2 text-lg leading-8 text-zinc-600 dark:text-zinc-400'>
             Discover and deploy AI agents for your workflow.
           </p>
-        </div>
+        </section>
 
-        <div className='relative'>
-          <div className='flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 px-4 -mx-4 scrollbar-hide'>
+        <section className='relative'>
+          <div className='flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 -mx-4 scrollbar-hide'>
             {AGENTS.map((agent) => (
               <AgentCard
                 key={agent.id}
@@ -107,9 +107,9 @@ export default function Dev() {
               />
             ))}
           </div>
-        </div>
+        </section>
 
-        <div className='mx-auto max-w-7xl'>
+        <section className='relative -mx-4'>
           <div className='bg-white rounded-xl shadow-sm border border-zinc-200 p-6 dark:bg-zinc-900 dark:border-zinc-800'>
             <div className='flex items-center justify-between mb-4'>
               <h3 className='flex items-center gap-2 text-lg font-semibold text-zinc-900 dark:text-white'>
@@ -139,7 +139,7 @@ export default function Dev() {
             />
             <ExecutionDetails execution={selectedExecution} />
           </div>
-        </div>
+        </section>
       </div>
     </div>
   )
