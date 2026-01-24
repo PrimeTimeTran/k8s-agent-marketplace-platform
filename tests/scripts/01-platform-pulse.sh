@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 #
-# DEV SMOKE TEST
-# --------------
+# Platform Pulse
+# ---------------------------------------------------------------------
+# * This script checks for basic liveness only.
+# * It is NOT a correctness test.
+# * It should stay shallow and forgiving.
+# ---------------------------------------------------------------------
 # This script validates that the local dev Kubernetes environment
 # (e.g. `skaffold dev`) is wired correctly end-to-end.
 #
@@ -60,9 +64,11 @@ kubectl wait --for=condition=Available deploy/infra-control-plane -n "$NAMESPACE
 
 echo "🌐 Checking service health..."
 curl_in_cluster http://product-control-plane:3000/health
+echo
 curl_in_cluster http://infra-control-plane:3000/health
+echo
 
-echo "⚙️ Queuing agent job..."
+echo "⚙️  Queuing agent job..."
 
 JOB_JSON=$(kubectl run smoke-curl \
   -n "$NAMESPACE" \
@@ -76,7 +82,6 @@ JOB_JSON=$(kubectl run smoke-curl \
     -d '{}'
 )
 
-# Debug visibility (helpful in CI)
 echo "📦 Job response:"
 echo "$JOB_JSON"
 

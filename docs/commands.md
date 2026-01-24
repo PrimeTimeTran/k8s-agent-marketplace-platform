@@ -38,7 +38,7 @@ docker build -t agent-runtime:dev ./agent-runtime && k3d image import agent-runt
 - Create job from CLI. Spins up pod/container to process it and then tears it down once completed.
 
 ```sh
-kubectl apply -f k8s/test-job.yaml
+kubectl apply -f k8s/agent-job.yaml
 ```
 
 - Proxy next/marketplace pod to host
@@ -135,7 +135,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/a
 # Forwards browser traffic → Kubernetes API
 kubectl proxy http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
 
-# Create a Servie Account
+# Create a Service Account
 kubectl create serviceaccount dashboard-admin -n kubernetes-dashboard
 
 # Grant cluster-admin (this is the big hammer)

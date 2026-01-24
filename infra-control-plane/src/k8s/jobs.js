@@ -4,7 +4,7 @@ export async function getJob(namespace, name) {
   return k8sGet(`/apis/batch/v1/namespaces/${namespace}/jobs/${name}`)
 }
 
-export async function queueJob({ executionId, agent, prompt }) {
+export async function queueJob({ executionId, agent, prompt, image }) {
   const jobName = `infra-${executionId}`
 
   const job = {
@@ -29,11 +29,45 @@ export async function queueJob({ executionId, agent, prompt }) {
         },
         spec: {
           restartPolicy: 'Never',
+          // 1. Create a shared volume to hold platform tools
+          volumes: [
+            {
+              name: 'platform-tools',
+              emptyDir: {},
+            },
+          ],
+          initContainers: [
+            {
+              // 2. Use the platform base image to copy tools into the shared volume
+              name: 'install-platform',
+              image: 'agent-base:dev',
+              imagePullPolicy: 'IfNotPresent',
+              command: [
+                'sh',
+                '-c',
+                'cp -r /app/common /platform/ && cp /app/runner.py /platform/',
+              ],
+              volumeMounts: [
+                {
+                  name: 'platform-tools',
+                  mountPath: '/platform',
+                },
+              ],
+            },
+          ],
           containers: [
             {
               name: 'agent',
-              image: 'agent-job:dev',
+              image: image || 'agent-job:dev',
               imagePullPolicy: 'IfNotPresent',
+              // 3. Override the command to run the platform runner instead of the default entrypoint
+              command: ['python', '/platform/runner.py', 'main.py'],
+              volumeMounts: [
+                {
+                  name: 'platform-tools',
+                  mountPath: '/platform',
+                },
+              ],
               env: [
                 { name: 'EXECUTION_MODE', value: 'agent' },
                 { name: 'EXECUTION_ID', value: executionId },
@@ -43,6 +77,8 @@ export async function queueJob({ executionId, agent, prompt }) {
                   name: 'CONTROL_PLANE_URL',
                   value: 'http://infra-control-plane:3000',
                 },
+                // Ensure the runner can find the common library in /platform
+                { name: 'PYTHONPATH', value: '/platform:/app' },
               ],
             },
           ],
@@ -55,3 +91,47 @@ export async function queueJob({ executionId, agent, prompt }) {
 
   return { jobName }
 }
+
+export async function queueBuildImageJob({
+  executionId,
+  repoUrl,
+  ref = 'main',
+}) {
+  const imageTag = `agent-job:${executionId}`
+
+  const job = {
+    apiVersion: 'batch/v1',
+    kind: 'Job',
+    metadata: {
+      name: `build-${executionId}`,
+      namespace: 'agent-platform',
+    },
+    spec: {
+      backoffLimit: 0,
+      template: {
+        spec: {
+          restartPolicy: 'Never',
+          containers: [
+            {
+              name: 'builder',
+              image: 'gcr.io/kaniko-project/executor:latest',
+              args: [
+                `--dockerfile=/workspace/Dockerfile`,
+                `--context=git://${repoUrl}#${ref}`,
+                `--destination=${imageTag}`,
+              ],
+              env: [
+                // registry auth if needed
+              ],
+            },
+          ],
+        },
+      },
+    },
+  }
+
+  await k8sPost('/apis/batch/v1/namespaces/agent-platform/jobs', job)
+
+  return { image: imageTag }
+}
+

@@ -9,8 +9,9 @@ export function Navbar() {
         </Link>
 
         <div className='flex gap-6'>
-          <a>Docs</a>
-          <a>Pricing</a>
+          <a>New Releases</a>
+          <a>Favorites</a>
+          <a>Account</a>
         </div>
       </div>
     </nav>

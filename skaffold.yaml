@@ -25,13 +25,6 @@ build:
         infer:
           - '**/*'
 
-    - image: agent-runtime
-      context: agent-runtime
-      sync:
-        manual:
-          - src: '**/*.py'
-            dest: /app
-
     - image: agent-job
       context: agent-job
 
@@ -41,5 +34,4 @@ manifests:
     - k8s/marketplace.yaml
     - k8s/product-control-plane.yaml
     - k8s/infra-control-plane.yaml
-    - k8s/agent-runtime.yaml
     - k8s/agent-job.yaml
