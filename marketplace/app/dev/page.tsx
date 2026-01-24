@@ -1,5 +1,6 @@
 'use client'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { MdHistory, MdRefresh } from 'react-icons/md'
 import {
   AGENTS,
   AgentCard,
@@ -17,7 +18,6 @@ export default function Dev() {
 
   const selectedIdRef = useRef<string | null>(null)
 
-  // Keep ref in sync
   useEffect(() => {
     selectedIdRef.current = selectedExecution?.id ?? null
   }, [selectedExecution])
@@ -91,7 +91,7 @@ export default function Dev() {
           </p>
         </div>
 
-        <div className='relative mb-16'>
+        <div className='relative'>
           <div className='flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 px-4 -mx-4 scrollbar-hide'>
             {AGENTS.map((agent) => (
               <AgentCard
@@ -109,32 +109,35 @@ export default function Dev() {
           </div>
         </div>
 
-        <div className='mx-auto max-w-3xl'>
+        <div className='mx-auto max-w-7xl'>
           <div className='bg-white rounded-xl shadow-sm border border-zinc-200 p-6 dark:bg-zinc-900 dark:border-zinc-800'>
             <div className='flex items-center justify-between mb-4'>
-              <h3 className='text-lg font-semibold text-zinc-900 dark:text-white'>
+              <h3 className='flex items-center gap-2 text-lg font-semibold text-zinc-900 dark:text-white'>
+                <MdHistory />
                 Recent Executions
               </h3>
               <button
                 onClick={() => loadExecutions()}
                 disabled={loadingExecutions}
-                className='text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300'
+                className='flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300 transition-colors'
               >
+                <MdRefresh
+                  className={loadingExecutions ? 'animate-spin' : ''}
+                  size={16}
+                />
                 {loadingExecutions ? 'Refreshing...' : 'Refresh'}
               </button>
             </div>
 
-            <div className='space-y-4'>
-              <ExecutionList
-                executions={executions}
-                selectedId={selectedExecution?.id}
-                onSelect={(id) => {
-                  const ex = executions.find((x) => x.id === id)
-                  setSelectedExecution(ex ?? null)
-                }}
-              />
-              <ExecutionDetails execution={selectedExecution} />
-            </div>
+            <ExecutionList
+              executions={executions}
+              selectedId={selectedExecution?.id}
+              onSelect={(id) => {
+                const ex = executions.find((x) => x.id === id)
+                setSelectedExecution(ex ?? null)
+              }}
+            />
+            <ExecutionDetails execution={selectedExecution} />
           </div>
         </div>
       </div>

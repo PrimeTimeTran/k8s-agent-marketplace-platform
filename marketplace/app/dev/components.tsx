@@ -1,15 +1,18 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
+import React, { useState, useRef } from 'react'
+import { FaRegSmile, FaLanguage } from 'react-icons/fa'
 import {
   MdStart,
-  MdContentCopy,
   MdCheck,
+  MdSettings,
+  MdTerminal,
   MdExpandMore,
   MdExpandLess,
+  MdDataObject,
+  MdContentCopy,
 } from 'react-icons/md'
-import { FaRegSmile, FaLanguage } from 'react-icons/fa'
 
 export type Execution = {
   id: string
@@ -59,8 +62,16 @@ export const AGENTS = [
   },
 ]
 
-function JsonHighlighter({ data }: { data: any }) {
-  const json = JSON.stringify(data, null, 2)
+function JsonHighlighter({
+  data,
+  jsonString,
+  className = 'text-xs font-mono overflow-auto p-4',
+}: {
+  data?: any
+  jsonString?: string
+  className?: string
+}) {
+  const json = jsonString ?? JSON.stringify(data, null, 2)
   if (!json) return null
 
   const html = json.replace(
@@ -84,9 +95,48 @@ function JsonHighlighter({ data }: { data: any }) {
 
   return (
     <pre
-      className='text-xs font-mono overflow-auto p-4'
+      className={className}
       dangerouslySetInnerHTML={{ __html: html }}
     />
+  )
+}
+
+function CodeEditor({
+  value,
+  onChange,
+  className,
+}: {
+  value: string
+  onChange: (val: string) => void
+  className?: string
+}) {
+  const wrapperRef = useRef<HTMLDivElement>(null)
+
+  return (
+    <div className={`relative ${className}`}>
+      <div
+        ref={wrapperRef}
+        className='absolute inset-0 pointer-events-none p-3 overflow-hidden font-mono text-xs'
+        aria-hidden='true'
+      >
+        <JsonHighlighter
+          jsonString={value}
+          className='m-0 p-0 whitespace-pre text-xs font-mono'
+        />
+      </div>
+      <textarea
+        value={value}
+        spellCheck={false}
+        onChange={(e) => onChange(e.target.value)}
+        onScroll={(e) => {
+          if (wrapperRef.current) {
+            wrapperRef.current.scrollTop = e.currentTarget.scrollTop
+            wrapperRef.current.scrollLeft = e.currentTarget.scrollLeft
+          }
+        }}
+        className='absolute inset-0 w-full h-full bg-transparent text-transparent caret-zinc-900 dark:caret-zinc-100 p-3 font-mono text-xs resize-none focus:outline-none border-none whitespace-pre overflow-auto'
+      />
+    </div>
   )
 }
 
@@ -95,11 +145,13 @@ function CollapsibleSection({
   children,
   defaultOpen = false,
   contentToCopy,
+  icon: Icon,
 }: {
   title: string
   children: React.ReactNode
   defaultOpen?: boolean
   contentToCopy?: string
+  icon?: React.ComponentType<{ className?: string }>
 }) {
   const [isOpen, setIsOpen] = useState(defaultOpen)
   const [copied, setCopied] = useState(false)
@@ -121,6 +173,7 @@ function CollapsibleSection({
       >
         <span className='flex items-center gap-2'>
           {isOpen ? <MdExpandLess size={16} /> : <MdExpandMore size={16} />}
+          {Icon && <Icon className='text-zinc-500 dark:text-zinc-400' />}
           {title}
         </span>
         {contentToCopy && (
@@ -167,8 +220,9 @@ export function AgentCard({
       {
         pythonVersion: '3.12',
         env: {
-          CUSTOM_VAR: 'Hello from UI',
           API_KEY: '123-abc',
+          CUSTOM_VAR: 'Hello from UI',
+          ENABLE_LOG_TIMESTAMPS: true,
         },
         args: ['--verbose', '--dry-run'],
       },
@@ -216,7 +270,7 @@ export function AgentCard({
   }
 
   return (
-    <div className='w-80 shrink-0 snap-center rounded-xl bg-white p-5 shadow-sm border border-zinc-200 dark:bg-zinc-900 dark:border-zinc-800 flex flex-col'>
+    <div className='w-80 h-[600px] shrink-0 snap-center rounded-xl bg-white p-5 shadow-sm border border-zinc-200 dark:bg-zinc-900 dark:border-zinc-800 flex flex-col'>
       <div className='flex items-center gap-3 mb-3'>
         <div className='p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-black dark:text-white'>
           {agent.icon}
@@ -235,7 +289,7 @@ export function AgentCard({
         {agent.description}
       </p>
 
-      <div className='flex gap-2 mb-4 border-b border-zinc-100 dark:border-zinc-800 min-h-[33px]'>
+      <div className='flex gap-2 mb-4 border-b border-zinc-100 dark:border-zinc-800 min-h-8.25'>
         <button
           onClick={() => setActiveTab('config')}
           className={`px-3 py-1.5 text-xs font-medium border-b-2 transition-colors ${
@@ -260,7 +314,7 @@ export function AgentCard({
         )}
       </div>
 
-      <div className='space-y-3 flex-1 overflow-y-auto min-h-[200px]'>
+      <div className='space-y-3 flex-1 overflow-y-auto min-h-50'>
         {activeTab === 'config' ? (
           <>
             {agent.type == 'custom-git-agent' && (
@@ -281,20 +335,28 @@ export function AgentCard({
               <label className='text-xs font-medium text-zinc-500 mb-1 block'>
                 Configuration (JSON)
               </label>
-              <textarea
-                rows={8}
-                placeholder='{ "env": {}, "args": [] }'
+              <CodeEditor
                 value={configJson}
-                onChange={(e) => setConfigJson(e.target.value)}
-                className='w-full rounded-md border border-zinc-200 px-3 py-1.5 text-xs font-mono dark:bg-zinc-800 dark:border-zinc-700'
+                onChange={setConfigJson}
+                className='w-full min-h-75 rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900'
               />
             </div>
           </>
         ) : (
-          <div className='mt-0 overflow-hidden rounded-md bg-zinc-50 p-2 text-[10px] border border-zinc-100 dark:bg-zinc-800 dark:border-zinc-700'>
-            <pre className='whitespace-pre-wrap break-all text-zinc-600 dark:text-zinc-300'>
-              {JSON.stringify(result, null, 2)}
-            </pre>
+          <div className='relative mt-0 overflow-hidden rounded-md bg-zinc-50 border border-zinc-100 dark:bg-zinc-900 dark:border-zinc-800 group'>
+            <div className='absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity'>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  navigator.clipboard.writeText(JSON.stringify(result, null, 2))
+                }}
+                className='p-1.5 bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300 rounded border border-zinc-200 dark:border-zinc-700 shadow-sm'
+                title='Copy result'
+              >
+                <MdContentCopy size={14} />
+              </button>
+            </div>
+            <JsonHighlighter data={result} />
           </div>
         )}
       </div>
@@ -325,6 +387,22 @@ export function AgentCard({
   )
 }
 
+function getStatusEmoji(status: string) {
+  switch (status) {
+    case 'succeeded':
+    case 'completed':
+      return '🟢'
+    case 'failed':
+      return '🔴'
+    case 'running':
+      return '�'
+    case 'scheduled':
+      return '🔵'
+    default:
+      return '⚫'
+  }
+}
+
 export function ExecutionList({
   executions,
   selectedId,
@@ -340,7 +418,7 @@ export function ExecutionList({
         Select Execution
       </label>
       <select
-        className='w-full rounded-md border border-zinc-200 px-3 py-2 text-sm dark:bg-zinc-800 dark:border-zinc-700 dark:text-white'
+        className='w-full rounded-md border border-zinc-200 px-3 py-2 text-sm dark:bg-zinc-800 dark:border-zinc-700 dark:text-white font-mono'
         value={selectedId ?? ''}
         onChange={(e) => onSelect(e.target.value)}
       >
@@ -350,16 +428,24 @@ export function ExecutionList({
             : 'Select an execution to view logs'}
         </option>
         {executions
-          .sort((a, b) => a.createdAt - b.createdAt)
-          .map((ex, i) => (
-            <option
-              key={ex.id}
-              value={ex.id}
-            >
-              {i + 1}. {ex.id} — {ex.status}
-              {ex.payload?.agent ? ` (${ex.payload.agent})` : ''}
-            </option>
-          ))}
+          .sort((a, b) => b.createdAt - a.createdAt)
+          .map((ex, i) => {
+            const time = new Date(ex.createdAt).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+            })
+            return (
+              <option
+                key={ex.id}
+                value={ex.id}
+              >
+                {getStatusEmoji(ex.status)} {i + 1}.{' '}
+                {ex.id.replace('job-exec-', '')} —{' '}
+                {ex.payload?.agent || 'Unknown'} ({time})
+              </option>
+            )
+          })}
       </select>
     </div>
   )
@@ -388,8 +474,8 @@ export function ExecutionDetails({
               : execution.status === 'failed'
                 ? 'bg-red-100 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800'
                 : execution.status === 'running'
-                  ? 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800 animate-pulse'
-                  : 'bg-white text-zinc-700 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700'
+                  ? 'bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800 animate-pulse'
+                  : 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800'
           }`}
         >
           {execution.status.toUpperCase()}
@@ -399,22 +485,23 @@ export function ExecutionDetails({
       <div className='p-4'>
         <CollapsibleSection
           title='Payload'
+          icon={MdDataObject}
           contentToCopy={JSON.stringify(execution.payload, null, 2)}
         >
           <JsonHighlighter data={execution.payload} />
         </CollapsibleSection>
 
-        {execution.jobConfig && (
-          <CollapsibleSection
-            title='Job Config (Resolved)'
-            contentToCopy={JSON.stringify(execution.jobConfig, null, 2)}
-          >
-            <JsonHighlighter data={execution.jobConfig} />
-          </CollapsibleSection>
-        )}
+        <CollapsibleSection
+          title='Job Config (Resolved)'
+          icon={MdSettings}
+          contentToCopy={JSON.stringify(execution.jobConfig || {}, null, 2)}
+        >
+          <JsonHighlighter data={execution.jobConfig || {}} />
+        </CollapsibleSection>
 
         <CollapsibleSection
           title='Logs'
+          icon={MdTerminal}
           defaultOpen={true}
           contentToCopy={execution.logs}
         >
