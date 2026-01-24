@@ -1,5 +1,5 @@
 import express from 'express'
-import { queueJob } from '../../k8s/jobs.js'
+import { queueJob } from '../../k8s/jobs/index.js'
 import { scheduleRun } from '../../domain/executions/service.js'
 import { watchJobLogs } from '../../domain/executions/watcher.js'
 import {

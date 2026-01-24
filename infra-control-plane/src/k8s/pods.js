@@ -1,6 +1,5 @@
-import { k8sGet } from './k8s.js'
-
-import { k8sFetch } from './client.js'
+import { k8sGet } from '../../infra/k8s/index.js'
+import { k8sFetch } from '../../infra/k8s/client.js'
 
 export async function getJobPod(namespace, jobName) {
   const data = await k8sGet(

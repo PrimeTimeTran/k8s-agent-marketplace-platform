@@ -1,9 +1,9 @@
-import { describe, it } from 'node:test'
 import assert from 'node:assert'
-import { queueJob } from '../../src/k8s/jobs.js'
+import { describe, it } from 'node:test'
+import { queueJob } from '../../src/k8s/jobs/index.js'
 
 describe('queueJob', () => {
-  it('should use agent-job:dev image by default', async () => {
+  it('should use agent-base:3.11 image by default', async () => {
     let capturedJob = null
     const mockPost = async (path, job) => {
       capturedJob = job
@@ -17,11 +17,11 @@ describe('queueJob', () => {
 
     assert.equal(
       capturedJob.spec.template.spec.containers[0].image,
-      'agent-job:dev',
+      'agent-base:3.11',
     )
   })
 
-  it('should use agent-base:dev if repoUrl is provided', async () => {
+  it('should use agent-base:3.11 if repoUrl is provided', async () => {
     let capturedJob = null
     const mockPost = async (path, job) => {
       capturedJob = job
@@ -32,7 +32,6 @@ describe('queueJob', () => {
       {
         executionId: '123',
         agent: 'test',
-        prompt: 'hi',
         repoUrl: 'http://git',
       },
       { post: mockPost },
@@ -40,7 +39,7 @@ describe('queueJob', () => {
 
     assert.equal(
       capturedJob.spec.template.spec.containers[0].image,
-      'agent-base:dev',
+      'agent-base:3.11',
     )
   })
 
@@ -55,7 +54,6 @@ describe('queueJob', () => {
       {
         executionId: '123',
         agent: 'test',
-        prompt: 'hi',
         repoUrl: 'http://git',
       },
       { post: mockPost },
@@ -78,7 +76,6 @@ describe('queueJob', () => {
       {
         executionId: '123',
         agent: 'test',
-        prompt: 'hi',
         env: { MY_VAR: 'hello' },
       },
       { post: mockPost },
@@ -101,7 +98,6 @@ describe('queueJob', () => {
       {
         executionId: '123',
         agent: 'test',
-        prompt: 'hi',
         args: ['--flag', 'value'],
       },
       { post: mockPost },

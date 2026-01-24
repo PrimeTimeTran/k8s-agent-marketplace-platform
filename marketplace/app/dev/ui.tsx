@@ -280,16 +280,19 @@ export function CollapsibleSection({
 }
 
 export function getStatusEmoji(status: string) {
+  console.log({
+    status,
+  })
   switch (status) {
     case 'succeeded':
+    case 'scheduled':
+      return '🔵'
+    case 'running':
+      return '🌕'
     case 'completed':
       return '🟢'
     case 'failed':
       return '🔴'
-    case 'running':
-      return '�'
-    case 'scheduled':
-      return '🔵'
     default:
       return '⚫'
   }

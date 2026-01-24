@@ -248,41 +248,61 @@ export function ExecutionList({
   selectedId: string | undefined
   onSelect: (id: string) => void
 }) {
+  const selectedExecution = executions.find((ex) => ex.id === selectedId)
+
   return (
     <div className='grid gap-2'>
       <label className='text-sm font-medium text-zinc-700 dark:text-zinc-300'>
         Select Execution
       </label>
-      <select
-        className='w-full rounded-md border border-zinc-200 px-3 py-2 text-sm dark:bg-zinc-800 dark:border-zinc-700 dark:text-white font-mono'
-        value={selectedId ?? ''}
-        onChange={(e) => onSelect(e.target.value)}
-      >
-        <option value=''>
-          {executions.length === 0
-            ? 'No executions found'
-            : 'Select an execution to view logs'}
-        </option>
-        {executions
-          .sort((a, b) => b.createdAt - a.createdAt)
-          .map((ex, i) => {
-            const time = new Date(ex.createdAt).toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
-              second: '2-digit',
-            })
-            return (
-              <option
-                key={ex.id}
-                value={ex.id}
-              >
-                {getStatusEmoji(ex.status)} {i + 1}.{' '}
-                {ex.id.replace('job-exec-', '')} —{' '}
-                {ex.payload?.agent || 'Unknown'} ({time})
-              </option>
-            )
-          })}
-      </select>
+      <div className='flex gap-2'>
+        <select
+          className='flex-1 rounded-md border border-zinc-200 px-3 py-2 text-sm dark:bg-zinc-800 dark:border-zinc-700 dark:text-white font-mono'
+          value={selectedId ?? ''}
+          onChange={(e) => onSelect(e.target.value)}
+        >
+          <option value=''>
+            {executions.length === 0
+              ? 'No executions found'
+              : 'Select an execution to view logs'}
+          </option>
+          {executions
+            .sort((a, b) => b.createdAt - a.createdAt)
+            .map((ex, i) => {
+              const time = new Date(ex.createdAt).toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+              })
+              return (
+                <option
+                  key={ex.id}
+                  value={ex.id}
+                >
+                  {getStatusEmoji(ex.status)} {i + 1}.{' '}
+                  {ex.id.replace('job-exec-', '')} —{' '}
+                  {ex.payload?.agent || 'Unknown'} ({time})
+                </option>
+              )
+            })}
+        </select>
+        {selectedExecution && (
+          <span
+            className={`flex items-center rounded-full px-3 text-xs font-semibold border shrink-0 ${
+              selectedExecution.status === 'succeeded' ||
+              selectedExecution.status === 'completed'
+                ? 'bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800'
+                : selectedExecution.status === 'failed'
+                  ? 'bg-red-100 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800'
+                  : selectedExecution.status === 'running'
+                    ? 'bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800 animate-pulse'
+                    : 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800'
+            }`}
+          >
+            {selectedExecution.status.toUpperCase()}
+          </span>
+        )}
+      </div>
     </div>
   )
 }
@@ -296,28 +316,6 @@ export function ExecutionDetails({
 
   return (
     <div className='rounded-md border border-zinc-200 bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-800'>
-      <div className='border-b border-zinc-200 px-4 py-2 flex items-center justify-between bg-zinc-100/50 dark:bg-zinc-900/50 dark:border-zinc-800'>
-        <div className='flex gap-4 text-xs text-zinc-500'>
-          <span>ID: {execution.id}</span>
-          <span>
-            Created: {new Date(execution.createdAt).toLocaleTimeString()}
-          </span>
-        </div>
-        <span
-          className={`rounded-full px-3 py-1 text-xs font-semibold border ${
-            execution.status === 'succeeded' || execution.status === 'completed'
-              ? 'bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800'
-              : execution.status === 'failed'
-                ? 'bg-red-100 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800'
-                : execution.status === 'running'
-                  ? 'bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800 animate-pulse'
-                  : 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800'
-          }`}
-        >
-          {execution.status.toUpperCase()}
-        </span>
-      </div>
-
       <div className='p-4'>
         <CollapsibleSection
           title='Payload'

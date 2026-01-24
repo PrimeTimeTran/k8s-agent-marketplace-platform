@@ -46,8 +46,8 @@ NAMESPACE=agent-platform
 
 curl_in_cluster() {
   local url="$1"
-
-  kubectl run smoke-curl \
+  POD_NAME="smoke-curl-$(date +%s)"
+  kubectl run "$POD_NAME" \
     -n "$NAMESPACE" \
     --rm -i \
     --restart=Never \
@@ -70,16 +70,21 @@ echo
 
 echo "⚙️  Queuing agent job..."
 
-JOB_JSON=$(kubectl run smoke-curl \
+POD_NAME="smoke-curl-$(date +%s)"
+
+JOB_JSON=$(kubectl run "$POD_NAME" \
   -n "$NAMESPACE" \
   --rm -i \
-  --restart=Never \
+--restart=Never \
   --image=curlimages/curl \
   --quiet \
   -- \
   curl -sf http://infra-control-plane:3000/queue-job \
     -H "Content-Type: application/json" \
-    -d '{}'
+    -d '{
+      "type": "infra",
+      "reason": "smoke-test"
+    }'
 )
 
 echo "📦 Job response:"
