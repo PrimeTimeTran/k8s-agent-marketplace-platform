@@ -3,14 +3,18 @@ import { Agent } from 'undici'
 
 export const K8S_API_BASE = 'https://kubernetes.default.svc'
 
-const token = fs.readFileSync(
-  '/var/run/secrets/kubernetes.io/serviceaccount/token',
-  'utf8',
-)
+let token = ''
+let ca = null
 
-const ca = fs.readFileSync(
-  '/var/run/secrets/kubernetes.io/serviceaccount/ca.crt',
-)
+try {
+  token = fs.readFileSync(
+    '/var/run/secrets/kubernetes.io/serviceaccount/token',
+    'utf8',
+  )
+  ca = fs.readFileSync('/var/run/secrets/kubernetes.io/serviceaccount/ca.crt')
+} catch (e) {
+  // Ignore error if running locally/testing
+}
 
 export const dispatcher = new Agent({
   connect: {

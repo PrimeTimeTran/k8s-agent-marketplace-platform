@@ -2,7 +2,10 @@ import express from 'express'
 import { queueJob } from '../../k8s/jobs.js'
 import { scheduleRun } from '../../domain/executions/service.js'
 import { watchJobLogs } from '../../domain/executions/watcher.js'
-import { createExecution } from '../../domain/executions/store.js'
+import {
+  createExecution,
+  updateExecution,
+} from '../../domain/executions/store.js'
 
 const router = express.Router()
 
@@ -33,6 +36,11 @@ router.post('/queue-job', async (req, res) => {
     const result = await queueJob({
       ...payload,
       executionId,
+    })
+
+    // Save the actual job configuration used
+    updateExecution(executionId, {
+      jobConfig: result.jobConfig,
     })
 
     watchJobLogs(executionId, result.jobName).catch((err) => {

@@ -12,6 +12,7 @@ type Execution = {
     prompt: string
     value: string
   }
+  jobConfig?: any
   logs: string
   createdAt: number
 }
@@ -279,14 +280,17 @@ export default function Dev() {
                       ? 'No executions found'
                       : 'Select an execution to view logs'}
                   </option>
-                  {executions.map((ex) => (
-                    <option
-                      key={ex.id}
-                      value={ex.id}
-                    >
-                      {ex.id} — {ex.status} ({ex.payload.agent})
-                    </option>
-                  ))}
+                  {executions
+                    .sort((a, b) => b.createdAt - a.createdAt)
+                    .map((ex, i) => (
+                      <option
+                        key={ex.id}
+                        value={ex.id}
+                      >
+                        {i + 1}. {ex.id} — {ex.status}
+                        {ex.payload?.agent ? ` (${ex.payload.agent})` : ''}
+                      </option>
+                    ))}
                 </select>
               </div>
 
@@ -324,6 +328,17 @@ export default function Dev() {
                         {JSON.stringify(selectedExecution.payload, null, 2)}
                       </pre>
                     </div>
+
+                    {selectedExecution.jobConfig && (
+                      <div className='mb-4'>
+                        <h4 className='text-xs font-semibold text-zinc-900 dark:text-zinc-100 mb-1'>
+                          Job Config (Resolved)
+                        </h4>
+                        <pre className='text-xs text-zinc-600 dark:text-zinc-400 font-mono'>
+                          {JSON.stringify(selectedExecution.jobConfig, null, 2)}
+                        </pre>
+                      </div>
+                    )}
 
                     <div>
                       <h4 className='text-xs font-semibold text-zinc-900 dark:text-zinc-100 mb-1'>

@@ -13,9 +13,9 @@ print(f"Arguments received: {sys.argv}")
 
 for i in range(3):
     print(f"\nWorking... {i + 1}/3")
-    print('Mehul color Red')
-    print('Santosh color White')
-    print('Raj color Blue')
+    print('Mehul color ...')
+    print('Santosh color ...')
+    print('Raj color ...')
     time.sleep(2)
 
 print("\n✅ Done, exiting")

@@ -1,4 +1,5 @@
 marketplace/node_modules/
+infra-control-plane/node_modules/
 marketplace/.next/
 agents
 notes

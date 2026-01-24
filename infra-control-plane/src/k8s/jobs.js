@@ -4,15 +4,18 @@ export async function getJob(namespace, name) {
   return k8sGet(`/apis/batch/v1/namespaces/${namespace}/jobs/${name}`)
 }
 
-export async function queueJob({
-  executionId,
-  agent,
-  prompt,
-  image,
-  repoUrl,
-  env: customEnv = {},
-  args = [],
-}) {
+export async function queueJob(
+  {
+    executionId,
+    agent,
+    prompt,
+    image,
+    repoUrl,
+    env: customEnv = {},
+    args = [],
+  },
+  { post = k8sPost } = {},
+) {
   const jobName = `infra-${executionId}`
   const jobImage = image || (repoUrl ? 'agent-base:dev' : 'agent-job:dev')
 
@@ -107,9 +110,19 @@ export async function queueJob({
     },
   }
 
-  await k8sPost('/apis/batch/v1/namespaces/agent-platform/jobs', job)
+  await post('/apis/batch/v1/namespaces/agent-platform/jobs', job)
 
-  return { jobName }
+  return {
+    jobName,
+    jobConfig: {
+      image: jobImage,
+      command: job.spec.template.spec.containers[0].command,
+      env: env.reduce(
+        (acc, { name, value }) => ({ ...acc, [name]: value }),
+        {},
+      ),
+    },
+  }
 }
 
 export async function queueBuildImageJob({
