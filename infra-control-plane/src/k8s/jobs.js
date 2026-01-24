@@ -1,13 +1,12 @@
 import { k8sGet, k8sPost } from './k8s.js'
 
 const DEFAULT_PYTHON_VERSION = '3.11'
-const PLATFORM_IMAGE = 'agent-platform:latest'
 const PYTHON_IMAGE_MAP = {
   3.11: 'agent-base:3.11',
   3.12: 'agent-base:3.12',
 }
 
-function normalizePythonVersion(version?: string) {
+function normalizePythonVersion(version) {
   if (!version) return DEFAULT_PYTHON_VERSION
 
   // "3.12.1" → "3.12"
@@ -16,7 +15,6 @@ function normalizePythonVersion(version?: string) {
 
   return `${match[1]}.${match[2]}`
 }
-
 
 export async function getJob(namespace, name) {
   return k8sGet(`/apis/batch/v1/namespaces/${namespace}/jobs/${name}`)
