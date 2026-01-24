@@ -15,8 +15,6 @@ print(f"Arguments received: {sys.argv}")
 
 print(pyfiglet.figlet_format("Agent Worklow"))
 
-import traceback
-
 def test_python_11_vs_12():
     print("\n--- 🐍 Python Version Test ---")
     code = """

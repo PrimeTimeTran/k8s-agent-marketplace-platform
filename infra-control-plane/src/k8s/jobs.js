@@ -7,27 +7,39 @@ const PYTHON_IMAGE_MAP = {
   3.12: 'agent-base:3.12',
 }
 
+function normalizePythonVersion(version?: string) {
+  if (!version) return DEFAULT_PYTHON_VERSION
+
+  // "3.12.1" → "3.12"
+  const match = version.match(/^(\d+)\.(\d+)/)
+  if (!match) return DEFAULT_PYTHON_VERSION
+
+  return `${match[1]}.${match[2]}`
+}
+
+
 export async function getJob(namespace, name) {
   return k8sGet(`/apis/batch/v1/namespaces/${namespace}/jobs/${name}`)
 }
 
 export async function queueJob(
   {
-    executionId,
     agent,
     prompt,
-    pythonVersion = DEFAULT_PYTHON_VERSION,
-    image, // escape hatch only
+    image,
     repoUrl,
-    env: customEnv = {},
     args = [],
+    executionId,
+    env: customEnv = {},
+    pythonVersion = DEFAULT_PYTHON_VERSION,
   },
   { post = k8sPost } = {},
 ) {
   const jobName = `infra-${executionId}`
+  const normalizedVersion = normalizePythonVersion(pythonVersion)
   const jobImage =
     image ||
-    PYTHON_IMAGE_MAP[pythonVersion] ||
+    PYTHON_IMAGE_MAP[normalizedVersion] ||
     PYTHON_IMAGE_MAP[DEFAULT_PYTHON_VERSION]
 
   const env = [
@@ -40,7 +52,8 @@ export async function queueJob(
       value: 'http://infra-control-plane:3000',
     },
     { name: 'PYTHONPATH', value: '/platform:/app' },
-    { name: 'PYTHON_VERSION', value: pythonVersion },
+    { name: 'PYTHON_VERSION_REQUESTED', value: pythonVersion },
+    { name: 'PYTHON_VERSION_RESOLVED', value: normalizedVersion },
   ]
 
   // Add custom environment variables
