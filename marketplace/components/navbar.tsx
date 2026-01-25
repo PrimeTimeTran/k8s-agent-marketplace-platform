@@ -18,10 +18,10 @@ export function Navbar() {
   }
 
   return (
-    <nav className='w-full border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-black transition-colors duration-300'>
+    <nav className='w-full border-b border-outline-variant bg-surface transition-colors duration-300'>
       <div className='mx-auto max-w-6xl px-6 h-16 flex items-center justify-between'>
         <Link href='/'>
-          <div className='font-semibold text-zinc-900 dark:text-zinc-100'>
+          <div className='font-semibold text-on-surface'>
             AI Agent Marketplace
           </div>
         </Link>
@@ -29,7 +29,7 @@ export function Navbar() {
         <div className='flex items-center gap-6'>
           <a
             href='/design-kit'
-            className='text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+            className='text-sm font-medium text-on-surface-variant hover:text-on-surface'
           >
             Design Kit
           </a>
@@ -37,11 +37,11 @@ export function Navbar() {
           {mounted && (
             <button
               onClick={toggleTheme}
-              className='relative rounded-full p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors'
+              className='relative rounded-full p-2 hover:bg-surface-variant transition-colors'
               aria-label='Toggle theme'
             >
-              <Sun className='h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-amber-500' />
-              <Moon className='absolute top-2 left-2 h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-indigo-400' />
+              <Sun className='h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-warning' />
+              <Moon className='absolute top-2 left-2 h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-primary' />
             </button>
           )}
         </div>

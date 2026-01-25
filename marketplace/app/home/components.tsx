@@ -216,14 +216,14 @@ export function AgentCard({
       <div className='mt-4 flex gap-2 pt-4 border-t border-outline-variant'>
         <Link
           href={`/agent?name=${agent.type}`}
-          className='flex items-center justify-center rounded-md border border-outline px-3 py-1.5 text-xs font-medium text-on-surface hover:bg-surface-variant transition-colors'
+          className='flex items-center justify-center bg-secondary hover:bg-secondary/80 rounded-md border border-outline px-3 py-1.5 text-xs font-medium text-on-secondary transition-colors'
         >
           View
         </Link>
         <button
           onClick={runJob}
           disabled={loading}
-          className='flex-1 flex items-center justify-center gap-1.5 rounded-md bg-on-surface px-3 py-1.5 text-xs font-medium text-surface hover:bg-on-surface/90 disabled:opacity-50 transition-colors'
+          className='flex-1 flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-surface hover:bg-primary/80 disabled:opacity-50 transition-colors'
         >
           {loading ? (
             'Running...'

@@ -5,7 +5,8 @@ import { useState, useEffect } from 'react'
 
 import { Typewriter, ShadowParticles, CursorFlock } from '@/components/ui'
 
-import { generateTheme, applyTheme, PALETTES } from '@/utils/color'
+import { PALETTES } from '@/utils/color'
+import { useDesignSystem } from '@/providers/design-system'
 import { ThemeController } from './theme-controller'
 import { SectionNavigation } from './section-navigation'
 
@@ -21,24 +22,12 @@ import { FeedbackSection } from './kits/feedback'
 
 export default function DesignKitPage() {
   const { resolvedTheme } = useTheme()
-  const [currentSeed, setCurrentSeed] = useState<string | null>(null)
+  const { currentSeed, setCurrentSeed } = useDesignSystem()
   const [mounted, setMounted] = useState(false)
-  const [altLabel, setAltLabel] = useState('Alt')
 
   useEffect(() => {
     setMounted(true)
   }, [])
-
-  useEffect(() => {
-    if (!currentSeed) return
-
-    const vars = generateTheme(
-      currentSeed,
-      resolvedTheme === 'dark' ? 'dark' : 'light',
-    )
-
-    applyTheme(vars)
-  }, [resolvedTheme, currentSeed])
 
   const currentPaletteName =
     PALETTES.find((p) => p.color === currentSeed)?.name || 'Default'
