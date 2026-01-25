@@ -13,7 +13,7 @@
 
 ## **Layers**
 
-Instead of building a monolithic system that becomes bloated, brittle, and difficult to evolve, this architecture is organized around four clearly defined layers: **Marketplace**, **Product Control Plane**, **Infra Control Plane**, and **Agent Runtime**. Each layer owns a single, well-scoped responsibility, allowing business concerns, product intent, infrastructure orchestration, and execution to evolve independently. This separation enables the platform to support many agents, users, and execution models without coupling commercial logic to operational reality or runtime behavior to policy decisions.
+Instead of building a monolithic system that becomes bloated, brittle, and difficult to evolve, this architecture is organized around four clearly defined layers: **Marketplace**, **Product Control Plane**, **Infra Control Plane**, and **Execution**. Each layer owns a single, well-scoped responsibility, allowing business concerns, product intent, infrastructure orchestration, and execution to evolve independently. This separation enables the platform to support many agents, users, and execution models without coupling commercial logic to operational reality or runtime behavior to policy decisions.
 
 Together, these cornerstones form a system that is resilient by design. Marketplace workflows such as discovery, pricing, and access control can change without impacting execution safety. Product-level decisions about what should run are enforced consistently across all agents, regardless of where or how they execute. Infrastructure concerns are delegated to Kubernetes, ensuring reliability, isolation, and scalability without custom scheduling logic. Finally, agent execution is isolated into narrow runtimes that can safely run untrusted or third-party code at scale. This layered approach creates a foundation that supports rapid iteration today while remaining robust enough to accommodate governance, monetization, and operational complexity as the marketplace grows.
 
@@ -47,12 +47,12 @@ This control plane does not make product or business decisions. It assumes that 
 
 By delegating scheduling and lifecycle management to Kubernetes, the Infra Control Plane avoids custom infrastructure logic while remaining flexible enough to support different execution models. It acts as the system’s operational backbone, ensuring that agent executions are isolated, resource-bounded, observable, and resilient to failure.
 
-### Execution(Agent Jobs/Runtime)
+### Execution (Ephemeral Jobs)
 
 > “What actually executes the agent.”
 
-Execution is creates an _Agent Runtime_ in an isolated execution environment in which an individual agent invocation runs. It is responsible for loading the agent code, resolving its dependencies, executing the agent’s logic, and producing outputs in response to a single request. Each execution is treated as a discrete unit of work with its own lifecycle, logs, resource limits, and failure modes.
+The Execution layer instantiates an isolated, ephemeral environment for each individual agent invocation. It is responsible for loading the agent code (e.g., via Git clone), resolving its dependencies, executing the logic, and producing outputs. Unlike a standing server, these environments exist only for the duration of the request, ensuring complete isolation and efficient resource usage.
 
-The runtime is intentionally narrow in scope. It does not handle authentication, billing, marketplace logic, or scheduling decisions. Instead, it focuses on safe and deterministic execution: enforcing tool access, applying secrets policies, honoring resource constraints, and exposing health and execution status back to the Infra Control Plane. This makes the runtime interchangeable and extensible, allowing different agent implementations or execution strategies without altering the rest of the platform.
+The environment is intentionally narrow in scope. It does not handle authentication, billing, marketplace logic, or scheduling decisions. Instead, it focuses on safe and deterministic execution: enforcing tool access, applying secrets policies, honoring resource constraints, and exposing health and execution status back to the Infra Control Plane. This makes the execution layer interchangeable and extensible, allowing different agent implementations or execution strategies (e.g., Firecracker microVMs, Wasm) without altering the rest of the platform.
 
-By isolating agent execution from control-plane concerns, the platform can safely run untrusted or third-party agents at scale. Multiple users may invoke the same agent concurrently, with each invocation running in its own runtime context. The Agent Runtime is therefore the point of truth for execution behavior, while remaining fully governed by upstream control planes.
+By isolating agent execution from control-plane concerns, the platform can safely run untrusted or third-party agents at scale. Multiple users may invoke the same agent concurrently, with each invocation running in its own fresh context. This is the point of truth for execution behavior, while remaining fully governed by upstream control planes.

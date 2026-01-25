@@ -50,7 +50,6 @@ spec:
         - name: infra-control-plane
           image: infra-control-plane
           imagePullPolicy: IfNotPresent
-          command: ['npm', 'run', 'dev']
           ports:
             - containerPort: 3000
           readinessProbe:

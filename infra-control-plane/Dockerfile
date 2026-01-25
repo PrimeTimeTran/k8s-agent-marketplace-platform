@@ -5,4 +5,4 @@ RUN npm install
 COPY src ./src
 COPY infra ./infra
 EXPOSE 3000
-CMD ["npm", "run", "dev"]
+CMD ["npm", "start"]

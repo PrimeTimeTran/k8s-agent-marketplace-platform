@@ -1,40 +1,94 @@
 apiVersion: skaffold/v4beta6
 kind: Config
 
+metadata:
+  name: marketplace-platform
+
+profiles:
+  # --------------------------------------------------------------------------
+  # DEVELOPMENT (Default for skaffold dev)
+  # --------------------------------------------------------------------------
+  - name: dev
+    activation:
+      - command: dev
+    build:
+      local:
+        push: false
+      artifacts:
+        - image: marketplace
+          context: marketplace
+          docker:
+            dockerfile: Dockerfile.dev
+          sync:
+            infer:
+              - '**/*'
+
+        - image: product-control-plane
+          context: product-control-plane
+          docker:
+            dockerfile: Dockerfile.dev
+          sync:
+            infer:
+              - '**/*'
+
+        - image: infra-control-plane
+          context: infra-control-plane
+          docker:
+            dockerfile: Dockerfile.dev
+          sync:
+            infer:
+              - '**/*'
+
+        - image: agent-base
+          context: execution
+          docker:
+            dockerfile: Dockerfile.base
+            buildArgs:
+              PYTHON_VERSION: '3.12'
+    manifests:
+      rawYaml:
+        - k8s/namespaces.yaml
+        - k8s/marketplace.yaml
+        - k8s/product-control-plane.yaml
+        - k8s/infra-control-plane.yaml
+
+  # --------------------------------------------------------------------------
+  # PRODUCTION (GKE / Staging)
+  # Usage: skaffold run -p production
+  # --------------------------------------------------------------------------
+  - name: production
+    build:
+      artifacts:
+        - image: marketplace
+          context: marketplace
+          docker:
+            dockerfile: Dockerfile
+
+        - image: product-control-plane
+          context: product-control-plane
+          docker:
+            dockerfile: Dockerfile
+
+        - image: infra-control-plane
+          context: infra-control-plane
+          docker:
+            dockerfile: Dockerfile
+
+        - image: agent-base
+          context: execution
+          docker:
+            dockerfile: Dockerfile.base
+            buildArgs:
+              PYTHON_VERSION: '3.12'
+    manifests:
+      rawYaml:
+        - k8s/namespaces.yaml
+        - k8s/marketplace.yaml
+        - k8s/product-control-plane.yaml
+        - k8s/infra-control-plane.yaml
+
+# Fallback / Shared Config
 build:
-  local:
-    push: false
-  artifacts:
-    - image: marketplace
-      context: marketplace
-      docker:
-        dockerfile: Dockerfile.dev
-      sync:
-        infer:
-          - '**/*'
-
-    - image: product-control-plane
-      context: product-control-plane
-      sync:
-        infer:
-          - '**/*'
-
-    - image: infra-control-plane
-      context: infra-control-plane
-      sync:
-        infer:
-          - '**/*'
-
-    - image: agent-base
-      context: execution
-      docker:
-        dockerfile: Dockerfile.base
-        buildArgs:
-          PYTHON_VERSION: '3.11'
-
+  artifacts: []
 manifests:
-  rawYaml:
-    - k8s/namespaces.yaml
-    - k8s/marketplace.yaml
-    - k8s/product-control-plane.yaml
-    - k8s/infra-control-plane.yaml
+  rawYaml: []

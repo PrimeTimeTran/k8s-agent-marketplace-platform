@@ -17,7 +17,6 @@ spec:
         - name: marketplace
           image: marketplace
           imagePullPolicy: IfNotPresent
-          command: ['npm', 'run', 'dev']
           ports:
             - containerPort: 3000
           readinessProbe:

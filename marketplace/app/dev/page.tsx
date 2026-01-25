@@ -1,12 +1,13 @@
 'use client'
-import { useCallback, useEffect, useRef, useState } from 'react'
+
 import { MdHistory, MdRefresh } from 'react-icons/md'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   AGENTS,
   AgentCard,
   Execution,
-  ExecutionDetails,
   ExecutionList,
+  ExecutionDetails,
 } from './components'
 
 export default function Dev() {
@@ -99,7 +100,9 @@ export default function Dev() {
                 agent={agent}
                 onRun={async (executionId) => {
                   const list = await loadExecutions()
-                  const newExec = list.find((x) => x.id === executionId)
+                  const newExec = list.find(
+                    (x: Execution) => x.id === executionId,
+                  )
                   if (newExec) {
                     setSelectedExecution(newExec)
                   }
@@ -133,7 +136,7 @@ export default function Dev() {
               executions={executions}
               selectedId={selectedExecution?.id}
               onSelect={(id) => {
-                const ex = executions.find((x) => x.id === id)
+                const ex = executions.find((x: Execution) => x.id === id)
                 setSelectedExecution(ex ?? null)
               }}
             />
