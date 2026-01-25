@@ -50,7 +50,7 @@ export default function ExecutionDashboard({ initialExecutions }: Props) {
 
   return (
     <div className='min-h-screen bg-background py-12'>
-      <div className='mx-auto max-w-7xl px-6 lg:px-8'>
+      <div className='mx-auto max-w-7xl px-6 lg:px-8 space-y-4'>
         <section className='mx-auto max-w-2xl text-center mb-6'>
           <p className='mt-2 text-lg leading-8 text-on-surface-variant'>
             Discover and deploy AI agents for your workflow.

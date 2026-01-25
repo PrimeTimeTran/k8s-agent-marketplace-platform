@@ -62,6 +62,9 @@ const SEMANTIC_SEEDS = {
   info: '#38bdf8', // Light Blue
 }
 
+const mix = (base: string, overlay: string, percent: number) =>
+  `color-mix(in srgb, ${base} ${100 - percent}%, ${overlay} ${percent}%)`
+
 export function generateTheme(seedHex: string, mode: 'light' | 'dark') {
   // Generate the main theme from the primary seed
   const theme = themeFromSourceColor(argbFromHex(seedHex), [
@@ -95,6 +98,25 @@ export function generateTheme(seedHex: string, mode: 'light' | 'dark') {
   const successGroup = getCustomColor('success')
   const warningGroup = getCustomColor('warning')
   const infoGroup = getCustomColor('info')
+
+  const background = c(scheme.background)
+  const surfaceBase = c(scheme.surface)
+
+  // Web elevation tuning (very subtle)
+  const surface =
+    mode === 'light'
+      ? mix(background, '#000000', 2) // slightly darker than bg
+      : mix(background, '#ffffff', 4) // slightly lighter than bg
+
+  const surface1 =
+    mode === 'light'
+      ? mix(background, '#000000', 4)
+      : mix(background, '#ffffff', 6)
+
+  const surface2 =
+    mode === 'light'
+      ? mix(background, '#000000', 6)
+      : mix(background, '#ffffff', 8)
 
   return {
     '--primary': c(scheme.primary),
@@ -143,10 +165,14 @@ export function generateTheme(seedHex: string, mode: 'light' | 'dark') {
       ? c(infoGroup.onColorContainer)
       : '#0c4a6e',
 
-    '--background': c(scheme.background),
+    '--background': background,
     '--on-background': c(scheme.onBackground),
 
-    '--surface': c(scheme.surface),
+    // ⬇️ Web-corrected surfaces
+    '--surface': surface,
+    '--surface-1': surface1,
+    '--surface-2': surface2,
+
     '--on-surface': c(scheme.onSurface),
     '--surface-variant': c(scheme.surfaceVariant),
     '--on-surface-variant': c(scheme.onSurfaceVariant),

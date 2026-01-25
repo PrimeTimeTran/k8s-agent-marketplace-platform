@@ -21,9 +21,7 @@ export function Navbar() {
     <nav className='w-full border-b border-outline-variant bg-surface transition-colors duration-300'>
       <div className='mx-auto max-w-6xl px-6 h-16 flex items-center justify-between'>
         <Link href='/'>
-          <div className='font-semibold text-on-surface'>
-            AI Agent Marketplace
-          </div>
+          <div className='font-semibold text-on-surface'>AI Marketplace</div>
         </Link>
 
         <div className='flex items-center gap-6'>
