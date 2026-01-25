@@ -1,7 +1,0 @@
-fastapi
-uvicorn
-anthropic
-transformers
-torch
-sentencepiece
-sacremoses

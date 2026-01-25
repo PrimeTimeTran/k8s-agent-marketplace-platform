@@ -18,10 +18,6 @@ async function post(path, body) {
   return JSON.parse(text)
 }
 
-export function queueAgent(payload) {
-  return post('/queue-agent', payload)
-}
-
 export function queueJob(payload) {
   return post('/queue-job', payload)
 }

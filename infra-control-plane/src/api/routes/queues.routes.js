@@ -1,6 +1,5 @@
 import express from 'express'
 import { queueJob } from '../../k8s/jobs/index.js'
-import { scheduleRun } from '../../domain/executions/service.js'
 import { watchJobLogs } from '../../domain/executions/watcher.js'
 import {
   createExecution,
@@ -8,16 +7,6 @@ import {
 } from '../../domain/executions/store.js'
 
 const router = express.Router()
-
-router.post('/queue-agent', async (req, res) => {
-  try {
-    const result = await scheduleRun(req.body)
-    res.json(result)
-  } catch (err) {
-    console.error(err)
-    res.status(500).json({ error: err.message })
-  }
-})
 
 router.post('/queue-job', async (req, res) => {
   try {
