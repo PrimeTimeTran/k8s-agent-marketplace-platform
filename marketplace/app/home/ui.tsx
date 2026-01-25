@@ -214,7 +214,7 @@ export function LogViewer({ logs }: { logs: string }) {
         ref={ref as any}
         tabIndex={tabIndex}
         onKeyDown={onKeyDown}
-        className='flex-1 whitespace-pre overflow-x-auto leading-relaxed outline-none focus:ring-1 focus:ring-primary/50 rounded p-3'
+        className='flex-1 whitespace-pre overflow-x-auto leading-relaxed outline-none focus:ring-1 focus:ring-primary/50 rounded'
       >
         <AnsiToHtml text={logs} />
       </div>
@@ -248,7 +248,7 @@ export function CollapsibleSection({
   }
 
   return (
-    <div className='border rounded-md border-outline-variant bg-surface overflow-hidden mb-4'>
+    <div className='border rounded-md border-outline-variant bg-surface overflow-hidden mb-1'>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className='w-full px-4 py-2 flex items-center justify-between text-xs font-semibold text-on-surface bg-surface-variant hover:bg-surface-variant/80 transition-colors'

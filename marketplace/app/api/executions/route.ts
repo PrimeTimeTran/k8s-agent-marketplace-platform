@@ -1,5 +1,7 @@
+import { env } from '@/config/env'
+
 export async function GET() {
-  const res = await fetch('http://product-control-plane:3000/executions', {
+  const res = await fetch(`${env.PRODUCT_CONTROL_PLANE_URL}/executions`, {
     cache: 'no-store',
   })
 

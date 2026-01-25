@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server'
 
+import { env } from '@/config/env'
+
 export async function POST(req: Request) {
   const body = await req.json()
 
-  const res = await fetch('http://product-control-plane:3000/queue-job', {
+  const res = await fetch(`${env.PRODUCT_CONTROL_PLANE_URL}/queue-job`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),

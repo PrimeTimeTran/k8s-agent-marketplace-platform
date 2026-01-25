@@ -22,7 +22,7 @@ export async function getExecutions(
   params: FetchParams = {},
 ): Promise<PaginatedResult<Execution>> {
   const { page = 1, limit = 10, search, status } = params
-  const url = new URL(`${env.CONTROL_PLANE_URL}/executions`)
+  const url = new URL(`${env.PRODUCT_CONTROL_PLANE_URL}/executions`)
 
   // 1. Map generic params to backend-specific query strings
   url.searchParams.set('page', page.toString())

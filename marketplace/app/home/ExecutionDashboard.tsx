@@ -58,7 +58,7 @@ export default function ExecutionDashboard({ initialExecutions }: Props) {
         </section>
 
         <section className='relative'>
-          <div className='flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 -mx-4 scrollbar-hide'>
+          <div className='flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 -mx-4 scrollbar-hide pt-6'>
             {AGENTS.map((agent) => (
               <AgentCard
                 key={agent.id}
