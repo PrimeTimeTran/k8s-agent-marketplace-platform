@@ -49,18 +49,16 @@
   --info-container: #d1e4ff;
   --on-info-container: #001d36;
 
-  /* Surfaces */
   --background: #fffbfe;
-  --on-background: #1c1b1f;
-
-  --surface: #fffbfe;
-  --on-surface: #1c1b1f;
+  --surface: #ffffff;
   --surface-variant: #e7e0ec;
+
+  --on-background: #1c1b1f;
+  --on-surface: #1c1b1f;
   --on-surface-variant: #49454f;
 
-  /* Outline */
   --outline: #79747e;
-  --outline-variant: #cac4d0;
+  --outline-variant: #e0dbe6;
 
   /* Shape (optional but useful) */
   --radius-sm: 8px;
@@ -109,16 +107,16 @@
   --info-container: #004a77;
   --on-info-container: #d1e4ff;
 
-  --background: #1c1b1f;
-  --on-background: #e6e1e5;
-
+  --background: #121318;
   --surface: #1c1b1f;
-  --on-surface: #e6e1e5;
   --surface-variant: #49454f;
+
+  --on-background: #e6e1e5;
+  --on-surface: #e6e1e5;
   --on-surface-variant: #cac4d0;
 
   --outline: #938f99;
-  --outline-variant: #49454f;
+  --outline-variant: #3a3841;
 }
 
 @theme inline {

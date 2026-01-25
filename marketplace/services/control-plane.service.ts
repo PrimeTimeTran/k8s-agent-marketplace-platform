@@ -67,7 +67,7 @@ export async function getExecutions(
         totalPages: Math.ceil(total / limit),
       },
     }
-    console.log({ response })
+    // console.log({ response })
     return response
   } catch (error) {
     console.error('getExecutions failed:', error)

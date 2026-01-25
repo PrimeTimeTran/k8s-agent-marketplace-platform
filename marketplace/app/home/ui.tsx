@@ -76,7 +76,7 @@ export function JsonHighlighter({
       ref={ref}
       tabIndex={tabIndex}
       onKeyDown={onKeyDown}
-      className={`${className} outline-none focus:ring-1 focus:ring-indigo-500/50 rounded`}
+      className={`${className} outline-none focus:ring-1 focus:ring-primary/50 rounded`}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   )
@@ -115,7 +115,7 @@ export function CodeEditor({
             wrapperRef.current.scrollLeft = e.currentTarget.scrollLeft
           }
         }}
-        className='absolute inset-0 w-full h-full bg-transparent text-transparent caret-zinc-900 dark:caret-zinc-100 p-3 font-mono text-xs resize-none focus:outline-none border-none whitespace-pre overflow-auto'
+        className='absolute inset-0 w-full h-full bg-transparent text-transparent caret-primary p-3 font-mono text-xs resize-none focus:outline-none border-none whitespace-pre overflow-auto'
       />
     </div>
   )
@@ -127,7 +127,7 @@ export function AnsiToHtml({ text }: { text: string }) {
   // Split by escape codes
   const parts = text.split(/(\x1b\[\d+m)/g)
 
-  let currentColor = 'text-zinc-700 dark:text-zinc-300'
+  let currentColor = 'text-on-surface'
   let currentDecor = ''
 
   const spans = []
@@ -140,7 +140,7 @@ export function AnsiToHtml({ text }: { text: string }) {
       const code = part.match(/\d+/)?.[0]
       switch (code) {
         case '0':
-          currentColor = 'text-zinc-700 dark:text-zinc-300'
+          currentColor = 'text-on-surface'
           currentDecor = ''
           break
         case '1':
@@ -191,7 +191,7 @@ export function LogViewer({ logs }: { logs: string }) {
 
   if (!logs)
     return (
-      <p className='text-xs text-zinc-400 italic p-4'>
+      <p className='text-xs text-on-surface-variant italic p-4'>
         No logs available yet...
       </p>
     )
@@ -199,8 +199,8 @@ export function LogViewer({ logs }: { logs: string }) {
   const lineCount = logs.split('\n').length
 
   return (
-    <div className='flex text-xs font-mono bg-white dark:bg-zinc-900 p-4 min-h-full'>
-      <div className='flex-none text-right pr-4 text-zinc-300 dark:text-zinc-600 select-none border-r border-zinc-100 dark:border-zinc-800 mr-4'>
+    <div className='flex text-xs font-mono bg-surface p-4 min-h-full'>
+      <div className='flex-none text-right pr-4 text-on-surface-variant/50 select-none border-r border-outline-variant mr-4'>
         {Array.from({ length: lineCount }).map((_, i) => (
           <div
             key={i}
@@ -214,7 +214,7 @@ export function LogViewer({ logs }: { logs: string }) {
         ref={ref as any}
         tabIndex={tabIndex}
         onKeyDown={onKeyDown}
-        className='flex-1 whitespace-pre overflow-x-auto leading-relaxed outline-none focus:ring-1 focus:ring-indigo-500/50 rounded p-3'
+        className='flex-1 whitespace-pre overflow-x-auto leading-relaxed outline-none focus:ring-1 focus:ring-primary/50 rounded p-3'
       >
         <AnsiToHtml text={logs} />
       </div>
@@ -248,27 +248,27 @@ export function CollapsibleSection({
   }
 
   return (
-    <div className='border rounded-md border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden mb-4'>
+    <div className='border rounded-md border-outline-variant bg-surface overflow-hidden mb-4'>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className='w-full px-4 py-2 flex items-center justify-between text-xs font-semibold text-zinc-900 dark:text-zinc-100 bg-zinc-50 dark:bg-zinc-800/50 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors'
+        className='w-full px-4 py-2 flex items-center justify-between text-xs font-semibold text-on-surface bg-surface-variant hover:bg-surface-variant/80 transition-colors'
       >
         <span className='flex items-center gap-2'>
           {isOpen ? <MdExpandLess size={16} /> : <MdExpandMore size={16} />}
-          {Icon && <Icon className='text-zinc-500 dark:text-zinc-400' />}
+          {Icon && <Icon className='text-on-surface-variant' />}
           {title}
         </span>
         {contentToCopy && (
           <div
             onClick={handleCopy}
-            className='flex items-center gap-1 px-2 py-1 -my-1 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300 rounded hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors'
+            className='flex items-center gap-1 px-2 py-1 -my-1 text-on-surface-variant hover:text-on-surface rounded hover:bg-surface-variant/50 transition-colors'
             title='Copy content'
           >
             {copied ? (
               <>
                 <MdCheck
                   size={14}
-                  className='text-green-500'
+                  className='text-success'
                 />
                 <span className='text-[10px]'>Copied</span>
               </>
@@ -279,9 +279,7 @@ export function CollapsibleSection({
         )}
       </button>
       {isOpen && (
-        <div className='border-t border-zinc-200 dark:border-zinc-800'>
-          {children}
-        </div>
+        <div className='border-t border-outline-variant'>{children}</div>
       )}
     </div>
   )

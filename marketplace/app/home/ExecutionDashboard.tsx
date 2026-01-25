@@ -49,10 +49,10 @@ export default function ExecutionDashboard({ initialExecutions }: Props) {
   }, [refreshExecutions, isRunning])
 
   return (
-    <div className='min-h-screen bg-zinc-50 dark:bg-black py-12'>
+    <div className='min-h-screen bg-background py-12'>
       <div className='mx-auto max-w-7xl px-6 lg:px-8'>
         <section className='mx-auto max-w-2xl text-center mb-6'>
-          <p className='mt-2 text-lg leading-8 text-zinc-600 dark:text-zinc-400'>
+          <p className='mt-2 text-lg leading-8 text-on-surface-variant'>
             Discover and deploy AI agents for your workflow.
           </p>
         </section>
@@ -73,16 +73,16 @@ export default function ExecutionDashboard({ initialExecutions }: Props) {
         </section>
 
         <section className='relative -mx-4'>
-          <div className='bg-white rounded-xl shadow-sm border border-zinc-200 p-6 dark:bg-zinc-900 dark:border-zinc-800'>
+          <div className='bg-surface rounded-xl shadow-sm border border-outline-variant p-6'>
             <div className='flex items-center justify-between mb-4'>
-              <h3 className='flex items-center gap-2 text-lg font-semibold text-zinc-900 dark:text-white'>
+              <h3 className='flex items-center gap-2 text-lg font-semibold text-on-surface'>
                 <MdHistory />
                 Recent Executions ({executions.length})
               </h3>
               <div className='flex items-center gap-2'>
                 <div className='relative'>
                   <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2'>
-                    <MdSearch className='text-zinc-400' />
+                    <MdSearch className='text-on-surface-variant' />
                   </div>
                   <input
                     type='text'
@@ -98,13 +98,13 @@ export default function ExecutionDashboard({ initialExecutions }: Props) {
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') refreshExecutions()
                     }}
-                    className='text-xs rounded border border-zinc-200 bg-white pl-8 pr-2 py-1 dark:bg-zinc-800 dark:border-zinc-700 w-32 focus:ring-1 focus:ring-indigo-500 outline-none'
+                    className='text-xs rounded border border-outline bg-surface-variant pl-8 pr-2 py-1 w-32 focus:ring-1 focus:ring-primary outline-none text-on-surface placeholder:text-on-surface-variant/50'
                   />
                 </div>
                 <button
                   disabled={refreshing}
                   onClick={refreshExecutions}
-                  className='flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300 transition-colors'
+                  className='flex items-center gap-1 text-xs text-on-surface-variant hover:text-primary transition-colors'
                 >
                   <MdRefresh
                     className={refreshing ? 'animate-spin' : ''}

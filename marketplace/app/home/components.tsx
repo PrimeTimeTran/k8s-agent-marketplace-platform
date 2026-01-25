@@ -124,32 +124,30 @@ export function AgentCard({
   }
 
   return (
-    <div className='w-80 h-150 shrink-0 snap-center rounded-xl bg-white p-5 shadow-sm border border-zinc-200 dark:bg-zinc-900 dark:border-zinc-800 flex flex-col'>
+    <div className='w-80 h-150 shrink-0 snap-center rounded-xl bg-surface p-5 shadow-sm border border-outline-variant flex flex-col'>
       <div className='flex items-center gap-3 mb-3'>
-        <div className='p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-black dark:text-white'>
+        <div className='p-2 rounded-lg bg-surface-variant text-on-surface'>
           {agent.icon}
         </div>
         <div>
-          <h3 className='font-semibold text-sm text-zinc-900 dark:text-zinc-100'>
+          <h3 className='font-semibold text-sm text-on-surface'>
             {agent.name}
           </h3>
-          <p className='text-xs text-zinc-500 dark:text-zinc-400'>
-            {agent.type}
-          </p>
+          <p className='text-xs text-on-surface-variant'>{agent.type}</p>
         </div>
       </div>
 
-      <p className='text-xs text-zinc-600 dark:text-zinc-300 mb-4 h-8'>
+      <p className='text-xs text-on-surface-variant mb-4 h-8'>
         {agent.description}
       </p>
 
-      <div className='flex gap-2 mb-4 border-b border-zinc-100 dark:border-zinc-800 min-h-8.25'>
+      <div className='flex gap-2 mb-4 border-b border-outline-variant min-h-8.25'>
         <button
           onClick={() => setActiveTab('config')}
           className={`px-3 py-1.5 text-xs font-medium border-b-2 transition-colors ${
             activeTab === 'config'
-              ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
-              : 'border-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-400'
+              ? 'border-primary text-primary'
+              : 'border-transparent text-on-surface-variant hover:text-on-surface'
           }`}
         >
           Config
@@ -159,8 +157,8 @@ export function AgentCard({
             onClick={() => setActiveTab('result')}
             className={`px-3 py-1.5 text-xs font-medium border-b-2 transition-colors ${
               activeTab === 'result'
-                ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
-                : 'border-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-400'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-on-surface-variant hover:text-on-surface'
             }`}
           >
             Result
@@ -173,7 +171,7 @@ export function AgentCard({
           <>
             {agent.type == 'custom-git-agent' && (
               <div>
-                <label className='text-xs font-medium text-zinc-500 mb-1 block'>
+                <label className='text-xs font-medium text-on-surface-variant mb-1 block'>
                   Repo
                 </label>
                 <input
@@ -181,30 +179,30 @@ export function AgentCard({
                   placeholder={agent.placeholder}
                   value={repo}
                   onChange={(e) => setRepo(e.target.value)}
-                  className='w-full rounded-md border border-zinc-200 px-3 py-1.5 text-xs dark:bg-zinc-800 dark:border-zinc-700'
+                  className='w-full rounded-md border border-outline px-3 py-1.5 text-xs bg-surface text-on-surface placeholder:text-on-surface-variant/50'
                 />
               </div>
             )}
             <div>
-              <label className='text-xs font-medium text-zinc-500 mb-1 block'>
+              <label className='text-xs font-medium text-on-surface-variant mb-1 block'>
                 Configuration (JSON)
               </label>
               <CodeEditor
                 value={configJson}
                 onChange={setConfigJson}
-                className='w-full min-h-75 rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900'
+                className='w-full min-h-75 rounded-md border border-outline bg-surface-variant/20'
               />
             </div>
           </>
         ) : (
-          <div className='relative mt-0 overflow-hidden rounded-md bg-zinc-50 border border-zinc-100 dark:bg-zinc-900 dark:border-zinc-800 group'>
+          <div className='relative mt-0 overflow-hidden rounded-md bg-surface-variant/20 border border-outline-variant group'>
             <div className='absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity'>
               <button
                 onClick={(e) => {
                   e.stopPropagation()
                   navigator.clipboard.writeText(JSON.stringify(result, null, 2))
                 }}
-                className='p-1.5 bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300 rounded border border-zinc-200 dark:border-zinc-700 shadow-sm'
+                className='p-1.5 bg-surface/80 backdrop-blur-sm text-on-surface-variant hover:text-on-surface rounded border border-outline shadow-sm'
                 title='Copy result'
               >
                 <MdContentCopy size={14} />
@@ -215,17 +213,17 @@ export function AgentCard({
         )}
       </div>
 
-      <div className='mt-4 flex gap-2 pt-4 border-t border-zinc-100 dark:border-zinc-800'>
+      <div className='mt-4 flex gap-2 pt-4 border-t border-outline-variant'>
         <Link
           href={`/agent?name=${agent.type}`}
-          className='flex items-center justify-center rounded-md border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors'
+          className='flex items-center justify-center rounded-md border border-outline px-3 py-1.5 text-xs font-medium text-on-surface hover:bg-surface-variant transition-colors'
         >
           View
         </Link>
         <button
           onClick={runJob}
           disabled={loading}
-          className='flex-1 flex items-center justify-center gap-1.5 rounded-md bg-black px-3 py-1.5 text-xs font-medium text-white hover:bg-zinc-800 disabled:opacity-50 dark:bg-white dark:text-black dark:hover:bg-zinc-200 transition-colors'
+          className='flex-1 flex items-center justify-center gap-1.5 rounded-md bg-on-surface px-3 py-1.5 text-xs font-medium text-surface hover:bg-on-surface/90 disabled:opacity-50 transition-colors'
         >
           {loading ? (
             'Running...'
@@ -254,16 +252,19 @@ export function ExecutionList({
 
   return (
     <div className='grid gap-2'>
-      <label className='text-sm font-medium text-zinc-700 dark:text-zinc-300'>
+      <label className='text-sm font-medium text-on-surface'>
         Select Execution
       </label>
       <div className='flex gap-2 mb-2'>
         <select
-          className='flex-1 rounded-md border border-zinc-200 px-3 py-2 text-sm dark:bg-zinc-800 dark:border-zinc-700 dark:text-white font-mono'
+          className='flex-1 rounded-md border border-outline px-3 py-2 text-sm bg-surface text-on-surface font-mono'
           value={selectedId ?? ''}
           onChange={(e) => onSelect(e.target.value)}
         >
-          <option value=''>
+          <option
+            value=''
+            className='bg-surface text-on-surface'
+          >
             {executions.length === 0
               ? 'No executions found'
               : 'Select an execution to view logs'}
@@ -292,12 +293,12 @@ export function ExecutionList({
           <span
             className={`flex items-center rounded-full px-3 text-xs font-semibold border shrink-0 ${
               selectedExecution.status === 'completed'
-                ? 'bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800'
+                ? 'bg-success-container text-on-success-container border-success/20'
                 : selectedExecution.status === 'failed'
-                  ? 'bg-red-100 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800'
+                  ? 'bg-error-container text-on-error-container border-error/20'
                   : selectedExecution.status === 'running'
-                    ? 'bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800 animate-pulse'
-                    : 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800'
+                    ? 'bg-warning-container text-on-warning-container border-warning/20 animate-pulse'
+                    : 'bg-info-container text-on-info-container border-info/20'
             }`}
           >
             {selectedExecution.status.toUpperCase()}
@@ -316,7 +317,7 @@ export function ExecutionDetails({
   if (!execution) return null
 
   return (
-    <div className='rounded-md border border-zinc-200 bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-800'>
+    <div className='rounded-md border border-outline-variant bg-surface-variant/20'>
       <div className='p-4'>
         <CollapsibleSection
           title='Payload'
@@ -341,7 +342,7 @@ export function ExecutionDetails({
           contentToCopy={execution.logs ? stripAnsi(execution.logs) : ''}
         >
           <div className='relative h-1/4 resize-y overflow-hidden min-h-25 flex flex-col'>
-            <div className='flex-1 overflow-y-auto bg-white dark:bg-zinc-900 p-0'>
+            <div className='flex-1 overflow-y-auto bg-surface p-0'>
               <LogViewer logs={execution.logs} />
             </div>
           </div>
