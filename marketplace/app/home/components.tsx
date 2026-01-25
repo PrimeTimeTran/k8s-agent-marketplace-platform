@@ -257,7 +257,7 @@ export function ExecutionList({
       <label className='text-sm font-medium text-zinc-700 dark:text-zinc-300'>
         Select Execution
       </label>
-      <div className='flex gap-2'>
+      <div className='flex gap-2 mb-2'>
         <select
           className='flex-1 rounded-md border border-zinc-200 px-3 py-2 text-sm dark:bg-zinc-800 dark:border-zinc-700 dark:text-white font-mono'
           value={selectedId ?? ''}

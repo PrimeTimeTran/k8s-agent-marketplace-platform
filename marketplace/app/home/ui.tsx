@@ -211,10 +211,10 @@ export function LogViewer({ logs }: { logs: string }) {
         ))}
       </div>
       <div
-        className='flex-1 whitespace-pre overflow-x-auto leading-relaxed outline-none focus:ring-1 focus:ring-indigo-500/50 rounded p-3'
-        ref={ref}
+        ref={ref as any}
         tabIndex={tabIndex}
         onKeyDown={onKeyDown}
+        className='flex-1 whitespace-pre overflow-x-auto leading-relaxed outline-none focus:ring-1 focus:ring-indigo-500/50 rounded p-3'
       >
         <AnsiToHtml text={logs} />
       </div>
