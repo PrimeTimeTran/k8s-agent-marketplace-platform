@@ -8,15 +8,19 @@ import {
   MdContentCopy,
 } from 'react-icons/md'
 
-function useSelectionTrap() {
-  const ref = useRef<HTMLDivElement>(null)
+import { ExecutionStatus } from '@/types/execution'
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+function useSelectionTrap<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null)
+
+  const handleKeyDown = (e: React.KeyboardEvent<T>) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'a') {
       e.preventDefault()
+
       if (ref.current) {
         const selection = window.getSelection()
         const range = document.createRange()
+
         range.selectNodeContents(ref.current)
         selection?.removeAllRanges()
         selection?.addRange(range)
@@ -24,7 +28,11 @@ function useSelectionTrap() {
     }
   }
 
-  return { ref, tabIndex: 0, onKeyDown: handleKeyDown }
+  return {
+    ref,
+    tabIndex: 0,
+    onKeyDown: handleKeyDown,
+  }
 }
 
 export function stripAnsi(text: string) {
@@ -36,28 +44,28 @@ export function JsonHighlighter({
   jsonString,
   className = 'text-xs font-mono overflow-auto p-4',
 }: {
-  data?: any
+  data?: unknown
   jsonString?: string
   className?: string
 }) {
-  const { ref, tabIndex, onKeyDown } = useSelectionTrap()
+  const { ref, tabIndex, onKeyDown } = useSelectionTrap<HTMLPreElement>()
   const json = jsonString ?? JSON.stringify(data, null, 2)
   if (!json) return null
 
   const html = json.replace(
     /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
     (match) => {
-      let cls = 'text-amber-600 dark:text-amber-400' // number
+      let cls = 'text-amber-600 dark:text-amber-400'
       if (/^"/.test(match)) {
         if (/:$/.test(match)) {
-          cls = 'text-blue-600 dark:text-blue-400 font-semibold' // key
+          cls = 'text-blue-600 dark:text-blue-400 font-semibold'
         } else {
-          cls = 'text-emerald-600 dark:text-emerald-400' // string
+          cls = 'text-emerald-600 dark:text-emerald-400'
         }
       } else if (/true|false/.test(match)) {
-        cls = 'text-purple-600 dark:text-purple-400' // boolean
+        cls = 'text-purple-600 dark:text-purple-400'
       } else if (/null/.test(match)) {
-        cls = 'text-zinc-500 dark:text-zinc-500' // null
+        cls = 'text-zinc-500 dark:text-zinc-500'
       }
       return `<span class="${cls}">${match}</span>`
     },
@@ -65,7 +73,7 @@ export function JsonHighlighter({
 
   return (
     <pre
-      ref={ref as any}
+      ref={ref}
       tabIndex={tabIndex}
       onKeyDown={onKeyDown}
       className={`${className} outline-none focus:ring-1 focus:ring-indigo-500/50 rounded`}
@@ -279,12 +287,8 @@ export function CollapsibleSection({
   )
 }
 
-export function getStatusEmoji(status: string) {
-  console.log({
-    status,
-  })
+export function getStatusEmoji(status: ExecutionStatus): string {
   switch (status) {
-    case 'succeeded':
     case 'scheduled':
       return '🔵'
     case 'running':
@@ -293,7 +297,5 @@ export function getStatusEmoji(status: string) {
       return '🟢'
     case 'failed':
       return '🔴'
-    default:
-      return '⚫'
   }
 }

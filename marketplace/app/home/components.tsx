@@ -2,9 +2,8 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { Execution } from './types'
-export type { Execution }
 import { FaRegSmile, FaLanguage, FaGithub } from 'react-icons/fa'
+
 import {
   MdStart,
   MdSettings,
@@ -12,6 +11,8 @@ import {
   MdDataObject,
   MdContentCopy,
 } from 'react-icons/md'
+
+import { Execution, ExecutionResponse } from '@/types/execution'
 
 import {
   LogViewer,
@@ -64,6 +65,9 @@ export function AgentCard({
   agent: (typeof AGENTS)[0]
   onRun?: (executionId: string) => void
 }) {
+  const [loading, setLoading] = useState(false)
+  const [result, setResult] = useState<ExecutionResponse | null>(null)
+  const [activeTab, setActiveTab] = useState<'config' | 'result'>('config')
   const [repo, setRepo] = useState(
     'https://github.com/PrimeTimeTran/agent-job-2',
   )
@@ -82,9 +86,6 @@ export function AgentCard({
       2,
     ),
   )
-  const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState<any>(null)
-  const [activeTab, setActiveTab] = useState<'config' | 'result'>('config')
 
   async function runJob() {
     setLoading(true)
@@ -111,6 +112,7 @@ export function AgentCard({
       })
 
       const data = await res.json()
+      console.log({ data })
       setResult(data)
       setActiveTab('result')
       if (onRun && data.executionId) {
@@ -289,7 +291,6 @@ export function ExecutionList({
         {selectedExecution && (
           <span
             className={`flex items-center rounded-full px-3 text-xs font-semibold border shrink-0 ${
-              selectedExecution.status === 'succeeded' ||
               selectedExecution.status === 'completed'
                 ? 'bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800'
                 : selectedExecution.status === 'failed'

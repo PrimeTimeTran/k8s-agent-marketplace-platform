@@ -1,5 +1,5 @@
-import Dev from './dev/page'
+import Home from './home/page'
 
 export default function App() {
-  return <Dev />
+  return <Home />
 }
