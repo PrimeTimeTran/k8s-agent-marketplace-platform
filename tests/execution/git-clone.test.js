@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const FIXTURES_DIR = path.join(__dirname, '../fixtures/execution')
-const SOURCE_REPO = path.join(FIXTURES_DIR, 'repos/agent-job')
+const SOURCE_REPO = path.join(FIXTURES_DIR, 'repos/hello-job')
 const REPO_DIR = path.join(FIXTURES_DIR, 'temp-git-repo')
 
 // Clean up previous runs
