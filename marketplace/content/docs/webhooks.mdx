@@ -1,0 +1,25 @@
+---
+title: Webhooks
+description: Listen for events on your account.
+---
+
+# Webhooks
+
+Webhooks allow you to be notified automatically when certain events happen on your account.
+
+## Events
+
+You can subscribe to the following events:
+
+- `agent.created`
+- `execution.completed`
+- `execution.failed`
+
+## verifying Signatures
+
+Platform signs the webhook events so you can verify they were sent by us.
+
+```javascript
+const signature = req.headers['x-platform-signature']
+// Verify logic here
+```

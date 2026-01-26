@@ -1,0 +1,20 @@
+---
+title: Authentication
+description: How to authenticate your API requests.
+---
+
+# Authentication
+
+The Platform API uses API keys to authenticate requests. You can view and manage your API keys in the [Dashboard](/profile).
+
+## Using your API Key
+
+Your API key should be included in the `Authorization` header of all requests:
+
+```bash
+Authorization: Bearer pk_live_12345
+```
+
+<Callout type='warning'>
+  Never share your API keys in client-side code or public repositories.
+</Callout>

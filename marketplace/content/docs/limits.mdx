@@ -1,0 +1,22 @@
+---
+title: Rate Limits
+description: API rate limits and quotas.
+---
+
+# Rate Limits
+
+To ensure the stability of the platform, we apply rate limits to API requests.
+
+## Standard Limits
+
+- **Free Tier**: 60 requests / minute
+- **Pro Tier**: 600 requests / minute
+- **Enterprise**: Custom limits
+
+## Headers
+
+Check the following headers to see your current status:
+
+- `X-RateLimit-Limit`
+- `X-RateLimit-Remaining`
+- `X-RateLimit-Reset`

@@ -1,7 +1,9 @@
 'use client'
 
-import { useEffect } from 'react'
 import Link from 'next/link'
+import { cn } from '@/lib/utils'
+import { createPortal } from 'react-dom'
+import { useState, useEffect } from 'react'
 import {
   X,
   Home,
@@ -10,9 +12,10 @@ import {
   FileText,
   Settings,
   HelpCircle,
+  MessageSquarePlus,
 } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { createPortal } from 'react-dom'
+
+import { FeedbackModal } from './feedback-modal'
 
 interface GlobalSidebarProps {
   isOpen: boolean
@@ -20,6 +23,8 @@ interface GlobalSidebarProps {
 }
 
 export function GlobalSidebar({ isOpen, onClose }: GlobalSidebarProps) {
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false)
+
   // Prevent scrolling when sidebar is open
   useEffect(() => {
     if (isOpen) {
@@ -72,51 +77,64 @@ export function GlobalSidebar({ isOpen, onClose }: GlobalSidebarProps) {
         </div>
 
         <div className='flex-1 overflow-y-auto py-6 px-4'>
-          <nav className='space-y-2'>
-            <SidebarLink
-              href='/'
-              icon={Home}
-              label='Home'
-              onClick={onClose}
-            />
-            <SidebarLink
-              href='/design-kit'
-              icon={Layout}
-              label='Design Kit'
-              onClick={onClose}
-            />
+          <nav className='flex flex-col min-h-full'>
+            <div className='space-y-2'>
+              <SidebarLink
+                href='/'
+                icon={Home}
+                label='Home'
+                onClick={onClose}
+              />
+              <SidebarLink
+                href='/design-kit'
+                icon={Layout}
+                label='Design Kit'
+                onClick={onClose}
+              />
 
-            <div className='pt-6 pb-2 px-4 text-xs font-semibold text-on-surface-variant uppercase tracking-wider'>
-              Account
+              <div className='pt-6 pb-2 px-4 text-xs font-semibold text-on-surface-variant uppercase tracking-wider'>
+                Account
+              </div>
+              <SidebarLink
+                href='/profile'
+                icon={User}
+                label='Profile'
+                onClick={onClose}
+              />
+              <SidebarLink
+                href='#'
+                icon={Settings}
+                label='Settings'
+                onClick={onClose}
+              />
             </div>
-            <SidebarLink
-              href='/profile'
-              icon={User}
-              label='Profile'
-              onClick={onClose}
-            />
-            <SidebarLink
-              href='#'
-              icon={Settings}
-              label='Settings'
-              onClick={onClose}
-            />
 
-            <div className='pt-6 pb-2 px-4 text-xs font-semibold text-on-surface-variant uppercase tracking-wider'>
-              Support
+            <div className='mt-auto space-y-2'>
+              <div className='pt-6 pb-2 px-4 text-xs font-semibold text-on-surface-variant uppercase tracking-wider'>
+                Support
+              </div>
+              <SidebarLink
+                href='#'
+                icon={MessageSquarePlus}
+                label='Feedback & Bugs'
+                onClick={() => {
+                  onClose()
+                  setIsFeedbackOpen(true)
+                }}
+              />
+              <SidebarLink
+                href='/docs'
+                icon={FileText}
+                label='Documentation'
+                onClick={onClose}
+              />
+              <SidebarLink
+                href='/help'
+                icon={HelpCircle}
+                label='Help Center'
+                onClick={onClose}
+              />
             </div>
-            <SidebarLink
-              href='#'
-              icon={FileText}
-              label='Documentation'
-              onClick={onClose}
-            />
-            <SidebarLink
-              href='#'
-              icon={HelpCircle}
-              label='Help Center'
-              onClick={onClose}
-            />
           </nav>
         </div>
 
@@ -132,6 +150,10 @@ export function GlobalSidebar({ isOpen, onClose }: GlobalSidebarProps) {
           </div>
         </div>
       </div>
+      <FeedbackModal
+        isOpen={isFeedbackOpen}
+        onClose={() => setIsFeedbackOpen(false)}
+      />
     </>
   )
 
