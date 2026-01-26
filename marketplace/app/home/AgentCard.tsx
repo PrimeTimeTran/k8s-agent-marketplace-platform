@@ -6,6 +6,7 @@ import { MdContentCopy, MdStart } from 'react-icons/md'
 import { FaGithub, FaLanguage, FaRegSmile } from 'react-icons/fa'
 
 import { ExecutionResponse } from '@/types/execution'
+
 import { CodeEditor, JsonHighlighter } from './ui'
 
 export const AGENTS = [

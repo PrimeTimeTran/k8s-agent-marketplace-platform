@@ -13,11 +13,11 @@ import {
   ExecutionDetails,
 } from './components'
 
-type Props = {
+export default function ExecutionDashboard({
+  initialExecutions,
+}: {
   initialExecutions: Execution[]
-}
-
-export default function ExecutionDashboard({ initialExecutions }: Props) {
+}) {
   const [refreshing, setRefreshing] = useState(false)
   const [selectedId, setSelectedId] = useState<string | undefined>(undefined)
   const [executions, setExecutions] = useState<Execution[]>(initialExecutions)
@@ -86,8 +86,12 @@ export default function ExecutionDashboard({ initialExecutions }: Props) {
                   </div>
                   <input
                     type='text'
-                    placeholder='Filter...'
                     value={searchQuery}
+                    placeholder='Filter...'
+                    className='text-xs rounded border border-outline bg-surface-variant pl-8 pr-2 py-1 w-32 focus:ring-1 focus:ring-primary outline-none text-on-surface placeholder:text-on-surface-variant/50'
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') refreshExecutions()
+                    }}
                     onChange={(e) => {
                       setSearchQuery(e.target.value)
                       // Trigger immediate refresh when typing (debouncing would be better in prod)
@@ -95,10 +99,6 @@ export default function ExecutionDashboard({ initialExecutions }: Props) {
                       // Here we just set state, and let the user click refresh or wait for poll?
                       // Better to trigger it.
                     }}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') refreshExecutions()
-                    }}
-                    className='text-xs rounded border border-outline bg-surface-variant pl-8 pr-2 py-1 w-32 focus:ring-1 focus:ring-primary outline-none text-on-surface placeholder:text-on-surface-variant/50'
                   />
                 </div>
                 <button

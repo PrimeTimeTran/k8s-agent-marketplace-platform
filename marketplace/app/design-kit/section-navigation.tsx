@@ -11,6 +11,7 @@ import {
   CreditCard,
   AlertTriangle,
   MousePointer2,
+  LayoutTemplate,
 } from 'lucide-react'
 
 export const SECTIONS = [
@@ -19,6 +20,7 @@ export const SECTIONS = [
   { id: 'buttons', label: 'Buttons', icon: MousePointer2 },
   { id: 'shadows', label: 'Shadows', icon: Layers },
   { id: 'cards', label: 'Cards', icon: CreditCard },
+  { id: 'carousel', label: 'Carousel', icon: LayoutTemplate },
   { id: 'forms', label: 'Forms', icon: FileText },
   { id: 'feedback', label: 'Feedback', icon: Loader2 },
   { id: 'alerts', label: 'Alerts', icon: AlertTriangle },

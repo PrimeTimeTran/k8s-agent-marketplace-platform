@@ -16,6 +16,7 @@ import { TypographySection } from './kits/typography'
 import { ButtonsPillsSection } from './kits/buttons-pills'
 import { ShadowsSection } from './kits/shadows'
 import { CardsSection } from './kits/cards'
+import { CarouselSection } from './kits/carousel'
 import { AlertsSection } from './kits/alerts'
 import { FormsSection } from './kits/forms'
 import { FeedbackSection } from './kits/feedback'
@@ -90,6 +91,9 @@ export default function DesignKitPage() {
       <div id='cards'>
         <CardsSection />
       </div>
+      <div id='carousel'>
+        <CarouselSection />
+      </div>
       <div id='forms'>
         <FormsSection />
       </div>
@@ -101,6 +105,9 @@ export default function DesignKitPage() {
       </div>
       <div id='radius'>
         <BorderRadiusSection />
+      </div>
+      <div id='sections'>
+        <CarouselSection />
       </div>
     </div>
   )
