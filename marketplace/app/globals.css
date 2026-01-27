@@ -7,60 +7,42 @@
    ========================================= */
 
 :root {
-  /* Primary */
   --primary: #6750a4;
   --on-primary: #ffffff;
   --primary-container: #eaddff;
   --on-primary-container: #21005d;
-
-  /* Secondary */
   --secondary: #625b71;
   --on-secondary: #ffffff;
   --secondary-container: #e8def8;
   --on-secondary-container: #1d192b;
-
-  /* Tertiary */
   --tertiary: #7d5260;
   --on-tertiary: #ffffff;
   --tertiary-container: #ffd8e4;
   --on-tertiary-container: #31111d;
-
-  /* Error */
   --error: #b3261e;
   --on-error: #ffffff;
   --error-container: #f9dedc;
   --on-error-container: #410e0b;
-
-  /* Success */
   --success: #386a20;
   --on-success: #ffffff;
   --success-container: #b8f397;
   --on-success-container: #042100;
-
-  /* Warning */
   --warning: #725c0c;
   --on-warning: #ffffff;
   --warning-container: #ffe088;
   --on-warning-container: #241a00;
-
-  /* Info */
   --info: #00639b;
   --on-info: #ffffff;
   --info-container: #d1e4ff;
   --on-info-container: #001d36;
-
   --background: #fffbfe;
   --surface: #ffffff;
   --surface-variant: #e7e0ec;
-
   --on-background: #1c1b1f;
   --on-surface: #1c1b1f;
   --on-surface-variant: #49454f;
-
   --outline: #79747e;
   --outline-variant: #e0dbe6;
-
-  /* Shape (optional but useful) */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
@@ -120,49 +102,41 @@
 }
 
 @theme inline {
-  /* Primary */
   --color-primary: var(--primary);
   --color-on-primary: var(--on-primary);
   --color-primary-container: var(--primary-container);
   --color-on-primary-container: var(--on-primary-container);
 
-  /* Secondary */
   --color-secondary: var(--secondary);
   --color-on-secondary: var(--on-secondary);
   --color-secondary-container: var(--secondary-container);
   --color-on-secondary-container: var(--on-secondary-container);
 
-  /* Tertiary */
   --color-tertiary: var(--tertiary);
   --color-on-tertiary: var(--on-tertiary);
   --color-tertiary-container: var(--tertiary-container);
   --color-on-tertiary-container: var(--on-tertiary-container);
 
-  /* Error */
   --color-error: var(--error);
   --color-on-error: var(--on-error);
   --color-error-container: var(--error-container);
   --color-on-error-container: var(--on-error-container);
 
-  /* Success */
   --color-success: var(--success);
   --color-on-success: var(--on-success);
   --color-success-container: var(--success-container);
   --color-on-success-container: var(--on-success-container);
 
-  /* Warning */
   --color-warning: var(--warning);
   --color-on-warning: var(--on-warning);
   --color-warning-container: var(--warning-container);
   --color-on-warning-container: var(--on-warning-container);
 
-  /* Info */
   --color-info: var(--info);
   --color-on-info: var(--on-info);
   --color-info-container: var(--info-container);
   --color-on-info-container: var(--on-info-container);
 
-  /* Surfaces */
   --color-background: var(--background);
   --color-on-background: var(--on-background);
   --color-surface: var(--surface);
@@ -170,11 +144,9 @@
   --color-surface-variant: var(--surface-variant);
   --color-on-surface-variant: var(--on-surface-variant);
 
-  /* Outline */
   --color-outline: var(--outline);
   --color-outline-variant: var(--outline-variant);
 
-  /* Radius */
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);

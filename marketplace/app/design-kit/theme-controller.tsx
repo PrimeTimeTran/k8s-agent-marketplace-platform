@@ -1,10 +1,12 @@
 'use client'
 
 import { useTheme } from 'next-themes'
-import { Moon, Sun } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { Moon, Sun, Download } from 'lucide-react'
+
 import { Button } from '@/components/ui'
 import { PALETTES } from '@/utils/color'
+import { ThemeExporter } from './theme-exporter'
 import { getAltKeyLabel } from '@/utils/platform'
 
 export function ThemeController({
@@ -17,6 +19,7 @@ export function ThemeController({
   const { setTheme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const [altLabel, setAltLabel] = useState('Alt')
+  const [isExporterOpen, setIsExporterOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -92,6 +95,26 @@ export function ThemeController({
           </button>
         ))}
       </div>
+
+      {currentSeed && (
+        <>
+          <div className='w-full h-px bg-outline-variant/50' />
+          <Button
+            size='sm'
+            variant='ghost'
+            onClick={() => setIsExporterOpen(true)}
+            className='w-full justify-center text-xs text-on-surface-variant hover:text-primary'
+          >
+            <Download className='w-4 h-4' />
+          </Button>
+        </>
+      )}
+
+      <ThemeExporter
+        isOpen={isExporterOpen}
+        onClose={() => setIsExporterOpen(false)}
+        currentSeed={currentSeed || PALETTES[0].color}
+      />
     </div>
   )
 }
