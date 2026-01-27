@@ -1,6 +1,5 @@
 import { ColorCard } from './color-card'
 import { AnimatedGradientSection } from '@/components/ui'
-import { PALETTES } from '@/utils/color'
 
 export function ColorPaletteSection() {
   return (

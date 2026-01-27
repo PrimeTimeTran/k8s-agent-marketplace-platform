@@ -65,6 +65,7 @@ export function AgentCard({
           API_KEY: '123-abc',
           CUSTOM_VAR: 'Hello from UI',
           ENABLE_LOG_TIMESTAMPS: true,
+          THROW_ERROR: 'N/A',
         },
         args: ['--verbose', '--dry-run'],
       },
@@ -109,7 +110,7 @@ export function AgentCard({
   }
 
   return (
-    <div className='w-80 h-150 shrink-0 snap-center rounded-xl bg-surface p-5 shadow-sm border border-outline-variant flex flex-col shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer'>
+    <div className='w-80 h-150 shrink-0 snap-center rounded-xl bg-surface p-5 border border-outline-variant flex flex-col shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer'>
       <div className='flex items-center gap-3 mb-3'>
         <div className='p-2 rounded-lg bg-surface-variant text-on-surface'>
           {agent.icon}

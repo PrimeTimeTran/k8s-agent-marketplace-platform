@@ -51,6 +51,71 @@ profiles:
         - k8s/marketplace.yaml
         - k8s/product-control-plane.yaml
         - k8s/infra-control-plane.yaml
+        # - k8s/ingress.yaml
+    portForward:
+      - resourceType: service
+        resourceName: marketplace
+        namespace: agent-platform
+        port: 3000
+        localPort: 3000
+      - resourceType: service
+        resourceName: product-control-plane
+        namespace: agent-platform
+        port: 3000
+        localPort: 3001
+      - resourceType: service
+        resourceName: infra-control-plane
+        namespace: agent-platform
+        port: 3000
+        localPort: 3002
+
+  # --------------------------------------------------------------------------
+  # BACKEND ONLY (For local Next.js dev)
+  # Usage: skaffold dev -p backend
+  # --------------------------------------------------------------------------
+  - name: backend
+    build:
+      local:
+        push: false
+      artifacts:
+        - image: product-control-plane
+          context: product-control-plane
+          docker:
+            dockerfile: Dockerfile.dev
+          sync:
+            infer:
+              - '**/*'
+
+        - image: infra-control-plane
+          context: infra-control-plane
+          docker:
+            dockerfile: Dockerfile.dev
+          sync:
+            infer:
+              - '**/*'
+
+        - image: agent-base
+          context: execution
+          docker:
+            dockerfile: Dockerfile.base
+            buildArgs:
+              PYTHON_VERSION: '3.12'
+    manifests:
+      rawYaml:
+        - k8s/namespaces.yaml
+        - k8s/product-control-plane.yaml
+        - k8s/infra-control-plane.yaml
+    portForward:
+      - resourceType: service
+        resourceName: product-control-plane
+        namespace: agent-platform
+        port: 3000
+        localPort: 3001
+      - resourceType: service
+        resourceName: infra-control-plane
+        namespace: agent-platform
+        port: 3000
+        localPort: 3002
 
   # --------------------------------------------------------------------------
   # PRODUCTION (GKE / Staging)
@@ -58,6 +123,7 @@ profiles:
   # --------------------------------------------------------------------------
   - name: production
     build:
+      platforms: ['linux/amd64']
       artifacts:
         - image: marketplace
           context: marketplace
@@ -86,6 +152,7 @@ profiles:
         - k8s/marketplace.yaml
         - k8s/product-control-plane.yaml
         - k8s/infra-control-plane.yaml
+        - k8s/ingress.yaml
 
 # Fallback / Shared Config
 build:

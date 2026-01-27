@@ -22,7 +22,7 @@
  * - Client Components then take over for updates/interactivity.
  */
 
-import ExecutionDashboard from './ExecutionDashboard'
+import ExecutionDashboard from './execution-dashboard'
 import { getExecutions } from '@/services/control-plane.service'
 
 export default async function Home() {

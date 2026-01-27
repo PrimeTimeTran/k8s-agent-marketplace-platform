@@ -58,7 +58,7 @@ export default function HelpPage() {
           <div className='relative max-w-2xl mx-auto'>
             <Search className='absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-on-surface-variant' />
             <Input
-              className='h-14 pl-12 text-lg bg-surface shadow-lg border-transparent focus:border-primary rounded-full'
+              className='h-14 pl-12 text-lg bg-surface shadow-2xl border focus:border-primary rounded-full'
               placeholder='Search for answers...'
             />
           </div>

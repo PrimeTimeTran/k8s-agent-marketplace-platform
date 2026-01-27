@@ -13,6 +13,7 @@ import {
   Settings,
   HelpCircle,
   MessageSquarePlus,
+  Rocket,
 } from 'lucide-react'
 
 import { FeedbackModal } from './feedback-modal'
@@ -83,6 +84,12 @@ export function GlobalSidebar({ isOpen, onClose }: GlobalSidebarProps) {
                 href='/'
                 icon={Home}
                 label='Home'
+                onClick={onClose}
+              />
+              <SidebarLink
+                href='/home'
+                icon={Rocket}
+                label='Dashboard'
                 onClick={onClose}
               />
               <SidebarLink

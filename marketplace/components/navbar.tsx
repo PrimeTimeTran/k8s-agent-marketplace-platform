@@ -31,7 +31,7 @@ export function Navbar() {
             >
               <Menu className='w-6 h-6' />
             </button>
-            <Link href='/'>
+            <Link href='/home'>
               <div className='font-semibold text-on-surface'>
                 AI Marketplace
               </div>

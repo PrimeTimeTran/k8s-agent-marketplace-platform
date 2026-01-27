@@ -1,3 +1,3 @@
-export * from './AgentCard'
-export * from './ExecutionList'
-export * from './ExecutionDetails'
+export * from './agent-card'
+export * from './execution-list'
+export * from './execution-details'

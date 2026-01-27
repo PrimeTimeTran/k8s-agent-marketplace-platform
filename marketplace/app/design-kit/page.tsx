@@ -6,20 +6,20 @@ import { useState, useEffect } from 'react'
 import { Typewriter, ShadowParticles, CursorFlock } from '@/components/ui'
 
 import { PALETTES } from '@/utils/color'
-import { useDesignSystem } from '@/providers/design-system'
 import { ThemeController } from './theme-controller'
 import { SectionNavigation } from './section-navigation'
+import { useDesignSystem } from '@/providers/design-system'
 
+import { FormsSection } from './kits/forms'
+import { CardsSection } from './kits/cards'
+import { AlertsSection } from './kits/alerts'
+import { ShadowsSection } from './kits/shadows'
+import { CarouselSection } from './kits/carousel'
+import { FeedbackSection } from './kits/feedback'
+import { TypographySection } from './kits/typography'
 import { ColorPaletteSection } from './kits/color-palette'
 import { BorderRadiusSection } from './kits/border-radius'
-import { TypographySection } from './kits/typography'
 import { ButtonsPillsSection } from './kits/buttons-pills'
-import { ShadowsSection } from './kits/shadows'
-import { CardsSection } from './kits/cards'
-import { CarouselSection } from './kits/carousel'
-import { AlertsSection } from './kits/alerts'
-import { FormsSection } from './kits/forms'
-import { FeedbackSection } from './kits/feedback'
 
 export default function DesignKitPage() {
   const { resolvedTheme } = useTheme()
@@ -105,9 +105,6 @@ export default function DesignKitPage() {
       </div>
       <div id='radius'>
         <BorderRadiusSection />
-      </div>
-      <div id='sections'>
-        <CarouselSection />
       </div>
     </div>
   )

@@ -8,7 +8,7 @@ export function FormsSection() {
           Forms & Inputs
         </h2>
 
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-12'>
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-12'>
           <div className='space-y-8'>
             <div className='space-y-4'>
               <h3 className='text-sm font-medium uppercase tracking-wider text-on-surface-variant'>
