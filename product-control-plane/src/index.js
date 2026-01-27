@@ -11,8 +11,11 @@ app.use(queueRouter)
 app.use(systemRouter)
 app.use(executionRouter)
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3001
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Product Control Plane listening on ${PORT}`)
+  console.log({
+    ts: new Date().toISOString(),
+    msg: `Infra control plane listening on :${PORT}`,
+  })
 })

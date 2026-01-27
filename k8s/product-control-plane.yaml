@@ -17,11 +17,11 @@ spec:
         - name: product-control-plane
           image: product-control-plane
           ports:
-            - containerPort: 3000
+            - containerPort: 3001
           readinessProbe:
             httpGet:
               path: /health
-              port: 3000
+              port: 3001
             initialDelaySeconds: 5
             periodSeconds: 5
 ---
@@ -35,3 +35,4 @@ spec:
     app: product-control-plane
   ports:
     - port: 3000
+      targetPort: 3001

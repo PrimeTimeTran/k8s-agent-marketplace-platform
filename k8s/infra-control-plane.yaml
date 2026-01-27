@@ -51,11 +51,11 @@ spec:
           image: infra-control-plane
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 3000
+            - containerPort: 3002
           readinessProbe:
             httpGet:
               path: /health
-              port: 3000
+              port: 3002
             initialDelaySeconds: 5
             periodSeconds: 5
 ---
@@ -69,3 +69,4 @@ spec:
     app: infra-control-plane
   ports:
     - port: 3000
+      targetPort: 3002
