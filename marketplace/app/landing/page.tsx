@@ -4,11 +4,21 @@ import Link from 'next/link'
 import { Zap, Code, Check, Shield, Activity, ArrowRight } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
+import { CodeWindow } from '@/components/code-window'
+
+const code = `import { Agent } from '@platform/sdk'
+
+const agent = new Agent({
+  name: 'support-bot',
+  model: 'gpt-4',
+  tools: [search, database],
+})
+
+export default agent`
 
 export default function LandingPage() {
   return (
     <div className='flex flex-col min-h-screen bg-background'>
-      {/* Hero Section */}
       <section className='relative pt-20 pb-32 overflow-hidden'>
         <div className='container mx-auto px-6 relative z-10'>
           <div className='flex flex-col items-center text-center max-w-4xl mx-auto space-y-8'>
@@ -46,14 +56,12 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Background Gradients */}
         <div className='absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 opacity-30 pointer-events-none'>
           <div className='absolute top-20 left-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl' />
           <div className='absolute bottom-20 right-20 w-96 h-96 bg-secondary/20 rounded-full blur-3xl' />
         </div>
       </section>
 
-      {/* Features Grid */}
       <section className='py-24 bg-surface-variant/5 border-y border-outline-variant/50'>
         <div className='container mx-auto px-6'>
           <div className='text-center mb-16 max-w-2xl mx-auto'>
@@ -103,7 +111,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Split Content - Developer Experience */}
       <section className='py-24 bg-background overflow-hidden'>
         <div className='container mx-auto px-6'>
           <div className='flex flex-col md:flex-row gap-16 items-center'>
@@ -142,52 +149,15 @@ export default function LandingPage() {
             </div>
             <div className='flex-1 w-full relative'>
               <div className='absolute -inset-4 bg-linear-to-r from-primary/20 to-secondary/20 rounded-3xl blur-2xl opacity-50' />
-              <div className='relative bg-[#1e1e1e] rounded-xl border border-white/10 shadow-2xl overflow-hidden'>
-                <div className='flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-white/5'>
-                  <div className='flex gap-1.5'>
-                    <div className='w-3 h-3 rounded-full bg-[#ff5f56]' />
-                    <div className='w-3 h-3 rounded-full bg-[#ffbd2e]' />
-                    <div className='w-3 h-3 rounded-full bg-[#27c93f]' />
-                  </div>
-                  <div className='text-xs text-white/40 font-mono ml-2'>
-                    agent.ts
-                  </div>
-                </div>
-                <div className='p-6 overflow-x-auto'>
-                  <pre className='font-mono text-sm leading-relaxed text-gray-300'>
-                    <code>
-                      <span className='text-[#c586c0]'>import</span>{' '}
-                      {'{ Agent }'} <span className='text-[#c586c0]'>from</span>{' '}
-                      <span className='text-[#ce9178]'>
-                        &apos;@platform/sdk&apos;
-                      </span>
-                      {'\n\n'}
-                      <span className='text-[#569cd6]'>const</span> agent ={' '}
-                      <span className='text-[#569cd6]'>new</span> Agent({'{'}
-                      {'\n'}
-                      {'  '}name:{' '}
-                      <span className='text-[#ce9178]'>
-                        &apos;support-bot&apos;
-                      </span>
-                      ,{'\n'}
-                      {'  '}model:{' '}
-                      <span className='text-[#ce9178]'>&apos;gpt-4&apos;</span>,
-                      {'\n'}
-                      {'  '}tools: [search, database],
-                      {'\n'}
-                      {'}'}){'\n\n'}
-                      <span className='text-[#569cd6]'>export</span>{' '}
-                      <span className='text-[#c586c0]'>default</span> agent
-                    </code>
-                  </pre>
-                </div>
-              </div>
+              <CodeWindow
+                filename='agent.ts'
+                code={code}
+              />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
       <section className='py-24 bg-primary text-on-primary relative overflow-hidden'>
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 brightness-100 contrast-150"></div>
         <div className='container mx-auto px-6 relative z-10'>
@@ -214,7 +184,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className='py-32 bg-background'>
         <div className='container mx-auto px-6'>
           <div className='bg-surface-variant/10 rounded-3xl border border-outline-variant p-12 md:p-24 text-center relative overflow-hidden'>
@@ -247,10 +216,9 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Decorative background elements */}
-            <div className='absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none'>
+            <div className='absolute overflow-hidden pointer-events-none'>
               <div className='absolute -top-[50%] -left-[10%] w-[50%] h-full bg-primary/5 blur-3xl rounded-full' />
-              <div className='absolute -bottom-[50%] -right-[10%] w-[50%] h-full bg-secondary/5 blur-3xl rounded-full' />
+              <div className='absolute -bottom-[50%] -right-[10%] rounded-full' />
             </div>
           </div>
         </div>

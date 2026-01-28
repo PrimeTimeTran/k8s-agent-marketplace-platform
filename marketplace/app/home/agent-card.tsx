@@ -62,10 +62,11 @@ export function AgentCard({
       {
         pythonVersion: '3.12',
         env: {
-          API_KEY: '123-abc',
+          THROW_ERROR: true,
+          API_KEY: 'abc-123',
+          GOOGLE_API_KEY: '',
           CUSTOM_VAR: 'Hello from UI',
           ENABLE_LOG_TIMESTAMPS: true,
-          THROW_ERROR: 'N/A',
         },
         args: ['--verbose', '--dry-run'],
       },
