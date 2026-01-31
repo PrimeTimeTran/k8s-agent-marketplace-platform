@@ -7,8 +7,8 @@ import { useEffect, useState } from 'react'
 import { GlobalSidebar } from './global-sidebar'
 
 export function Navbar() {
-  const { setTheme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const { setTheme, resolvedTheme } = useTheme()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   useEffect(() => {

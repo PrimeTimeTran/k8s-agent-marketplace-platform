@@ -1,19 +1,19 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
+import { useState, useEffect } from 'react'
 import {
   X,
-  Upload,
-  Image as ImageIcon,
-  Loader2,
-  MessageSquare,
-  Paperclip,
   Send,
   Trash2,
+  Upload,
+  Loader2,
+  Paperclip,
+  MessageSquare,
+  Image as ImageIcon,
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 
 interface FeedbackModalProps {
   isOpen: boolean

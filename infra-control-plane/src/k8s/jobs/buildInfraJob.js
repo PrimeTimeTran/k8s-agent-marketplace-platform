@@ -1,3 +1,5 @@
+import { K8S_NAMESPACE } from '../../constants.js'
+
 export function buildInfraJob({ executionId, image }) {
   const jobName = `infra-${executionId}`
 
@@ -6,7 +8,7 @@ export function buildInfraJob({ executionId, image }) {
     kind: 'Job',
     metadata: {
       name: jobName,
-      namespace: 'agent-platform',
+      namespace: K8S_NAMESPACE,
       labels: { executionId },
     },
     spec: {

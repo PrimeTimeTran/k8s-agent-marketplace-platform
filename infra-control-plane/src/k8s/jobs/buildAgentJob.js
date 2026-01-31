@@ -1,3 +1,5 @@
+import { K8S_NAMESPACE } from '../../constants.js'
+
 const DEFAULT_PYTHON_VERSION = '3.11'
 const PYTHON_IMAGE_MAP = {
   3.11: 'agent-base:3.11',
@@ -62,7 +64,7 @@ export function buildAgentJob({
       kind: 'Job',
       metadata: {
         name: jobName,
-        namespace: 'agent-platform',
+        namespace: K8S_NAMESPACE,
         labels: { executionId },
       },
       spec: {

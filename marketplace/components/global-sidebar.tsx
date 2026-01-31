@@ -8,12 +8,12 @@ import {
   X,
   Home,
   User,
+  Rocket,
   Layout,
   FileText,
   Settings,
   HelpCircle,
   MessageSquarePlus,
-  Rocket,
 } from 'lucide-react'
 
 import { FeedbackModal } from './feedback-modal'
@@ -169,12 +169,12 @@ export function GlobalSidebar({ isOpen, onClose }: GlobalSidebarProps) {
 
 function SidebarLink({
   href,
-  icon: Icon,
   label,
   onClick,
+  icon: Icon,
 }: {
-  href: string
   icon: any
+  href: string
   label: string
   onClick: () => void
 }) {
