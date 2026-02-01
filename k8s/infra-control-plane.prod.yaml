@@ -49,7 +49,7 @@ spec:
       containers:
         - name: infra-control-plane
           image: infra-control-plane
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 3002
           readinessProbe:
@@ -60,10 +60,9 @@ spec:
             periodSeconds: 5
           env:
             - name: CONTAINER_REGISTRY
-              # Prod
-              # value: 'us-central1-docker.pkg.dev/system-design-123/platform-repo'
-              # Localhost
-              value: ''
+              value: 'us-central1-docker.pkg.dev/system-design-123/platform-repo'
+            - name: JOB_IMAGE_PULL_POLICY
+              value: 'Always'
 ---
 apiVersion: v1
 kind: Service

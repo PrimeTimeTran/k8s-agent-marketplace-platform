@@ -1,9 +1,16 @@
 import { K8S_NAMESPACE } from '../../constants.js'
 
 const DEFAULT_PYTHON_VERSION = '3.11'
+
+// Get the registry from env, or default to empty (for local dev if needed)
+// Env var should be set in k8s deployment
+const REGISTRY = process.env.CONTAINER_REGISTRY || ''
+const REPO_PREFIX = REGISTRY ? `${REGISTRY}/` : ''
+const PULL_POLICY = process.env.JOB_IMAGE_PULL_POLICY || 'IfNotPresent'
+
 const PYTHON_IMAGE_MAP = {
-  3.11: 'agent-base:3.11',
-  3.12: 'agent-base:3.12',
+  3.11: `${REPO_PREFIX}agent-base-3-11`, // mapped to 'agent-base-3-11' artifact in skaffold
+  3.12: `${REPO_PREFIX}agent-base-3-12`, // mapped to 'agent-base-3-12' artifact in skaffold
 }
 
 function normalizePythonVersion(version) {
@@ -78,6 +85,7 @@ export function buildAgentJob({
               {
                 name: 'install-platform',
                 image: jobImage,
+                imagePullPolicy: PULL_POLICY,
                 command: [
                   'sh',
                   '-c',
@@ -92,6 +100,7 @@ export function buildAgentJob({
               {
                 name: 'agent',
                 image: jobImage,
+                imagePullPolicy: PULL_POLICY,
                 command: ['python', '/platform/runner.py', 'main.py', ...args],
                 env,
                 volumeMounts: [

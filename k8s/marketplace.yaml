@@ -5,6 +5,8 @@ metadata:
   namespace: agent-platform
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: marketplace
@@ -19,6 +21,10 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
+              # Note:
+              # Uncomment for prod deployment
+              # Breaks localhost dev(skaffold dev)
+              # hostPort: 80
           readinessProbe:
             httpGet:
               path: /
@@ -47,8 +53,10 @@ metadata:
   name: marketplace
   namespace: agent-platform
 spec:
+  type: NodePort
   selector:
     app: marketplace
   ports:
     - port: 3000
       targetPort: 3000
+      nodePort: 30000

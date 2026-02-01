@@ -4,6 +4,12 @@ kind: Config
 metadata:
   name: marketplace-platform
 
+build:
+  tagPolicy:
+    sha256: {}
+    # Also tag with 'latest' so our hardcoded code finds it
+  artifacts: []
+
 profiles:
   # --------------------------------------------------------------------------
   # DEVELOPMENT (Default for skaffold dev)
@@ -12,6 +18,9 @@ profiles:
     activation:
       - command: dev
     build:
+      tagPolicy:
+        envTemplate:
+          template: '{{.IMAGE_NAME}}:latest'
       local:
         push: false
       artifacts:
@@ -125,11 +134,56 @@ profiles:
         - k8s/marketplace.yaml
         - k8s/product-control-plane.yaml
         - k8s/infra-control-plane.yaml
-        - k8s/ingress.yaml
+        # - k8s/ingress.yaml
+
+  # --------------------------------------------------------------------------
+  # GKE POC (Free/Cheap Tier)
+  # Usage: kubectl config use-context gke_system-design-123_us-central1-a_platform-cluster
+  # Usage: skaffold run -p gke-poc
+  # --------------------------------------------------------------------------
+  - name: gke-poc
+    build:
+      tagPolicy:
+        envTemplate:
+          template: '{{.IMAGE_NAME}}:latest'
+      platforms: ['linux/amd64']
+      artifacts:
+        - image: marketplace
+          context: marketplace
+          docker:
+            dockerfile: Dockerfile
+
+        - image: product-control-plane
+          context: product-control-plane
+          docker:
+            dockerfile: Dockerfile
+
+        - image: infra-control-plane
+          context: infra-control-plane
+          docker:
+            dockerfile: Dockerfile
+
+        - image: agent-base-3-12
+          context: execution
+          docker:
+            dockerfile: Dockerfile.base
+            buildArgs:
+              PYTHON_VERSION: '3.12'
+
+        - image: agent-base-3-11
+          context: execution
+          docker:
+            dockerfile: Dockerfile.base
+            buildArgs:
+              PYTHON_VERSION: '3.11'
+    manifests:
+      rawYaml:
+        - k8s/namespaces.yaml
+        - k8s/marketplace.yaml
+        - k8s/product-control-plane.yaml
+        - k8s/infra-control-plane.prod.yaml
 
 # Fallback / Shared Config
-build:
-  artifacts: []
 manifests:
   rawYaml: []
 

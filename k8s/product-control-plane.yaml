@@ -16,6 +16,7 @@ spec:
       containers:
         - name: product-control-plane
           image: product-control-plane
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3001
           readinessProbe:

@@ -17,7 +17,7 @@ describe('queueJob', () => {
 
     assert.equal(
       capturedJob.spec.template.spec.containers[0].image,
-      'agent-base:3.11',
+      'agent-base-3-11',
     )
   })
 
@@ -39,7 +39,7 @@ describe('queueJob', () => {
 
     assert.equal(
       capturedJob.spec.template.spec.containers[0].image,
-      'agent-base:3.11',
+      'agent-base-3-11',
     )
   })
 

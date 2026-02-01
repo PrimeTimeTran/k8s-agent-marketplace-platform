@@ -10,7 +10,7 @@ describe('buildAgentJob Python Version Selection', () => {
       prompt: 'hello',
     })
 
-    assert.strictEqual(jobImage, 'agent-base:3.11')
+    assert.strictEqual(jobImage, 'agent-base-3-11')
 
     const versionEnv = env.find((e) => e.name === 'PYTHON_VERSION_RESOLVED')
     assert.strictEqual(versionEnv.value, '3.11')
@@ -24,7 +24,7 @@ describe('buildAgentJob Python Version Selection', () => {
       pythonVersion: '3.12',
     })
 
-    assert.strictEqual(jobImage, 'agent-base:3.12')
+    assert.strictEqual(jobImage, 'agent-base-3-12')
 
     const requestedEnv = env.find((e) => e.name === 'PYTHON_VERSION_REQUESTED')
     assert.strictEqual(requestedEnv.value, '3.12')
@@ -41,7 +41,7 @@ describe('buildAgentJob Python Version Selection', () => {
       pythonVersion: '3.12.1',
     })
 
-    assert.strictEqual(jobImage, 'agent-base:3.12')
+    assert.strictEqual(jobImage, 'agent-base-3-12')
 
     const resolvedEnv = env.find((e) => e.name === 'PYTHON_VERSION_RESOLVED')
     assert.strictEqual(resolvedEnv.value, '3.12')
@@ -55,7 +55,7 @@ describe('buildAgentJob Python Version Selection', () => {
       pythonVersion: '3.12.19',
     })
 
-    assert.strictEqual(jobImage, 'agent-base:3.12')
+    assert.strictEqual(jobImage, 'agent-base-3-12')
   })
 
   it('falls back to default if version is unknown/unsupported by map (but normalization happens)', () => {
@@ -71,7 +71,7 @@ describe('buildAgentJob Python Version Selection', () => {
     })
 
     // 3.13 is not in map, so it falls back to DEFAULT (3.11 image)
-    assert.strictEqual(jobImage, 'agent-base:3.11')
+    assert.strictEqual(jobImage, 'agent-base-3-11')
 
     // But resolved version in env might be the normalized one?
     // Let's check the code:
