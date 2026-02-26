@@ -1,5 +1,7 @@
 **/venv
 */node_modules/
+**/__pycache__/
+**/n8n-workflows/
 marketplace/.next/
 agents
 notes

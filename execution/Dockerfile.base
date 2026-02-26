@@ -1,0 +1,25 @@
+ARG PYTHON_VERSION=3.12
+FROM python:${PYTHON_VERSION}-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    curl \
+    procps \
+    iproute2 \
+    dnsutils \
+    busybox \
+    ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY common /app/common
+COPY runner.py /app/runner.py
+COPY main.py /app/main.py
+
+ENV PYTHONPATH=/app
+
+CMD ["python", "runner.py"]
