@@ -38,7 +38,7 @@ export function Navbar() {
             </Link>
           </div>
 
-          <div className='flex items-center gap-6'>
+          {/* <div className='flex items-center gap-6'>
             <a
               href='/design-kit'
               className='text-sm font-medium text-on-surface-variant hover:text-on-surface'
@@ -56,7 +56,7 @@ export function Navbar() {
                 <Moon className='absolute top-2 left-2 h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-primary' />
               </button>
             )}
-          </div>
+          </div> */}
         </div>
       </nav>
 

@@ -63,7 +63,7 @@ export function GlobalSidebar({ isOpen, onClose }: GlobalSidebarProps) {
       {/* Sidebar Panel */}
       <div
         className={cn(
-          'fixed top-0 left-0 h-full w-[280px] bg-surface border-r border-outline-variant z-50 shadow-2xl transition-transform duration-300 ease-out flex flex-col',
+          'fixed top-0 left-0 h-full w-70 bg-surface border-r border-outline-variant z-50 shadow-2xl transition-transform duration-300 ease-out flex flex-col',
           isOpen ? 'translate-x-0' : '-translate-x-full',
         )}
       >
@@ -109,7 +109,7 @@ export function GlobalSidebar({ isOpen, onClose }: GlobalSidebarProps) {
                 onClick={onClose}
               />
               <SidebarLink
-                href='#'
+                href='/settings'
                 icon={Settings}
                 label='Settings'
                 onClick={onClose}

@@ -1,0 +1,21 @@
+{
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/next-env.d.ts": true,
+    "**/eslint.config.mjs": true,
+    "**/postcss.config.mjs": true,
+    "**/venv": true,
+    "**/__pycache__": true,
+    "**/__init__.py": true,
+
+    ".gitignore": true,
+    "**/Dockerfile": true,
+    "**/Dockerfile.dev": true,
+    "**/Dockerfile.base": true,
+    "**/package.json": true,
+    "**/package-lock.json": true,
+  }
+}
