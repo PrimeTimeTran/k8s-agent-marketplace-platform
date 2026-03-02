@@ -1,6 +1,12 @@
 import { K8S_NAMESPACE } from '../../constants.js'
 
-export function buildInfraJob({ executionId, image }) {
+export function buildInfraJob({
+  executionId,
+  image,
+}: {
+  executionId: string
+  image: string
+}) {
   const jobName = `infra-${executionId}`
 
   return {

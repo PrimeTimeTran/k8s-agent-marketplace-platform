@@ -11,7 +11,7 @@ kubectl get jobs -n agent-platform
 > Will print a list of jobs
 
 ```sh
-$ kubectl get jobs -n agent-platform
+kubectl get jobs -n agent-platform
 NAME                            STATUS    COMPLETIONS   DURATION   AGE
 infra-agent-job-1768912582351   Running   0/1           5s         5s
 ```
@@ -26,7 +26,7 @@ kubectl get pods -n agent-platform \
 > Will print the job name WITH pod id
 
 ```sh
-$ kubectl get pods -n agent-platform \
+kubectl get pods -n agent-platform \
   -l job-name=infra-agent-job-1768912844541
 NAME                                  READY   STATUS      RESTARTS   AGE
 infra-agent-job-1768912844541-qpqzw   0/1     Completed   0          61s

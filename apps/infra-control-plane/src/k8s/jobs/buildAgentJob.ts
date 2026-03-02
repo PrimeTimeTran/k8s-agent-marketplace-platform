@@ -8,12 +8,12 @@ const REGISTRY = process.env.CONTAINER_REGISTRY || ''
 const REPO_PREFIX = REGISTRY ? `${REGISTRY}/` : ''
 const PULL_POLICY = process.env.JOB_IMAGE_PULL_POLICY || 'IfNotPresent'
 
-const PYTHON_IMAGE_MAP = {
-  3.11: `${REPO_PREFIX}agent-base-3-11`, // mapped to 'agent-base-3-11' artifact in skaffold
-  3.12: `${REPO_PREFIX}agent-base-3-12`, // mapped to 'agent-base-3-12' artifact in skaffold
+const PYTHON_IMAGE_MAP: Record<string, string> = {
+  '3.11': `${REPO_PREFIX}agent-base-3-11`,
+  '3.12': `${REPO_PREFIX}agent-base-3-12`,
 }
 
-function normalizePythonVersion(version) {
+function normalizePythonVersion(version: string) {
   if (!version) return DEFAULT_PYTHON_VERSION
 
   // "3.12.1" → "3.12"
@@ -21,6 +21,18 @@ function normalizePythonVersion(version) {
   if (!match) return DEFAULT_PYTHON_VERSION
 
   return `${match[1]}.${match[2]}`
+}
+
+interface AgentJobOptions {
+  type: string
+  image?: string
+  agent: string
+  prompt?: string
+  repoUrl: string
+  args?: string[]
+  executionId: string
+  env?: Record<string, string>
+  pythonVersion?: string
 }
 
 export function buildAgentJob({
@@ -33,7 +45,7 @@ export function buildAgentJob({
   executionId,
   env: customEnv = {},
   pythonVersion = DEFAULT_PYTHON_VERSION,
-}) {
+}: AgentJobOptions) {
   const normalizedVersion = normalizePythonVersion(pythonVersion)
   const jobImage =
     image ||

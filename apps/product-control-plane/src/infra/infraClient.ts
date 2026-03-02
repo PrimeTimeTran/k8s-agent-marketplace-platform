@@ -6,7 +6,7 @@ export async function fetchExecutions() {
   return res.json()
 }
 
-export async function fetchExecution(id) {
+export async function fetchExecution(id: string) {
   const res = await fetch(`${INFRA_BASE}/executions/${id}`)
   if (!res.ok) throw new Error('Execution not found')
   return res.json()

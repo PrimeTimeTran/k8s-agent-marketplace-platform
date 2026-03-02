@@ -6,6 +6,7 @@ COPY package.json .
 
 # Copy packages
 COPY packages/types ./packages/types
+COPY packages/utils ./packages/utils
 
 # Copy service definitions (to install dependencies)
 COPY apps/product-control-plane/package.json ./apps/product-control-plane/package.json

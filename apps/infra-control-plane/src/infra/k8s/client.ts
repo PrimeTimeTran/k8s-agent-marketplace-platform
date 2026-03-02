@@ -4,7 +4,7 @@ import { Agent } from 'undici'
 export const K8S_API_BASE = 'https://kubernetes.default.svc'
 
 let token = ''
-let ca = null
+let ca: Buffer | null | undefined = null
 
 try {
   token = fs.readFileSync(
@@ -18,7 +18,7 @@ try {
 
 export const dispatcher = new Agent({
   connect: {
-    ca,
+    ca: ca as any,
   },
 })
 
@@ -27,15 +27,17 @@ export const authHeaders = {
   'Content-Type': 'application/json',
 }
 
-export async function k8sFetch(path, options = {}) {
-  const res = await fetch(`${K8S_API_BASE}${path}`, {
+export async function k8sFetch(path: string, options: any = {}) {
+  const fetchOptions: any = {
     dispatcher,
     headers: {
       ...authHeaders,
       ...(options.headers || {}),
     },
     ...options,
-  })
+  }
+
+  const res = await fetch(`${K8S_API_BASE}${path}`, fetchOptions)
 
   if (!res.ok) {
     throw new Error(await res.text())

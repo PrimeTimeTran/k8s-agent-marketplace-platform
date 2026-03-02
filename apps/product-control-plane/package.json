@@ -1,11 +1,12 @@
 {
   "name": "product-control-plane",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.ts",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -13,12 +14,19 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@hc/types": "*",
     "express": "^4.19.2",
     "node-fetch": "^3.3.2",
     "nodemon": "3.1.11",
     "pg": "^8.19.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.7",
-    "@hc/types": "*"
+    "@hc/utils": "*"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^20.19.35",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }

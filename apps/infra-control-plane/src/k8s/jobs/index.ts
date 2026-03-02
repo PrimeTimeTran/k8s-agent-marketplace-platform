@@ -1,14 +1,14 @@
-import { k8sGet, k8sPost } from '../../../infra/k8s/index.js'
+import { k8sGet, k8sPost } from '../../infra/k8s/index.js'
 
 import { buildAgentJob } from './buildAgentJob.js'
 import { buildInfraJob } from './buildInfraJob.js'
 import { K8S_NAMESPACE } from '../../constants.js'
 
-export async function getJob(namespace, name) {
+export async function getJob(namespace: string, name: string) {
   return k8sGet(`/apis/batch/v1/namespaces/${namespace}/jobs/${name}`)
 }
 
-export async function queueJob(input, { post = k8sPost } = {}) {
+export async function queueJob(input: any, { post = k8sPost } = {}) {
   if (input.type === 'infra') {
     const job = buildInfraJob(input)
     await post(`/apis/batch/v1/namespaces/${K8S_NAMESPACE}/jobs`, job)
@@ -44,6 +44,10 @@ export async function queueBuildImageJob({
   executionId,
   repoUrl,
   ref = 'main',
+}: {
+  executionId: string
+  repoUrl: string
+  ref?: string
 }) {
   const imageTag = `agent-job:${executionId}`
 

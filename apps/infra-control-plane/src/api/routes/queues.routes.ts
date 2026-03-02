@@ -1,4 +1,5 @@
-import express from 'express'
+import express, { Request, Response } from 'express'
+import { getErrorMessage } from '@hc/utils'
 import { queueJob } from '../../k8s/jobs/index.js'
 import { watchJobLogs } from '../../domain/executions/watcher.js'
 import {
@@ -8,7 +9,7 @@ import {
 
 const router = express.Router()
 
-router.post('/queue-job', async (req, res) => {
+router.post('/queue-job', async (req: Request, res: Response) => {
   try {
     console.log('Infra CP (queue-job) body:', JSON.stringify(req.body, null, 2))
     const payload = req.body
@@ -42,7 +43,7 @@ router.post('/queue-job', async (req, res) => {
     })
   } catch (err) {
     console.error(err)
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: getErrorMessage(err) })
   }
 })
 

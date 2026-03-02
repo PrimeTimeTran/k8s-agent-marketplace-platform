@@ -2,9 +2,9 @@ import { getJobPod, getPodLogs } from '../../k8s/pods.js'
 import { getExecution, updateExecution } from './store.js'
 import { K8S_NAMESPACE } from '../../constants.js'
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
-export async function watchJobLogs(executionId, jobName) {
+export async function watchJobLogs(executionId: string, jobName: string) {
   let podName = null
   let lastLogs = ''
 
@@ -39,9 +39,11 @@ export async function watchJobLogs(executionId, jobName) {
       lastLogs = logs
 
       const exec = getExecution(executionId)
-      updateExecution(executionId, {
-        logs: (exec.logs || '') + newLogs,
-      })
+      if (exec) {
+        updateExecution(executionId, {
+          logs: (exec.logs || '') + newLogs,
+        })
+      }
     }
 
     if (phase === 'Succeeded') {

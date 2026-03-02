@@ -60,12 +60,14 @@ profiles:
               - 'packages/types/dist/**/*'
 
         - image: infra-control-plane
-          context: apps/infra-control-plane
+          context: .
           docker:
-            dockerfile: Dockerfile.dev
+            dockerfile: apps/infra-control-plane/Dockerfile.dev
           sync:
             infer:
-              - '**/*'
+              - 'apps/infra-control-plane/**/*'
+              - 'packages/types/dist/**/*'
+              - 'packages/utils/dist/**/*'
 
         - image: agent-base
           context: apps/execution

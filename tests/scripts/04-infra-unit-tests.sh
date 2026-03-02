@@ -12,7 +12,7 @@ if [[ -d "$INFRA_DIR" ]]; then
   # Ensure dependencies are installed
   npm install --silent
   # Run tests
-  node --test tests/unit/*.test.js
+  npm test
   popd > /dev/null
 else
   echo "⚠️  infra-control-plane directory not found at $INFRA_DIR"
