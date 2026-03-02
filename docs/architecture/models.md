@@ -91,8 +91,17 @@ ExecutionRequest {
 
   reason: string | null       // rejection / failure reason
 
+  // Timing
   created_at: timestamp
+  started_at: timestamp | null
+  completed_at: timestamp | null
   updated_at: timestamp
+
+  // Usage / Billing
+  duration_ms: number | null      // Wall clock time (billable duration)
+  cpu_time_ms: number | null      // Actual CPU time used (if available)
+  memory_max_mb: number | null    // Peak memory usage
+  exit_code: number | null        // Process exit code
 }
 
 AgentExecutionLimits {
@@ -112,11 +121,18 @@ AgentEntitlement {
   agent_id: UUID
   user_id: UUID
 
-  plan: enum('free', 'pro', 'enterprise')
+  plan: enum('free', 'pro', 'enterprise', 'usage_based')
 
-  max_runs_per_day: number
-  max_cpu_seconds_per_day: number
-  max_tokens_per_day: number | null
+  // Quotas (null = unlimited)
+  max_runs_per_period: number | null
+  max_compute_seconds_per_period: number | null
+
+  // Rate Limits (Short term protection)
+  max_concurrent_runs: number | null
+
+  // Period definition
+  period: enum('daily', 'monthly', 'lifetime')
+  period_reset_at: timestamp | null
 
   starts_at: timestamp
   ends_at: timestamp | null

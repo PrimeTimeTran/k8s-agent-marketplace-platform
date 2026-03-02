@@ -51,7 +51,7 @@ export default function ContactPage() {
           </h1>
           <p className='text-xl text-on-surface-variant max-w-2xl mx-auto'>
             Have questions about our enterprise plans, custom integrations, or
-            just want to say hello? We'd love to hear from you.
+            just want to say hello? We&apos;d love to hear from you.
           </p>
         </div>
       </section>
@@ -193,7 +193,7 @@ export default function ContactPage() {
                   Message
                 </label>
                 <textarea
-                  className='flex min-h-[150px] w-full rounded-md border border-outline bg-surface px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-y'
+                  className='flex min-h-37.5 w-full rounded-md border border-outline bg-surface px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-y'
                   placeholder='Tell us more about your project...'
                   required
                 />

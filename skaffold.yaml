@@ -29,8 +29,25 @@ profiles:
           docker:
             dockerfile: Dockerfile.dev
           sync:
-            infer:
-              - '**/*'
+            manual:
+              - src: 'app/**/*'
+                dest: .
+              - src: 'components/**/*'
+                dest: .
+              - src: 'lib/**/*'
+                dest: .
+              - src: 'public/**/*'
+                dest: .
+              - src: 'styles/**/*'
+                dest: .
+              - src: '*.ts'
+                dest: .
+              - src: '*.json'
+                dest: .
+              - src: '*.mjs'
+                dest: .
+              - src: '*.js'
+                dest: .
 
         - image: product-control-plane
           context: product-control-plane

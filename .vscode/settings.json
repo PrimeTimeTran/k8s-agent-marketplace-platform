@@ -13,9 +13,12 @@
 
     ".gitignore": true,
     "**/Dockerfile": true,
+    "**/.env": true,
+    // "**/.env.local": true,
+    "**/.env.production": true,
     "**/Dockerfile.dev": true,
     "**/Dockerfile.base": true,
-    "**/package.json": true,
+    // "**/package.json": true,
     "**/package-lock.json": true,
   }
 }

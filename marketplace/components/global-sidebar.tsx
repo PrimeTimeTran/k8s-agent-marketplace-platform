@@ -92,12 +92,12 @@ export function GlobalSidebar({ isOpen, onClose }: GlobalSidebarProps) {
                 label='Dashboard'
                 onClick={onClose}
               />
-              <SidebarLink
+              {/* <SidebarLink
                 href='/design-kit'
                 icon={Layout}
                 label='Design Kit'
                 onClick={onClose}
-              />
+              /> */}
 
               <div className='pt-6 pb-2 px-4 text-xs font-semibold text-on-surface-variant uppercase tracking-wider'>
                 Account
