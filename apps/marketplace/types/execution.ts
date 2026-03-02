@@ -1,4 +1,5 @@
-export type ExecutionStatus = 'scheduled' | 'running' | 'completed' | 'failed'
+import { ExecutionStatus } from '@hc/types'
+export { ExecutionStatus }
 
 export type Execution = {
   id: string

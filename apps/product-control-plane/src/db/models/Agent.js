@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize'
 import { sequelize } from '../sequelize.js'
+import { AgentVisibility, AgentStatus } from '@hc/types'
 
 export const Agent = sequelize.define(
   'Agent',
@@ -25,12 +26,12 @@ export const Agent = sequelize.define(
       allowNull: true,
     },
     visibility: {
-      type: DataTypes.ENUM('private', 'org', 'public'),
-      defaultValue: 'private',
+      type: DataTypes.ENUM(...Object.values(AgentVisibility)),
+      defaultValue: AgentVisibility.PRIVATE,
     },
     status: {
-      type: DataTypes.ENUM('draft', 'active', 'disabled', 'deprecated'),
-      defaultValue: 'draft',
+      type: DataTypes.ENUM(...Object.values(AgentStatus)),
+      defaultValue: AgentStatus.DRAFT,
     },
   },
   {

@@ -19,46 +19,48 @@ profiles:
       - command: dev
     build:
       tagPolicy:
-        envTemplate:
-          template: '{{.IMAGE_NAME}}:latest'
+        sha256: {}
       local:
         push: false
       artifacts:
         - image: marketplace
-          context: marketplace
+          context: .
           docker:
-            dockerfile: Dockerfile.dev
+            dockerfile: apps/marketplace/Dockerfile.dev
           sync:
             manual:
-              - src: 'app/**/*'
+              - src: 'apps/marketplace/app/**/*'
                 dest: .
-              - src: 'components/**/*'
+              - src: 'apps/marketplace/components/**/*'
                 dest: .
-              - src: 'lib/**/*'
+              - src: 'apps/marketplace/lib/**/*'
                 dest: .
-              - src: 'public/**/*'
+              - src: 'apps/marketplace/public/**/*'
                 dest: .
-              - src: 'styles/**/*'
+              - src: 'apps/marketplace/styles/**/*'
                 dest: .
-              - src: '*.ts'
+              - src: 'apps/marketplace/*.ts'
                 dest: .
-              - src: '*.json'
+              - src: 'apps/marketplace/*.json'
                 dest: .
-              - src: '*.mjs'
+              - src: 'apps/marketplace/*.mjs'
                 dest: .
-              - src: '*.js'
+              - src: 'apps/marketplace/*.js'
+                dest: .
+              - src: 'packages/types/dist/**/*'
                 dest: .
 
         - image: product-control-plane
-          context: product-control-plane
+          context: .
           docker:
-            dockerfile: Dockerfile.dev
+            dockerfile: apps/product-control-plane/Dockerfile.dev
           sync:
             infer:
-              - '**/*'
+              - 'apps/product-control-plane/**/*'
+              - 'packages/types/dist/**/*'
 
         - image: infra-control-plane
-          context: infra-control-plane
+          context: apps/infra-control-plane
           docker:
             dockerfile: Dockerfile.dev
           sync:
@@ -66,7 +68,7 @@ profiles:
               - '**/*'
 
         - image: agent-base
-          context: execution
+          context: apps/execution
           docker:
             dockerfile: Dockerfile.base
             buildArgs:

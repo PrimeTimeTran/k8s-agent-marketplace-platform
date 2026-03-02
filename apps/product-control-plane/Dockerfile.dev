@@ -1,0 +1,25 @@
+FROM node:20-alpine
+WORKDIR /app
+
+# Copy workspace configuration
+COPY package.json .
+
+# Copy packages
+COPY packages/types ./packages/types
+
+# Copy service definitions (to install dependencies)
+COPY apps/product-control-plane/package.json ./apps/product-control-plane/package.json
+COPY apps/marketplace/package.json ./apps/marketplace/package.json
+COPY apps/infra-control-plane/package.json ./apps/infra-control-plane/package.json
+
+# Install dependencies
+RUN npm install
+
+# Copy source code
+COPY apps/product-control-plane ./apps/product-control-plane
+COPY apps/marketplace ./apps/marketplace
+COPY apps/infra-control-plane ./apps/infra-control-plane
+
+WORKDIR /app/apps/product-control-plane
+EXPOSE 3001
+CMD ["npm", "run", "dev"]

@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize'
 import { sequelize } from '../sequelize.js'
+import { Runtime } from '@hc/types'
 
 export const AgentVersion = sequelize.define(
   'AgentVersion',
@@ -26,8 +27,8 @@ export const AgentVersion = sequelize.define(
       allowNull: false,
     },
     runtime: {
-      type: DataTypes.ENUM('python', 'node', 'custom'),
-      defaultValue: 'custom',
+      type: DataTypes.ENUM(...Object.values(Runtime)),
+      defaultValue: Runtime.CUSTOM,
     },
     is_active: {
       type: DataTypes.BOOLEAN,

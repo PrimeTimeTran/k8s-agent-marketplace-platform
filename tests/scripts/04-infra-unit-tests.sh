@@ -3,7 +3,7 @@ set -euo pipefail
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(dirname "$DIR")"
-INFRA_DIR="$ROOT/../infra-control-plane"
+INFRA_DIR="$ROOT/../apps/infra-control-plane"
 
 echo "🧪 Running Infra Control Plane Unit Tests..."
 

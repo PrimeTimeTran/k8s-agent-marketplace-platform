@@ -1,5 +1,6 @@
+**/.next
 **/venv
-*/node_modules/
+**/node_modules/
 **/__pycache__/
 **/n8n-workflows/
 marketplace/.next/

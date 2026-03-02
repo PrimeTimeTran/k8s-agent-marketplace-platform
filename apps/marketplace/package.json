@@ -23,7 +23,8 @@
     "react-icons": "5.5.0",
     "rehype-highlight": "^7.0.2",
     "rehype-slug": "^6.0.0",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.4.0",
+    "@hc/types": "*"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

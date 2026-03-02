@@ -14,7 +14,7 @@ echo
 
 echo "🧪 Running execution tests..."
 # Run all .test.js files in tests/execution/
-for test in "$ROOT"/execution/*.test.js; do
+for test in "$ROOT"/apps/execution/*.test.js; do
   if [[ -f "$test" ]]; then
     echo "  • Running $(basename "$test")"
     node "$test"

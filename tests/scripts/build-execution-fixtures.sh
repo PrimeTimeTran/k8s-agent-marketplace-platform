@@ -4,7 +4,7 @@ set -euo pipefail
 echo "🔨 Building execution fixture images..."
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-EXECUTION_DIR="$ROOT/../execution"
+EXECUTION_DIR="$ROOT/../apps/execution"
 IMAGES_DIR="$ROOT/fixtures/execution/images"
 
 if [[ -f "$EXECUTION_DIR/Dockerfile.base" ]]; then
